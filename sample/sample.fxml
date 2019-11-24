@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <AnchorPane prefHeight="600.0" prefWidth="180.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <ImageView fitHeight="63.0" fitWidth="172.0" layoutX="5.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Logo2.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="OrderLabel" alignment="CENTER" layoutY="129.0" onMouseClicked="#OrderLabelClicked" prefHeight="57.0" prefWidth="180.0" style="-fx-background-color: #FFFFFF;" text="ORDER" textAlignment="CENTER" textFill="#9a9a9a">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="MemberLabel" alignment="CENTER" layoutY="186.0" onMouseClicked="#MemberLabelClicked" prefHeight="57.0" prefWidth="180.0" style="-fx-background-color: #FFFFFF;" text="MEMBERS" textAlignment="CENTER" textFill="#9a9a9a">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="ProductLabel" alignment="CENTER" layoutY="243.0" onMouseClicked="#ProductLabelClicked" prefHeight="57.0" prefWidth="180.0" style="-fx-background-color: #FFFFFF;" text="PRODUCT" textAlignment="CENTER" textFill="#9a9a9a">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Label>
+            <Rectangle fx:id="OrderRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="129.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
+            <Rectangle fx:id="MemberRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="186.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
+            <Rectangle fx:id="ProductRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="243.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="OrderPane" layoutX="200.0" prefHeight="600.0" prefWidth="800.0">
+         <children>
+            <TableView layoutX="14.0" layoutY="72.0" prefHeight="443.0" prefWidth="773.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
+            <Button layoutX="91.0" layoutY="536.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="Filter" />
+            <Button layoutX="216.0" layoutY="536.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="New Order" />
+            <Button layoutX="341.0" layoutY="536.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="Delete Order" />
+            <Button layoutX="467.0" layoutY="536.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="Edit Order" />
+            <Button layoutX="591.0" layoutY="536.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="Print Invoice" />
+            <Label layoutX="22.0" layoutY="35.0" text="Order List" />
+         </children></AnchorPane>
+      <AnchorPane fx:id="MemberPane" disable="true" layoutX="210.0" layoutY="10.0" prefHeight="600.0" prefWidth="800.0" visible="false">
+         <children>
+            <TableView layoutX="14.0" layoutY="72.0" prefHeight="443.0" prefWidth="773.0">
+               <columns>
+                  <TableColumn prefWidth="75.0" text="C1" />
+                  <TableColumn prefWidth="75.0" text="C2" />
+               </columns>
+            </TableView>
+            <Button layoutX="91.0" layoutY="536.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="Filter" />
+            <Button layoutX="216.0" layoutY="536.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="New Client" />
+            <Button layoutX="341.0" layoutY="536.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="Delete Client" />
+            <Button layoutX="467.0" layoutY="536.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="Edit Client" />
+            <Label layoutX="22.0" layoutY="35.0" text="Members List" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
