@@ -2,6 +2,7 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
@@ -10,6 +11,7 @@ import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Filter;
 
 public class Controller implements Initializable {
 
@@ -24,12 +26,27 @@ public class Controller implements Initializable {
     @FXML private AnchorPane OrderPane;
     @FXML private AnchorPane MemberPane;
 
+    @FXML private Label NewOrderLabel;
+    @FXML private Label DeleteOrderLabel;
+    @FXML private Label OverviewLabel;
+    @FXML private ComboBox FilterComboBox;
+    @FXML private ComboBox DateComboBox;
+
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        // Initialize Order Pane
+        NewOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
+        DeleteOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
+        OverviewLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 14));
+        FilterComboBox.setPromptText("Status: All");
+        FilterComboBox.getItems().addAll("All", "Pending", "Confirmed");
+        DateComboBox.setPromptText("Date: Today");
+        DateComboBox.getItems().addAll("All", "Today", "Yesterday");
+        // By Default, Order Label is Clicked
         OrderLabelClicked();
     }
 
-    public void LabelDefault(){
+    private void LabelDefault(){
         // Set Label Fonts
         OrderLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
         MemberLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
