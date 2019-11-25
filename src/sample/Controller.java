@@ -29,6 +29,7 @@ public class Controller implements Initializable {
     // Order Pane Members
     @FXML private Label NewOrderLabel;
     @FXML private Label DeleteOrderLabel;
+    @FXML private Label EditOrderLabel;
     @FXML private Label OverviewLabel;
     @FXML private ComboBox FilterComboBox;
     @FXML private ComboBox DateComboBox;
@@ -36,12 +37,14 @@ public class Controller implements Initializable {
     // Member Pane Members
     @FXML private Label NewMemberLabel;
     @FXML private Label DeleteMemberLabel;
+    @FXML private Label EditMemberLabel;
     @FXML private Label OverviewLabel2;
     @FXML private ComboBox FilterComboBox2;
 
     // Product Pane Members
     @FXML private Label NewProductLabel;
     @FXML private Label DeleteProductLabel;
+    @FXML private Label EditProductLabel;
     @FXML private Label OverviewLabel3;
     @FXML private ComboBox FilterComboBox3;
 
@@ -50,6 +53,7 @@ public class Controller implements Initializable {
         // Initialize Order Pane
         NewOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
         DeleteOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
+        EditOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
         OverviewLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 14));
         FilterComboBox.setPromptText("Status: All");
         FilterComboBox.getItems().addAll("All", "Pending", "Confirmed");
@@ -59,6 +63,7 @@ public class Controller implements Initializable {
         // Initialize Member Pane
         NewMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
         DeleteMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
+        EditMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
         OverviewLabel2.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 14));
         FilterComboBox2.setPromptText("Type: All");
         FilterComboBox2.getItems().addAll("All", "Business", "Individuals");
@@ -66,6 +71,7 @@ public class Controller implements Initializable {
         // Initialize Product Pane
         NewProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
         DeleteProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
+        EditProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
         OverviewLabel3.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 14));
         FilterComboBox3.setPromptText("Type: All");
         FilterComboBox3.getItems().addAll("All", "Cakes", "Cup Cakes", "Cookies");
@@ -135,6 +141,11 @@ public class Controller implements Initializable {
         System.out.println("Delete Order Clicked");
     }
 
+    @FXML
+    public void EditOrderClicked(){
+        System.out.println("Edit Order Clicked");
+    }
+
     // Member Pane Functions
     @FXML
     public void NewMemberClicked(){
@@ -146,6 +157,11 @@ public class Controller implements Initializable {
         System.out.println("Delete Member Clicked");
     }
 
+    @FXML
+    public void EditMemberClicked(){
+        System.out.println("Edit Member Clicked");
+    }
+
     // Product Pane Functions
     @FXML
     public void NewProductClicked(){
@@ -155,6 +171,11 @@ public class Controller implements Initializable {
     @FXML
     public void DeleteProductClicked(){
         System.out.println("Delete Product Clicked");
+    }
+
+    @FXML
+    public void EditProductClicked(){
+        System.out.println("Edit Product Clicked");
     }
 
 }
