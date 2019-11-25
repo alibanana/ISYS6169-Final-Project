@@ -124,4 +124,37 @@ public class Controller implements Initializable {
         ProductPane.setVisible(true);
     }
 
+    // Order Pane Functions
+    @FXML
+    public void NewOrderClicked(){
+        System.out.println("New Order Clicked");
+    }
+
+    @FXML
+    public void DeleteOrderClicked(){
+        System.out.println("Delete Order Clicked");
+    }
+
+    // Member Pane Functions
+    @FXML
+    public void NewMemberClicked(){
+        System.out.println("New Member Clicked");
+    }
+
+    @FXML
+    public void DeleteMemberClicked(){
+        System.out.println("Delete Member Clicked");
+    }
+
+    // Product Pane Functions
+    @FXML
+    public void NewProductClicked(){
+        System.out.println("New Product Clicked");
+    }
+
+    @FXML
+    public void DeleteProductClicked(){
+        System.out.println("Delete Product Clicked");
+    }
+
 }
