@@ -24,6 +24,7 @@ public class Controller implements Initializable {
 
     @FXML private AnchorPane OrderPane;
     @FXML private AnchorPane MemberPane;
+    @FXML private AnchorPane ProductPane;
 
     // Order Pane Members
     @FXML private Label NewOrderLabel;
@@ -37,6 +38,12 @@ public class Controller implements Initializable {
     @FXML private Label DeleteMemberLabel;
     @FXML private Label OverviewLabel2;
     @FXML private ComboBox FilterComboBox2;
+
+    // Product Pane Members
+    @FXML private Label NewProductLabel;
+    @FXML private Label DeleteProductLabel;
+    @FXML private Label OverviewLabel3;
+    @FXML private ComboBox FilterComboBox3;
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
@@ -55,6 +62,13 @@ public class Controller implements Initializable {
         OverviewLabel2.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 14));
         FilterComboBox2.setPromptText("Type: All");
         FilterComboBox2.getItems().addAll("All", "Business", "Individuals");
+
+        // Initialize Product Pane
+        NewProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
+        DeleteProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
+        OverviewLabel3.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 14));
+        FilterComboBox3.setPromptText("Type: All");
+        FilterComboBox3.getItems().addAll("All", "Cakes", "Cup Cakes", "Cookies");
 
         // By Default, Order Label is Clicked
         OrderLabelClicked();
@@ -78,6 +92,8 @@ public class Controller implements Initializable {
         OrderPane.setVisible(false);
         MemberPane.setDisable(true);
         MemberPane.setVisible(false);
+        ProductPane.setDisable(true);
+        ProductPane.setVisible(false);
     }
 
     @FXML
@@ -104,6 +120,8 @@ public class Controller implements Initializable {
         LabelDefault();
         ProductLabel.setTextFill(Paint.valueOf("5596FD"));
         ProductRectangle.setVisible(true);
+        ProductPane.setDisable(false);
+        ProductPane.setVisible(true);
     }
 
 }
