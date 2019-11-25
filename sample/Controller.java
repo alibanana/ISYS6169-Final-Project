@@ -37,7 +37,6 @@ public class Controller implements Initializable {
     @FXML private Label DeleteMemberLabel;
     @FXML private Label OverviewLabel2;
     @FXML private ComboBox FilterComboBox2;
-    @FXML private ComboBox DateComboBox2;
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
@@ -54,7 +53,7 @@ public class Controller implements Initializable {
         NewMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
         DeleteMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
         OverviewLabel2.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 14));
-        FilterComboBox2.setPromptText("Status: All");
+        FilterComboBox2.setPromptText("Type: All");
         FilterComboBox2.getItems().addAll("All", "Business", "Individuals");
 
         // By Default, Order Label is Clicked

@@ -76,7 +76,7 @@
                   <TableColumn prefWidth="30.0" resizable="false" text="#" />
                   <TableColumn prefWidth="95.0" resizable="false" text="Member ID" />
                   <TableColumn prefWidth="250.0" resizable="false" text="Name" />
-                  <TableColumn prefWidth="150.0" resizable="false" text="Status" />
+                  <TableColumn prefWidth="150.0" resizable="false" text="Type" />
                   <TableColumn prefWidth="125.0" resizable="false" text="Total Orders" />
                </columns>
             </TableView>
