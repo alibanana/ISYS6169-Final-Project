@@ -111,6 +111,7 @@ public class Controller implements Initializable {
         LabelDefault();
         OrderLabel.setTextFill(Paint.valueOf("5596FD"));
         OrderRectangle.setVisible(true);
+        new FadeIn(OrderRectangle).play();
         OrderPane.setDisable(false);
         OrderPane.setVisible(true);
         new Pulse(OrderLabel).play();
@@ -122,6 +123,7 @@ public class Controller implements Initializable {
         LabelDefault();
         MemberLabel.setTextFill(Paint.valueOf("5596FD"));
         MemberRectangle.setVisible(true);
+        new FadeIn(MemberRectangle).play();
         MemberPane.setDisable(false);
         MemberPane.setVisible(true);
         new Pulse(MemberLabel).play();
@@ -134,6 +136,7 @@ public class Controller implements Initializable {
         LabelDefault();
         ProductLabel.setTextFill(Paint.valueOf("5596FD"));
         ProductRectangle.setVisible(true);
+        new FadeIn(ProductRectangle).play();
         ProductPane.setDisable(false);
         ProductPane.setVisible(true);
         new Pulse(ProductLabel).play();
@@ -144,57 +147,57 @@ public class Controller implements Initializable {
     @FXML
     public void NewOrderClicked(){
         System.out.println("New Order Clicked");
-        new Flash(NewOrderLabel).setSpeed(5).play();
+        new FadeIn(NewOrderLabel).setSpeed(5).play();
     }
 
     @FXML
     public void DeleteOrderClicked(){
         System.out.println("Delete Order Clicked");
-        new Flash(DeleteOrderLabel).setSpeed(5).play();
+        new FadeIn(DeleteOrderLabel).setSpeed(5).play();
     }
 
     @FXML
     public void EditOrderClicked(){
         System.out.println("Edit Order Clicked");
-        new Flash(EditOrderLabel).setSpeed(5).play();
+        new FadeIn(EditOrderLabel).setSpeed(5).play();
     }
 
     // Member Pane Functions
     @FXML
     public void NewMemberClicked(){
         System.out.println("New Member Clicked");
-        new Flash(NewMemberLabel).setSpeed(5).play();
+        new FadeIn(NewMemberLabel).setSpeed(5).play();
     }
 
     @FXML
     public void DeleteMemberClicked(){
         System.out.println("Delete Member Clicked");
-        new Flash(DeleteMemberLabel).setSpeed(5).play();
+        new FadeIn(DeleteMemberLabel).setSpeed(5).play();
     }
 
     @FXML
     public void EditMemberClicked(){
         System.out.println("Edit Member Clicked");
-        new Flash(EditMemberLabel).setSpeed(5).play();
+        new FadeIn(EditMemberLabel).setSpeed(5).play();
     }
 
     // Product Pane Functions
     @FXML
     public void NewProductClicked(){
         System.out.println("New Product Clicked");
-        new Flash(NewProductLabel).setSpeed(5).play();
+        new FadeIn(NewProductLabel).setSpeed(5).play();
     }
 
     @FXML
     public void DeleteProductClicked(){
         System.out.println("Delete Product Clicked");
-        new Flash(DeleteProductLabel).setSpeed(5).play();
+        new FadeIn(DeleteProductLabel).setSpeed(5).play();
     }
 
     @FXML
     public void EditProductClicked(){
         System.out.println("Edit Product Clicked");
-        new Flash(EditProductLabel).setSpeed(5).play();
+        new FadeIn(EditProductLabel).setSpeed(5).play();
     }
 
 }
