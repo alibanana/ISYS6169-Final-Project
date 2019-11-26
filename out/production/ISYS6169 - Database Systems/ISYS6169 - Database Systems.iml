@@ -8,6 +8,5 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="io.github.typhon0:AnimateFX:1.2.1" level="project" />
   </component>
 </module>
