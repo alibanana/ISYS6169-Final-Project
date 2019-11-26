@@ -1,5 +1,9 @@
 package sample;
 
+import animatefx.animation.FadeIn;
+import animatefx.animation.Flash;
+import animatefx.animation.Pulse;
+import animatefx.animation.Wobble;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -109,6 +113,8 @@ public class Controller implements Initializable {
         OrderRectangle.setVisible(true);
         OrderPane.setDisable(false);
         OrderPane.setVisible(true);
+        new Pulse(OrderLabel).play();
+        new FadeIn(OrderPane).play();
     }
 
     @FXML
@@ -118,6 +124,8 @@ public class Controller implements Initializable {
         MemberRectangle.setVisible(true);
         MemberPane.setDisable(false);
         MemberPane.setVisible(true);
+        new Pulse(MemberLabel).play();
+        new FadeIn(MemberPane).play();
 
     }
 
@@ -128,54 +136,65 @@ public class Controller implements Initializable {
         ProductRectangle.setVisible(true);
         ProductPane.setDisable(false);
         ProductPane.setVisible(true);
+        new Pulse(ProductLabel).play();
+        new FadeIn(ProductPane).play();
     }
 
     // Order Pane Functions
     @FXML
     public void NewOrderClicked(){
         System.out.println("New Order Clicked");
+        new Flash(NewOrderLabel).setSpeed(5).play();
     }
 
     @FXML
     public void DeleteOrderClicked(){
         System.out.println("Delete Order Clicked");
+        new Flash(DeleteOrderLabel).setSpeed(5).play();
     }
 
     @FXML
     public void EditOrderClicked(){
         System.out.println("Edit Order Clicked");
+        new Flash(EditOrderLabel).setSpeed(5).play();
     }
 
     // Member Pane Functions
     @FXML
     public void NewMemberClicked(){
         System.out.println("New Member Clicked");
+        new Flash(NewMemberLabel).setSpeed(5).play();
     }
 
     @FXML
     public void DeleteMemberClicked(){
         System.out.println("Delete Member Clicked");
+        new Flash(DeleteMemberLabel).setSpeed(5).play();
     }
 
     @FXML
     public void EditMemberClicked(){
         System.out.println("Edit Member Clicked");
+        new Flash(EditMemberLabel).setSpeed(5).play();
     }
 
     // Product Pane Functions
     @FXML
     public void NewProductClicked(){
         System.out.println("New Product Clicked");
+        new Flash(NewProductLabel).setSpeed(5).play();
     }
 
     @FXML
     public void DeleteProductClicked(){
         System.out.println("Delete Product Clicked");
+        new Flash(DeleteProductLabel).setSpeed(5).play();
     }
 
     @FXML
     public void EditProductClicked(){
         System.out.println("Edit Product Clicked");
+        new Flash(EditProductLabel).setSpeed(5).play();
     }
 
 }
