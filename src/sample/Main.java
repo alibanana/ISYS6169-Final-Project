@@ -21,8 +21,8 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
     public static void main(String[] args) {
+//        Database.addMember("MEM00001", "CUS00001");
         launch(args);
     }
 }
