@@ -35,6 +35,7 @@ public class Controller implements Initializable {
     @FXML private Label DeleteOrderLabel;
     @FXML private Label EditOrderLabel;
     @FXML private Label OverviewLabel;
+    @FXML private Label DetailsLabel;
     @FXML private ComboBox FilterComboBox;
     @FXML private ComboBox DateComboBox;
 
@@ -55,28 +56,29 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb){
         // Initialize Order Pane
-        NewOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
-        DeleteOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
-        EditOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
-        OverviewLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 14));
+        NewOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        DeleteOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        EditOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        OverviewLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
+        DetailsLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         FilterComboBox.setPromptText("Status: All");
         FilterComboBox.getItems().addAll("All", "Pending", "Confirmed");
         DateComboBox.setPromptText("Date: Today");
         DateComboBox.getItems().addAll("All", "Today", "Yesterday");
 
         // Initialize Member Pane
-        NewMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
-        DeleteMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
-        EditMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
-        OverviewLabel2.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 14));
+        NewMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        DeleteMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        EditMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        OverviewLabel2.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         FilterComboBox2.setPromptText("Type: All");
         FilterComboBox2.getItems().addAll("All", "Business", "Individuals");
 
         // Initialize Product Pane
-        NewProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
-        DeleteProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
-        EditProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 14));
-        OverviewLabel3.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 14));
+        NewProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        DeleteProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        EditProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        OverviewLabel3.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         FilterComboBox3.setPromptText("Type: All");
         FilterComboBox3.getItems().addAll("All", "Cakes", "Cup Cakes", "Cookies");
 

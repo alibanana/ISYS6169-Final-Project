@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="928.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.OrderForm">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="62.0" prefWidth="507.0" style="-fx-background-color: #1e90ff; -fx-background-radius: 10;">
+         <children>
+            <Label layoutX="189.0" layoutY="16.0" text="Add Order" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="26.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="14.0" layoutY="80.0" prefHeight="506.0" prefWidth="507.0" style="-fx-background-color: #f4f4f4; -fx-background-radius: 10;">
+         <children>
+            <TextField layoutX="111.0" layoutY="60.0" prefHeight="31.0" prefWidth="343.0" />
+            <Label layoutX="54.0" layoutY="65.0" text="Name" />
+            <Label layoutX="58.0" layoutY="162.0" text="Price" />
+            <Spinner layoutX="111.0" layoutY="157.0" />
+            <Label layoutX="58.0" layoutY="114.0" text="Type" />
+            <Button layoutX="377.0" layoutY="461.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="Add" textFill="WHITE" />
+            <ComboBox layoutX="111.0" layoutY="109.0" prefHeight="31.0" prefWidth="187.0" />
+            <Button layoutX="14.0" layoutY="461.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #b92e34;" text="Close" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="526.0" layoutY="14.0" prefHeight="62.0" prefWidth="397.0" style="-fx-background-color: #1e90ff; -fx-background-radius: 10;">
+         <children>
+            <Label layoutX="128.0" layoutY="16.0" text="Sub Orders" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="26.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+      <AnchorPane layoutX="525.0" layoutY="80.0" prefHeight="506.0" prefWidth="397.0" style="-fx-background-color: #f4f4f4; -fx-background-radius: 10;">
+         <children>
+            <TableView layoutX="11.0" layoutY="28.0" prefHeight="469.0" prefWidth="381.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
