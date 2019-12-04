@@ -4,10 +4,12 @@ import animatefx.animation.FadeIn;
 import animatefx.animation.Flash;
 import animatefx.animation.Pulse;
 import animatefx.animation.Wobble;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -18,17 +20,24 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+    @FXML private Label HomeLabel;
     @FXML private Label OrderLabel;
     @FXML private Label MemberLabel;
     @FXML private Label ProductLabel;
 
+    @FXML private Rectangle HomeRectangle;
     @FXML private Rectangle OrderRectangle;
     @FXML private Rectangle MemberRectangle;
     @FXML private Rectangle ProductRectangle;
 
+    @FXML private AnchorPane HomePane;
     @FXML private AnchorPane OrderPane;
     @FXML private AnchorPane MemberPane;
     @FXML private AnchorPane ProductPane;
+
+    // Home Pane Members
+    @FXML private TextField test;
+    @FXML private TextField test2;
 
     // Order Pane Members
     @FXML private Label NewOrderLabel;
@@ -82,30 +91,47 @@ public class Controller implements Initializable {
         FilterComboBox3.setPromptText("Type: All");
         FilterComboBox3.getItems().addAll("All", "Cakes", "Cup Cakes", "Cookies");
 
-        // By Default, Order Label is Clicked
-        OrderLabelClicked();
+        // By Default, Home Label is Clicked
+        HomeLabelClicked();
+//        OrderLabelClicked();
     }
 
     private void LabelDefault(){
         // Set Label Fonts
+        HomeLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
         OrderLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
         MemberLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
         ProductLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
         // Set Label Colors
+        HomeLabel.setTextFill(Paint.valueOf("9a9a9a"));
         OrderLabel.setTextFill(Paint.valueOf("9a9a9a"));
         MemberLabel.setTextFill(Paint.valueOf("9a9a9a"));
         ProductLabel.setTextFill(Paint.valueOf("9a9a9a"));
         // Set Rectangles Off
+        HomeRectangle.setVisible(false);
         OrderRectangle.setVisible(false);
         MemberRectangle.setVisible(false);
         ProductRectangle.setVisible(false);
         // Set Panes Off
+        HomePane.setDisable(true);
+        HomePane.setVisible(false);
         OrderPane.setDisable(true);
         OrderPane.setVisible(false);
         MemberPane.setDisable(true);
         MemberPane.setVisible(false);
         ProductPane.setDisable(true);
         ProductPane.setVisible(false);
+    }
+
+    @FXML
+    public void HomeLabelClicked(){
+        LabelDefault();
+        HomeLabel.setTextFill(Paint.valueOf("5596FD"));
+        HomeRectangle.setVisible(true);
+        new FadeIn(HomeRectangle).play();
+        HomePane.setDisable(false);
+        HomePane.setVisible(true);
+        new FadeIn(HomePane).play();
     }
 
     @FXML
@@ -116,7 +142,6 @@ public class Controller implements Initializable {
         new FadeIn(OrderRectangle).play();
         OrderPane.setDisable(false);
         OrderPane.setVisible(true);
-        new Pulse(OrderLabel).play();
         new FadeIn(OrderPane).play();
     }
 
@@ -128,7 +153,6 @@ public class Controller implements Initializable {
         new FadeIn(MemberRectangle).play();
         MemberPane.setDisable(false);
         MemberPane.setVisible(true);
-        new Pulse(MemberLabel).play();
         new FadeIn(MemberPane).play();
 
     }
@@ -141,8 +165,13 @@ public class Controller implements Initializable {
         new FadeIn(ProductRectangle).play();
         ProductPane.setDisable(false);
         ProductPane.setVisible(true);
-        new Pulse(ProductLabel).play();
         new FadeIn(ProductPane).play();
+    }
+
+    // Home Pane Functions
+    @FXML
+    public void TestAction(){
+        test2.setText(test.getText());
     }
 
     // Order Pane Functions

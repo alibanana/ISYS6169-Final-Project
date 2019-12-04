@@ -162,15 +162,15 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
+      <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
          <children>
             <TableView layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
                <columns>
                   <TableColumn prefWidth="30.0" resizable="false" text="#" />
-                  <TableColumn prefWidth="95.0" resizable="false" text="Product ID" />
-                  <TableColumn prefWidth="250.0" resizable="false" text="Name" />
-                  <TableColumn prefWidth="150.0" resizable="false" text="Type" />
-                  <TableColumn prefWidth="125.0" resizable="false" text="Price" />
+                  <TableColumn prefWidth="147.0" resizable="false" text="Product ID" />
+                  <TableColumn prefWidth="305.0" resizable="false" text="Name" />
+                  <TableColumn prefWidth="164.0" resizable="false" text="Type" />
+                  <TableColumn prefWidth="203.0" resizable="false" text="Price" />
                </columns>
             </TableView>
             <Label layoutX="28.0" layoutY="21.0" text="Products">

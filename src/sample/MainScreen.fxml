@@ -1,53 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.StackedAreaChart?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <AnchorPane prefHeight="700.0" prefWidth="166.0" style="-fx-background-color: #ffffff;">
          <children>
-            <ImageView fitHeight="71.0" fitWidth="166.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="71.0" fitWidth="166.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/Logo2.png" />
                </image>
             </ImageView>
-            <Label fx:id="MemberLabel" alignment="CENTER" layoutY="251.0" onMouseClicked="#MemberLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="MEMBERS" textAlignment="CENTER" textFill="#9a9a9a">
+            <Label fx:id="HomeLabel" alignment="CENTER" layoutY="122.0" onMouseClicked="#HomeLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="HOME" textAlignment="CENTER" textFill="#9a9a9a">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="ProductLabel" alignment="CENTER" layoutY="308.0" onMouseClicked="#ProductLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="PRODUCT" textAlignment="CENTER" textFill="#9a9a9a">
+            <Rectangle fx:id="HomeRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="122.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
+            <Label fx:id="OrderLabel" alignment="CENTER" layoutY="179.0" onMouseClicked="#OrderLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="ORDER" textAlignment="CENTER" textFill="#9a9a9a">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Rectangle fx:id="MemberRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="251.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
-            <Rectangle fx:id="ProductRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="308.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
-            <Label fx:id="OrderLabel" alignment="CENTER" layoutY="194.0" onMouseClicked="#OrderLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="ORDER" textAlignment="CENTER" textFill="#9a9a9a">
+            <Rectangle fx:id="OrderRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="179.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
+            <Label fx:id="MemberLabel" alignment="CENTER" layoutY="236.0" onMouseClicked="#MemberLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="MEMBERS" textAlignment="CENTER" textFill="#9a9a9a">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Rectangle fx:id="OrderRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="194.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
-            <Label fx:id="OrderLabel1" alignment="CENTER" layoutY="137.0" onMouseClicked="#OrderLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="HOME" textAlignment="CENTER" textFill="#9a9a9a">
+            <Rectangle fx:id="MemberRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="236.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
+            <Label fx:id="ProductLabel" alignment="CENTER" layoutY="293.0" onMouseClicked="#ProductLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="PRODUCT" textAlignment="CENTER" textFill="#9a9a9a">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Rectangle fx:id="OrderRectangle1" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="137.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
+            <Rectangle fx:id="ProductRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="293.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
+      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
          <children>
             <StackedAreaChart layoutX="209.0" layoutY="56.0">
               <xAxis>
@@ -57,6 +52,8 @@
                 <NumberAxis side="LEFT" />
               </yAxis>
             </StackedAreaChart>
+            <TextField fx:id="test" layoutX="303.0" layoutY="538.0" onAction="#TestAction" />
+            <TextField fx:id="test2" layoutX="303.0" layoutY="579.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034" visible="false">
