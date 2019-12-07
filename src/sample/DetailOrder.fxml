@@ -12,7 +12,7 @@
    <children>
       <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="62.0" prefWidth="847.0" style="-fx-background-color: #1e90ff; -fx-background-radius: 10;">
          <children>
-            <Label layoutX="330.0" layoutY="16.0" text="Add Sub-Order" textFill="WHITE">
+            <Label layoutX="349.0" layoutY="16.0" text="Detail Order" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="26.0" />
                </font>
@@ -21,7 +21,7 @@
       </AnchorPane>
       <AnchorPane layoutX="14.0" layoutY="81.0" prefHeight="637.0" prefWidth="847.0" style="-fx-background-color: #f4f4f4; -fx-background-radius: 10;">
          <children>
-            <Button fx:id="nextButton" layoutX="717.0" layoutY="589.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="Next" textFill="WHITE" />
+            <Button fx:id="nextButton" layoutX="717.0" layoutY="589.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: b92e34;" text="Close" textFill="WHITE" />
             <Label layoutX="20.0" layoutY="58.0" prefHeight="27.0" prefWidth="93.0" text="Order ID">
                <font>
                   <Font name="System Bold" size="16.0" />
@@ -41,7 +41,7 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label fx:id="customerName" layoutX="119.0" layoutY="16.0" prefHeight="27.0" prefWidth="250.0" text="Customer Name">
+            <Label fx:id="customerName" layoutX="119.0" layoutY="16.0" prefHeight="27.0" prefWidth="222.0" text="Customer Name">
                <font>
                   <Font size="16.0" />
                </font>
@@ -132,6 +132,16 @@
                </font>
             </Label>
             <Spinner fx:id="paid" layoutX="587.0" layoutY="472.0" prefHeight="31.0" prefWidth="250.0" />
+            <Label layoutX="348.0" layoutY="16.0" prefHeight="27.0" prefWidth="61.0" text="Status">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="customerName2" layoutX="405.0" layoutY="16.0" prefHeight="27.0" prefWidth="77.0" style="font: #b92e34;" text="Pending" textFill="#b92e34">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>
