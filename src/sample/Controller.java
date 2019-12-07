@@ -4,7 +4,10 @@ import animatefx.animation.FadeIn;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -12,8 +15,12 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -57,14 +64,14 @@ public class Controller implements Initializable {
     @FXML private Label DeleteCustomerLabel;
     @FXML private Label EditCustomerLabel;
     @FXML private Label OverviewLabel2;
-    @FXML private ComboBox FilterComboBox2;
+    @FXML private ComboBox CustomerComboBox;
     @FXML private TableView<Customer> CustomerTable;
     @FXML private TableColumn<Customer, Integer> CustNoCol;
     @FXML private TableColumn<Customer, String> CustIDCol;
     @FXML private TableColumn<Customer, String> CustNameCol;
     @FXML private TableColumn<Customer, String> CustPhoneCol;
     @FXML private TableColumn<Customer, String> CustEmailCol;
-    @FXML private TableColumn<Customer, Boolean> CustStatusCol;
+    @FXML private TableColumn<Customer, String> CustStatusCol;
     ObservableList<Customer> CustomerList = FXCollections.observableArrayList();
 
 
@@ -93,8 +100,8 @@ public class Controller implements Initializable {
         DeleteCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         EditCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         OverviewLabel2.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
-        FilterComboBox2.setPromptText("Type: All");
-        FilterComboBox2.getItems().addAll("All", "Business", "Individuals");
+        CustomerComboBox.setPromptText("Type: All");
+        CustomerComboBox.getItems().addAll("All", "Members", "Non-Members");
 
         // Initialize Product Pane
         NewProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
@@ -220,15 +227,30 @@ public class Controller implements Initializable {
 
     // Customer Pane Functions
     @FXML
-    public void NewCustomerClicked(){
+    public void NewCustomerClicked() throws IOException {
         System.out.println("New Customer Clicked");
         new FadeIn(NewCustomerLabel).setSpeed(5).play();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("CustomerForm.fxml"));
+        Parent CustomerFormParent = loader.load();
+
+        Stage stage = new Stage(); // New stage (window)
+
+        // Setting the stage up
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setTitle("New Customer Form");
+        stage.setScene(new Scene(CustomerFormParent));
+        stage.showAndWait();
+
     }
 
     @FXML
     public void DeleteCustomerClicked(){
         System.out.println("Delete Customer Clicked");
         new FadeIn(DeleteCustomerLabel).setSpeed(5).play();
+
         // Gets Selected Row
         Customer selectedCustomer = CustomerTable.getSelectionModel().getSelectedItem();
         if(!(selectedCustomer == null)){
@@ -239,17 +261,44 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void EditCustomerClicked(){
+    public void EditCustomerClicked() throws IOException {
         System.out.println("Edit Customer Clicked");
         new FadeIn(EditCustomerLabel).setSpeed(5).play();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("EditCustomerForm.fxml"));
+        Parent CustomerFormParent = loader.load();
+
+        Stage stage = new Stage(); // New stage (window)
+
+        // Setting the stage up
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setTitle("Edit Customer Form");
+        stage.setScene(new Scene(CustomerFormParent));
+        stage.showAndWait();
     }
 
     @FXML
-    public void RefreshCustomerTable(){
+    public void RefreshCustomerTable() throws NullPointerException{
         CustomerList.clear();
+        String filter;
         try {
+            // Checks if ComboBox is empty
+            try {
+                filter = CustomerComboBox.getValue().toString();
+            } catch (NullPointerException e) {
+                filter = "All";
+            }
+
             Connection conn = Database.connect();
             String sql = "SELECT * FROM customers";
+            if (filter.equals("Members")){
+                sql = "SELECT * FROM customers WHERE member = 1";
+            } else if (filter.equals("Non-Members")){
+                sql = "SELECT * FROM customers WHERE member = 0";
+            }
+
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             int colNo = 1;

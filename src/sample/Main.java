@@ -24,7 +24,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        Database.addCustomer("CUS12324", "Delete This", "08112383399", "alifio.rasyid@binus.ac.id", true);
+//        Database.addCustomer("CUS00005", "Arvin Rasyid", "08112383399", "aarvin@gmail.com", false);
         launch(args);
     }
 }
