@@ -28,12 +28,12 @@
                </font>
             </Label>
             <Rectangle fx:id="OrderRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="179.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
-            <Label fx:id="MemberLabel" alignment="CENTER" layoutY="236.0" onMouseClicked="#MemberLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="MEMBERS" textAlignment="CENTER" textFill="#9a9a9a">
+            <Label fx:id="CustomerLabel" alignment="CENTER" layoutY="236.0" onMouseClicked="#CustomerLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="CUSTOMER" textAlignment="CENTER" textFill="#9a9a9a">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Rectangle fx:id="MemberRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="236.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
+            <Rectangle fx:id="CustomerRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="236.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
             <Label fx:id="ProductLabel" alignment="CENTER" layoutY="293.0" onMouseClicked="#ProductLabelClicked" prefHeight="57.0" prefWidth="166.0" style="-fx-background-color: #FFFFFF;" text="PRODUCT" textAlignment="CENTER" textFill="#9a9a9a">
                <font>
                   <Font name="Arial" size="18.0" />
@@ -42,7 +42,7 @@
             <Rectangle fx:id="ProductRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="293.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
+      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
          <children>
             <StackedAreaChart layoutX="209.0" layoutY="56.0">
               <xAxis>
@@ -54,6 +54,7 @@
             </StackedAreaChart>
             <TextField fx:id="test" layoutX="303.0" layoutY="538.0" onAction="#TestAction" />
             <TextField fx:id="test2" layoutX="303.0" layoutY="579.0" />
+            <Button layoutX="599.0" layoutY="551.0" mnemonicParsing="false" onAction="#ButtonClicked" prefHeight="25.0" prefWidth="99.0" text="Button" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034" visible="false">
@@ -120,28 +121,29 @@
                </font>
             </Label>
          </children></AnchorPane>
-      <AnchorPane fx:id="MemberPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
+      <AnchorPane fx:id="CustomerPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
          <children>
-            <TableView layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
+            <TableView fx:id="CustomerTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
                <columns>
-                  <TableColumn prefWidth="30.0" resizable="false" text="#" />
-                  <TableColumn prefWidth="95.0" resizable="false" text="Member ID" />
-                  <TableColumn prefWidth="250.0" resizable="false" text="Name" />
-                  <TableColumn prefWidth="150.0" resizable="false" text="Type" />
-                  <TableColumn prefWidth="125.0" resizable="false" text="Total Orders" />
+                  <TableColumn fx:id="CustNoCol" prefWidth="30.0" resizable="false" text="#" />
+                  <TableColumn fx:id="CustIDCol" prefWidth="95.0" resizable="false" text="Customer ID" />
+                  <TableColumn fx:id="CustNameCol" prefWidth="250.0" resizable="false" text="Name" />
+                  <TableColumn fx:id="CustPhoneCol" prefWidth="170.0" resizable="false" text="Phone Number" />
+                  <TableColumn fx:id="CustEmailCol" prefWidth="180.0" resizable="false" text="Email" />
+                  <TableColumn fx:id="CustStatusCol" prefWidth="125.0" resizable="false" text="Status" />
                </columns>
             </TableView>
-            <Label layoutX="28.0" layoutY="21.0" text="Members">
+            <Label layoutX="28.0" layoutY="21.0" text="Customers">
                <font>
                   <Font name="Arial Bold" size="26.0" />
                </font>
             </Label>
-            <Label fx:id="NewMemberLabel" layoutX="755.0" layoutY="26.0" onMouseClicked="#NewMemberClicked" text="+ New Member" textFill="#5596fd">
+            <Label fx:id="NewCustomerLabel" layoutX="745.0" layoutY="26.0" onMouseClicked="#NewCustomerClicked" text="+ New Customer" textFill="#5596fd">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="DeleteMemberLabel" layoutX="739.0" layoutY="655.0" onMouseClicked="#DeleteMemberClicked" text="- Delete Member" textFill="#ff1818">
+            <Label fx:id="DeleteCustomerLabel" layoutX="731.0" layoutY="655.0" onMouseClicked="#DeleteCustomerClicked" text="- Delete Customer" textFill="#ff1818">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
@@ -151,12 +153,13 @@
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="FilterComboBox2" layoutX="169.0" layoutY="21.0" prefHeight="31.0" prefWidth="184.0" style="-fx-background-color: #D1D1D1;" />
-            <Label fx:id="EditMemberLabel" layoutX="28.0" layoutY="655.0" onMouseClicked="#EditMemberClicked" text="Edit Member" textFill="#684efc">
+            <ComboBox fx:id="FilterComboBox2" layoutX="204.0" layoutY="21.0" prefHeight="31.0" prefWidth="184.0" style="-fx-background-color: #D1D1D1;" />
+            <Label fx:id="EditCustomerLabel" layoutX="28.0" layoutY="655.0" onMouseClicked="#EditCustomerClicked" text="Edit Customer" textFill="#684efc">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
+            <Button layoutX="491.0" layoutY="24.0" mnemonicParsing="false" onAction="#RefreshCustomerTable" text="Refresh" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">

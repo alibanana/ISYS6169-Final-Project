@@ -1,45 +1,49 @@
 package sample;
 
 import animatefx.animation.FadeIn;
-import animatefx.animation.Flash;
-import animatefx.animation.Pulse;
-import animatefx.animation.Wobble;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controller implements Initializable {
 
     @FXML private Label HomeLabel;
     @FXML private Label OrderLabel;
-    @FXML private Label MemberLabel;
+    @FXML private Label CustomerLabel;
     @FXML private Label ProductLabel;
 
     @FXML private Rectangle HomeRectangle;
     @FXML private Rectangle OrderRectangle;
-    @FXML private Rectangle MemberRectangle;
+    @FXML private Rectangle CustomerRectangle;
     @FXML private Rectangle ProductRectangle;
 
     @FXML private AnchorPane HomePane;
     @FXML private AnchorPane OrderPane;
-    @FXML private AnchorPane MemberPane;
+    @FXML private AnchorPane CustomerPane;
     @FXML private AnchorPane ProductPane;
 
-    // Home Pane Members
+    // Home Pane Customers
     @FXML private TextField test;
     @FXML private TextField test2;
 
-    // Order Pane Members
+    // Order Pane Customers
     @FXML private Label NewOrderLabel;
     @FXML private Label DeleteOrderLabel;
     @FXML private Label EditOrderLabel;
@@ -48,14 +52,23 @@ public class Controller implements Initializable {
     @FXML private ComboBox FilterComboBox;
     @FXML private ComboBox DateComboBox;
 
-    // Member Pane Members
-    @FXML private Label NewMemberLabel;
-    @FXML private Label DeleteMemberLabel;
-    @FXML private Label EditMemberLabel;
+    // Customer Pane Customers
+    @FXML private Label NewCustomerLabel;
+    @FXML private Label DeleteCustomerLabel;
+    @FXML private Label EditCustomerLabel;
     @FXML private Label OverviewLabel2;
     @FXML private ComboBox FilterComboBox2;
+    @FXML private TableView<Customer> CustomerTable;
+    @FXML private TableColumn<Customer, Integer> CustNoCol;
+    @FXML private TableColumn<Customer, String> CustIDCol;
+    @FXML private TableColumn<Customer, String> CustNameCol;
+    @FXML private TableColumn<Customer, String> CustPhoneCol;
+    @FXML private TableColumn<Customer, String> CustEmailCol;
+    @FXML private TableColumn<Customer, Boolean> CustStatusCol;
+    ObservableList<Customer> CustomerList = FXCollections.observableArrayList();
 
-    // Product Pane Members
+
+    // Product Pane Customers
     @FXML private Label NewProductLabel;
     @FXML private Label DeleteProductLabel;
     @FXML private Label EditProductLabel;
@@ -75,10 +88,10 @@ public class Controller implements Initializable {
         DateComboBox.setPromptText("Date: Today");
         DateComboBox.getItems().addAll("All", "Today", "Yesterday");
 
-        // Initialize Member Pane
-        NewMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
-        DeleteMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
-        EditMemberLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        // Initialize Customer Pane
+        NewCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        DeleteCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        EditCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         OverviewLabel2.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         FilterComboBox2.setPromptText("Type: All");
         FilterComboBox2.getItems().addAll("All", "Business", "Individuals");
@@ -100,25 +113,25 @@ public class Controller implements Initializable {
         // Set Label Fonts
         HomeLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
         OrderLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
-        MemberLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
+        CustomerLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
         ProductLabel.setFont(Font.loadFont("file:src/fonts/expressway.ttf", 20));
         // Set Label Colors
         HomeLabel.setTextFill(Paint.valueOf("9a9a9a"));
         OrderLabel.setTextFill(Paint.valueOf("9a9a9a"));
-        MemberLabel.setTextFill(Paint.valueOf("9a9a9a"));
+        CustomerLabel.setTextFill(Paint.valueOf("9a9a9a"));
         ProductLabel.setTextFill(Paint.valueOf("9a9a9a"));
         // Set Rectangles Off
         HomeRectangle.setVisible(false);
         OrderRectangle.setVisible(false);
-        MemberRectangle.setVisible(false);
+        CustomerRectangle.setVisible(false);
         ProductRectangle.setVisible(false);
         // Set Panes Off
         HomePane.setDisable(true);
         HomePane.setVisible(false);
         OrderPane.setDisable(true);
         OrderPane.setVisible(false);
-        MemberPane.setDisable(true);
-        MemberPane.setVisible(false);
+        CustomerPane.setDisable(true);
+        CustomerPane.setVisible(false);
         ProductPane.setDisable(true);
         ProductPane.setVisible(false);
     }
@@ -146,14 +159,15 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void MemberLabelClicked(){
+    public void CustomerLabelClicked(){
         LabelDefault();
-        MemberLabel.setTextFill(Paint.valueOf("5596FD"));
-        MemberRectangle.setVisible(true);
-        new FadeIn(MemberRectangle).play();
-        MemberPane.setDisable(false);
-        MemberPane.setVisible(true);
-        new FadeIn(MemberPane).play();
+        CustomerLabel.setTextFill(Paint.valueOf("5596FD"));
+        CustomerRectangle.setVisible(true);
+        new FadeIn(CustomerRectangle).play();
+        CustomerPane.setDisable(false);
+        CustomerPane.setVisible(true);
+        new FadeIn(CustomerPane).play();
+        RefreshCustomerTable();
 
     }
 
@@ -172,6 +186,17 @@ public class Controller implements Initializable {
     @FXML
     public void TestAction(){
         test2.setText(test.getText());
+    }
+
+    @FXML
+    public void ButtonClicked() {
+        FileChooser fc = new FileChooser();
+        File selectedFile = fc.showOpenDialog(null);
+        if (selectedFile != null){
+            System.out.println(selectedFile.getAbsolutePath());
+        } else {
+            System.out.println("File is not valid");
+        }
     }
 
     // Order Pane Functions
@@ -193,23 +218,59 @@ public class Controller implements Initializable {
         new FadeIn(EditOrderLabel).setSpeed(5).play();
     }
 
-    // Member Pane Functions
+    // Customer Pane Functions
     @FXML
-    public void NewMemberClicked(){
-        System.out.println("New Member Clicked");
-        new FadeIn(NewMemberLabel).setSpeed(5).play();
+    public void NewCustomerClicked(){
+        System.out.println("New Customer Clicked");
+        new FadeIn(NewCustomerLabel).setSpeed(5).play();
     }
 
     @FXML
-    public void DeleteMemberClicked(){
-        System.out.println("Delete Member Clicked");
-        new FadeIn(DeleteMemberLabel).setSpeed(5).play();
+    public void DeleteCustomerClicked(){
+        System.out.println("Delete Customer Clicked");
+        new FadeIn(DeleteCustomerLabel).setSpeed(5).play();
+        // Gets Selected Row
+        Customer selectedCustomer = CustomerTable.getSelectionModel().getSelectedItem();
+        if(!(selectedCustomer == null)){
+            String id = selectedCustomer.getCustomerID();
+            Database.deleteCustomer(id);
+            RefreshCustomerTable();
+        }
     }
 
     @FXML
-    public void EditMemberClicked(){
-        System.out.println("Edit Member Clicked");
-        new FadeIn(EditMemberLabel).setSpeed(5).play();
+    public void EditCustomerClicked(){
+        System.out.println("Edit Customer Clicked");
+        new FadeIn(EditCustomerLabel).setSpeed(5).play();
+    }
+
+    @FXML
+    public void RefreshCustomerTable(){
+        CustomerList.clear();
+        try {
+            Connection conn = Database.connect();
+            String sql = "SELECT * FROM customers";
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            int colNo = 1;
+            while(rs.next()) {
+                CustomerList.add(new Customer(colNo, rs.getString("CustomerID"), rs.getString("Name"),
+                rs.getString("PhoneNo"), rs.getString("Email"), rs.getBoolean("Member")));
+                colNo++;
+            }
+
+            rs.close();
+            conn.close();
+        } catch (SQLException e) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
+        }
+        CustNoCol.setCellValueFactory(new PropertyValueFactory<>("columnNo"));
+        CustIDCol.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
+        CustNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        CustPhoneCol.setCellValueFactory(new PropertyValueFactory<>("PhoneNo"));
+        CustEmailCol.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        CustStatusCol.setCellValueFactory(new PropertyValueFactory<>("Member"));
+        CustomerTable.setItems(CustomerList);
     }
 
     // Product Pane Functions

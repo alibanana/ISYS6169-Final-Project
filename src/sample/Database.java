@@ -22,27 +22,44 @@ public class Database {
         }
     }
 
-    public static void addCustomer(String id, String name, String phone, String email){
+    public static void addCustomer(String id, String name, String phone, String email, boolean Member){
         try {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "INSERT INTO customers(CustomerID, Name, PhoneNo, Email) VALUE('%s', '%s', '%s', '%s')";
-            sql = String.format(sql, id, name, phone, email);
+            int mem = 0;
+            if (Member) {
+                mem = 1;
+            }
+
+            String sql = "INSERT INTO customers(CustomerID, Name, PhoneNo, Email, Member) VALUE('%s', '%s', '%s', '%s', '%d')";
+            sql = String.format(sql, id, name, phone, email, mem);
             stmt.execute(sql);
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void addMember(String MemberID, String CustomerID){
+    public static void deleteCustomer(String id){
         try {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "INSERT INTO members(MemberID, CustomerID) VALUE('%s', '%s')";
-            sql = String.format(sql, MemberID, CustomerID);
+            String sql = String.format("DELETE FROM customers where CustomerID = '%s'", id);
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addProduct(String ProductID, String ProductName, String Type, int Price){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = "INSERT INTO members(ProductID, ProductName, Type, Price) VALUE('%s', '%s', '%s', '%d')";
+            sql = String.format(sql, ProductID, ProductName, Type, Price);
             stmt.execute(sql);
 
         } catch (Exception e) {
@@ -51,17 +68,14 @@ public class Database {
     }
 
     // Not Done
-    public static void addProduct(String MemberID, String CustomerID){
-        try {
-            conn = connect();
-            stmt = conn.createStatement();
+    // Convert Image to ByteStreams then store in database
+//    public static void addSubOrder(String OrderID, String ProductID, int Quantity, String Description){
+//
+//    }
 
-            String sql = "INSERT INTO members(MemberID, CustomerID) VALUE('%s', '%s')";
-            sql = String.format(sql, MemberID, CustomerID);
-            stmt.execute(sql);
+    // Not Done
+    // Convert java.util's date to java.sql's date format.
+//    public static void addorder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress,
+//    int DeliveryPrice,)
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

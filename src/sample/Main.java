@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.xml.crypto.Data;
+
 public class Main extends Application {
 
     @Override
@@ -22,7 +24,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-//        Database.addMember("MEM00001", "CUS00001");
+        Database.addCustomer("CUS12324", "Delete This", "08112383399", "alifio.rasyid@binus.ac.id", true);
         launch(args);
     }
 }
