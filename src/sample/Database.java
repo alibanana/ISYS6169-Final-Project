@@ -41,6 +41,25 @@ public class Database {
         }
     }
 
+    public static void editCustomer(String id, String name, String phone, String email, boolean Member){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            int mem = 0;
+            if (Member) {
+                mem = 1;
+            }
+
+            String sql = "UPDATE customers SET Name='%s', PhoneNo='%s', Email='%s', Member='%d' WHERE CustomerID='%s'";
+            sql = String.format(sql, name, phone, email, mem, id);
+            stmt.execute(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void deleteCustomer(String id){
         try {
             conn = connect();

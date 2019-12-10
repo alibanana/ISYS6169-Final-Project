@@ -315,15 +315,20 @@ public class Controller implements Initializable {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("EditCustomerForm.fxml"));
-        Parent CustomerFormParent = loader.load();
+        Parent EditCustomerFormParent = loader.load();
 
         Stage stage = new Stage(); // New stage (window)
+
+        // Passing data to CustomerFormController
+        EditCustomerFormController controller = loader.getController();
+        Customer selectedCustomer = CustomerTable.getSelectionModel().getSelectedItem();
+        controller.initData(this, selectedCustomer);
 
         // Setting the stage up
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
         stage.setTitle("Edit Customer Form");
-        stage.setScene(new Scene(CustomerFormParent));
+        stage.setScene(new Scene(EditCustomerFormParent));
         stage.showAndWait();
     }
 
