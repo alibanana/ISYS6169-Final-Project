@@ -55,7 +55,7 @@ public class Controller implements Initializable {
     @FXML private Label DeleteOrderLabel;
     @FXML private Label EditOrderLabel;
     @FXML private Label OverviewLabel;
-    @FXML private Label DetailsLabel;
+    @FXML private Label DetailsOrderLabel;
     @FXML private ComboBox FilterComboBox;
     @FXML private ComboBox DateComboBox;
 
@@ -89,7 +89,7 @@ public class Controller implements Initializable {
         DeleteOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         EditOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         OverviewLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
-        DetailsLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
+        DetailsOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         FilterComboBox.setPromptText("Status: All");
         FilterComboBox.getItems().addAll("All", "Pending", "Confirmed");
         DateComboBox.setPromptText("Date: Today");
@@ -208,9 +208,22 @@ public class Controller implements Initializable {
 
     // Order Pane Functions
     @FXML
-    public void NewOrderClicked(){
+    public void NewOrderClicked() throws IOException {
         System.out.println("New Order Clicked");
         new FadeIn(NewOrderLabel).setSpeed(5).play();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("OrderForm.fxml"));
+        Parent OrderFormParent = loader.load();
+
+        Stage stage = new Stage(); // New stage (window)
+
+        // Setting the stage up
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setTitle("New Order Form");
+        stage.setScene(new Scene(OrderFormParent));
+        stage.showAndWait();
     }
 
     @FXML
@@ -220,9 +233,41 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void EditOrderClicked(){
+    public void DetailsOrderClicked() throws IOException {
+        System.out.println("Details Order Clicked");
+        new FadeIn(DetailsOrderLabel).setSpeed(5).play();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("DetailOrder.fxml"));
+        Parent OrderFormParent = loader.load();
+
+        Stage stage = new Stage(); // New stage (window)
+
+        // Setting the stage up
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setTitle("Details Order Form");
+        stage.setScene(new Scene(OrderFormParent));
+        stage.showAndWait();
+    }
+
+    @FXML
+    public void EditOrderClicked() throws IOException {
         System.out.println("Edit Order Clicked");
         new FadeIn(EditOrderLabel).setSpeed(5).play();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("EditOrderForm.fxml"));
+        Parent OrderFormParent = loader.load();
+
+        Stage stage = new Stage(); // New stage (window)
+
+        // Setting the stage up
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setTitle("Edit Order Form");
+        stage.setScene(new Scene(OrderFormParent));
+        stage.showAndWait();
     }
 
     // Customer Pane Functions
@@ -243,7 +288,6 @@ public class Controller implements Initializable {
         stage.setTitle("New Customer Form");
         stage.setScene(new Scene(CustomerFormParent));
         stage.showAndWait();
-
     }
 
     @FXML
@@ -324,9 +368,22 @@ public class Controller implements Initializable {
 
     // Product Pane Functions
     @FXML
-    public void NewProductClicked(){
+    public void NewProductClicked() throws IOException {
         System.out.println("New Product Clicked");
         new FadeIn(NewProductLabel).setSpeed(5).play();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ProductForm.fxml"));
+        Parent ProductFormParent = loader.load();
+
+        Stage stage = new Stage(); // New stage (window)
+
+        // Setting the stage up
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setTitle("New Product Form");
+        stage.setScene(new Scene(ProductFormParent));
+        stage.showAndWait();
     }
 
     @FXML
@@ -336,9 +393,22 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void EditProductClicked(){
+    public void EditProductClicked() throws IOException {
         System.out.println("Edit Product Clicked");
         new FadeIn(EditProductLabel).setSpeed(5).play();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("EditProductForm.fxml"));
+        Parent ProductFormParent = loader.load();
+
+        Stage stage = new Stage(); // New stage (window)
+
+        // Setting the stage up
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+        stage.setTitle("Edit Product Form");
+        stage.setScene(new Scene(ProductFormParent));
+        stage.showAndWait();
     }
 
 }
