@@ -17,7 +17,6 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
@@ -281,6 +280,11 @@ public class Controller implements Initializable {
         Parent CustomerFormParent = loader.load();
 
         Stage stage = new Stage(); // New stage (window)
+
+        // Passing data to CustomerFormController
+        CustomerFormController controller = loader.getController();
+        String prevCustomerID = CustomerList.get(CustomerList.size()-1).getCustomerID();
+        controller.initData(this, prevCustomerID);
 
         // Setting the stage up
         stage.initModality(Modality.APPLICATION_MODAL);
