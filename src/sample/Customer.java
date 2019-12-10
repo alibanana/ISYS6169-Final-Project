@@ -6,15 +6,15 @@ public class Customer {
     private String Name;
     private String PhoneNo;
     private String Email;
-    private boolean Member;
+    private String Member;
 
-    public Customer(int No, String customerID, String name, String phoneNo, String email, boolean member) {
+    public Customer(int No, String customerID, String name, String phoneNo, String email, boolean status) {
         columnNo = No;
         CustomerID = customerID;
         Name = name;
         PhoneNo = phoneNo;
         Email = email;
-        Member = member;
+        setMember(status);
     }
 
     public int getColumnNo() {
@@ -57,12 +57,16 @@ public class Customer {
         Email = email;
     }
 
-    public boolean isMember() {
+    public String getMember() {
         return Member;
     }
 
-    public void setMember(boolean member) {
-        Member = member;
+    public void setMember(boolean status) {
+        if (status) {
+            Member = "Member";
+        } else {
+            Member = "Non-Member";
+        }
     }
 
 }
