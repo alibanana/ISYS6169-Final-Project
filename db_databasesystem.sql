@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2019 at 08:42 AM
+-- Generation Time: Dec 07, 2019 at 08:40 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -30,19 +30,20 @@ CREATE TABLE `customers` (
   `CustomerID` varchar(8) NOT NULL,
   `Name` varchar(30) NOT NULL,
   `PhoneNo` varchar(16) NOT NULL,
-  `Email` varchar(30) DEFAULT NULL
+  `Email` varchar(30) DEFAULT NULL,
+  `Member` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `members`
+-- Dumping data for table `customers`
 --
 
-CREATE TABLE `members` (
-  `MemberID` varchar(8) NOT NULL,
-  `CustomerID` varchar(8) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `customers` (`CustomerID`, `Name`, `PhoneNo`, `Email`, `Member`) VALUES
+('CUS00001', 'Alifio Rasyid', '08112383399', 'alifio.rasyid@binus.ac.id', 1),
+('CUS00002', 'Nicholas Michael', '08112453366', 'nicholas.michael@binus.ac.id', 1),
+('CUS00003', 'Muchsin Hisyam', '08117766453', 'muchsin.hisyam@binus.ac.id', 1),
+('CUS00006', 'Jason Sianandar', '08112383399', 'jason@gmail.com', 0),
+('CUS00007', 'Bima Satria', '08112383399', 'bima@gmail.com', 0);
 
 -- --------------------------------------------------------
 
@@ -87,8 +88,7 @@ CREATE TABLE `suborders` (
   `ProductID` varchar(8) NOT NULL,
   `Qty` int(11) NOT NULL,
   `Description` text,
-  `DescriptionPhoto` blob,
-  `customPrice` int(10) UNSIGNED DEFAULT NULL
+  `DescriptionPhoto` blob
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -100,13 +100,6 @@ CREATE TABLE `suborders` (
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`CustomerID`);
-
---
--- Indexes for table `members`
---
-ALTER TABLE `members`
-  ADD PRIMARY KEY (`MemberID`),
-  ADD KEY `CustomerID` (`CustomerID`);
 
 --
 -- Indexes for table `orders`
@@ -131,12 +124,6 @@ ALTER TABLE `suborders`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `members`
---
-ALTER TABLE `members`
-  ADD CONSTRAINT `members_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customers` (`CustomerID`);
 
 --
 -- Constraints for table `orders`
