@@ -64,7 +64,7 @@
             <Button layoutX="599.0" layoutY="551.0" mnemonicParsing="false" onAction="#ButtonClicked" prefHeight="25.0" prefWidth="99.0" text="Button" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034">
+      <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034" visible="false">
          <children>
             <TableView layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
               <columns>
@@ -169,15 +169,15 @@
             <Button layoutX="491.0" layoutY="24.0" mnemonicParsing="false" onAction="#RefreshCustomerTable" text="Refresh" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
+      <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
          <children>
-            <TableView layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
+            <TableView fx:id="ProductTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
                <columns>
-                  <TableColumn prefWidth="30.0" resizable="false" text="#" />
-                  <TableColumn prefWidth="147.0" resizable="false" text="Product ID" />
-                  <TableColumn prefWidth="305.0" resizable="false" text="Name" />
-                  <TableColumn prefWidth="164.0" resizable="false" text="Type" />
-                  <TableColumn prefWidth="203.0" resizable="false" text="Price" />
+                  <TableColumn fx:id="ProdNoCol" prefWidth="30.0" resizable="false" text="#" />
+                  <TableColumn fx:id="ProdIDCol" prefWidth="147.0" resizable="false" text="Product ID" />
+                  <TableColumn fx:id="ProdNameCol" prefWidth="305.0" resizable="false" text="Name" />
+                  <TableColumn fx:id="ProdTypeCol" prefWidth="164.0" resizable="false" text="Type" />
+                  <TableColumn fx:id="ProdPriceCol" prefWidth="203.0" resizable="false" text="Price" />
                </columns>
             </TableView>
             <Label layoutX="28.0" layoutY="21.0" text="Products">
@@ -205,7 +205,7 @@
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <ComboBox fx:id="FilterComboBox3" layoutX="170.0" layoutY="21.0" prefHeight="31.0" prefWidth="184.0" style="-fx-background-color: #D1D1D1;" />
+            <ComboBox fx:id="FilterProduct" layoutX="170.0" layoutY="21.0" onAction="#RefreshProductTable" prefHeight="31.0" prefWidth="184.0" style="-fx-background-color: #D1D1D1;" />
          </children>
       </AnchorPane>
    </children>

@@ -77,11 +77,37 @@ public class Database {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "INSERT INTO members(ProductID, ProductName, Type, Price) VALUE('%s', '%s', '%s', '%d')";
+            String sql = "INSERT INTO products(ProductID, ProductName, Type, Price) VALUE('%s', '%s', '%s', '%d')";
             sql = String.format(sql, ProductID, ProductName, Type, Price);
             stmt.execute(sql);
 
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editProduct(String ProductID, String ProductName, String Type, int Price){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = "UPDATE products SET ProductName='%s', Type='%s', Price='%d' WHERE ProductID='%s'";
+            sql = String.format(sql, ProductName, Type, Price, ProductID);
+            stmt.execute(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteProduct(String ProductID){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = String.format("DELETE FROM products where ProductID = '%s'", ProductID);
+            stmt.execute(sql);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

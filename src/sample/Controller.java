@@ -79,7 +79,14 @@ public class Controller implements Initializable {
     @FXML private Label DeleteProductLabel;
     @FXML private Label EditProductLabel;
     @FXML private Label OverviewLabel3;
-    @FXML private ComboBox FilterComboBox3;
+    @FXML private ComboBox FilterProduct;
+    @FXML private TableView<Product> ProductTable;
+    @FXML private TableColumn<Product, Integer> ProdNoCol;
+    @FXML private TableColumn<Product, String> ProdIDCol;
+    @FXML private TableColumn<Product, String> ProdNameCol;
+    @FXML private TableColumn<Product, String> ProdTypeCol;
+    @FXML private TableColumn<Product, Integer> ProdPriceCol;
+    ObservableList<Product> ProductList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
@@ -107,8 +114,8 @@ public class Controller implements Initializable {
         DeleteProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         EditProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         OverviewLabel3.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
-        FilterComboBox3.setPromptText("Type: All");
-        FilterComboBox3.getItems().addAll("All", "Cakes", "Cup Cakes", "Cookies");
+        FilterProduct.setPromptText("All");
+        FilterProduct.getItems().addAll("All", "Cake", "Cupcake", "Cookies");
 
         // By Default, Home Label is Clicked
         HomeLabelClicked();
@@ -186,6 +193,7 @@ public class Controller implements Initializable {
         ProductPane.setDisable(false);
         ProductPane.setVisible(true);
         new FadeIn(ProductPane).play();
+        RefreshProductTable();
     }
 
     // Home Pane Functions
@@ -387,6 +395,11 @@ public class Controller implements Initializable {
 
         Stage stage = new Stage(); // New stage (window)
 
+        // Passing data to ProductFormController
+        ProductFormController controller = loader.getController();
+        String prevProductID = ProductList.get(ProductList.size()-1).getProductID();
+        controller.initData(this, prevProductID);
+
         // Setting the stage up
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
@@ -399,6 +412,14 @@ public class Controller implements Initializable {
     public void DeleteProductClicked(){
         System.out.println("Delete Product Clicked");
         new FadeIn(DeleteProductLabel).setSpeed(5).play();
+
+        // Gets Selected Row
+        Product selectedItem = ProductTable.getSelectionModel().getSelectedItem();
+        if(!(selectedItem == null)){
+            String id = selectedItem.getProductID();
+            Database.deleteProduct(id);
+            RefreshProductTable();
+        }
     }
 
     @FXML
@@ -412,6 +433,11 @@ public class Controller implements Initializable {
 
         Stage stage = new Stage(); // New stage (window)
 
+        // Passing data to EditProductFormController
+        EditProductFormController controller = loader.getController();
+        Product selectedProduct = ProductTable.getSelectionModel().getSelectedItem();
+        controller.initData(this, selectedProduct);
+
         // Setting the stage up
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
@@ -420,4 +446,45 @@ public class Controller implements Initializable {
         stage.showAndWait();
     }
 
+    @FXML
+    public void RefreshProductTable() throws NullPointerException{
+        ProductList.clear();
+        String filter;
+        try {
+            // Checks if FilterComboBox is empty
+            try {
+                filter = FilterProduct.getValue().toString();
+            } catch (NullPointerException e) {
+                filter = "All";
+            }
+
+            Connection conn = Database.connect();
+            String sql = "SELECT * FROM products";
+            if (filter.equals("Cake")){
+                sql = "SELECT * FROM products WHERE Type='Cake'";
+            } else if (filter.equals("Cupcake")){
+                sql = "SELECT * FROM products WHERE Type='Cupcake'";
+            }
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            int colNo = 1;
+            while(rs.next()) {
+                ProductList.add(new Product(colNo, rs.getString("ProductID"), rs.getString("ProductName"),
+                        rs.getString("Type"), rs.getInt("Price")));
+                colNo++;
+            }
+
+            rs.close();
+            conn.close();
+        } catch (SQLException e) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
+        }
+        ProdNoCol.setCellValueFactory(new PropertyValueFactory<>("columnNo"));
+        ProdIDCol.setCellValueFactory(new PropertyValueFactory<>("ProductID"));
+        ProdNameCol.setCellValueFactory(new PropertyValueFactory<>("ProductName"));
+        ProdTypeCol.setCellValueFactory(new PropertyValueFactory<>("Type"));
+        ProdPriceCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        ProductTable.setItems(ProductList);
+    }
 }
