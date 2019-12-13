@@ -17,6 +17,7 @@ public class CustomerFormController implements Initializable {
 
     private int prevCustomerID;
     private String newCustomerID;
+    private boolean memberStatus;
 
     @FXML private TextField customerName;
     @FXML private TextField customerPhone;
@@ -28,6 +29,7 @@ public class CustomerFormController implements Initializable {
         // Default CustomerStatus to first value
         customerStatus.getItems().addAll("Non-Member", "Member");
         customerStatus.setPromptText(customerStatus.getItems().get(0).toString());
+        memberStatus = false;
     }
 
     public void initData(Controller parentController, String prevCustomerID){
@@ -41,11 +43,10 @@ public class CustomerFormController implements Initializable {
 
     @FXML
     public void addCustomer(ActionEvent event){
-        boolean status = false;
-        if (customerStatus.getValue().toString().equals("Member")){
-            status = true;
+        if (!customerStatus.getSelectionModel().isEmpty()){
+            memberStatus = customerStatus.getValue().toString().equals("Member");
         }
-        Database.addCustomer(newCustomerID, customerName.getText(), customerPhone.getText(), customerEmail.getText(), status);
+        Database.addCustomer(newCustomerID, customerName.getText(), customerPhone.getText(), customerEmail.getText(), memberStatus);
         System.out.println(String.format("Added %s to the database", newCustomerID));
 
         // Close Stage & Refresh Table

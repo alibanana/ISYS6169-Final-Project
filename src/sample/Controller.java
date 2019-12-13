@@ -45,11 +45,11 @@ public class Controller implements Initializable {
     @FXML private AnchorPane CustomerPane;
     @FXML private AnchorPane ProductPane;
 
-    // Home Pane Customers
+    // Home Pane Members
     @FXML private TextField test;
     @FXML private TextField test2;
 
-    // Order Pane Customers
+    // Order Pane Members
     @FXML private Label NewOrderLabel;
     @FXML private Label DeleteOrderLabel;
     @FXML private Label EditOrderLabel;
@@ -57,8 +57,9 @@ public class Controller implements Initializable {
     @FXML private Label DetailsOrderLabel;
     @FXML private ComboBox FilterComboBox;
     @FXML private ComboBox DateComboBox;
+    @FXML private TableView<Order> OrderTable;
 
-    // Customer Pane Customers
+    // Customer Pane Members
     @FXML private Label NewCustomerLabel;
     @FXML private Label DeleteCustomerLabel;
     @FXML private Label EditCustomerLabel;
@@ -73,8 +74,7 @@ public class Controller implements Initializable {
     @FXML private TableColumn<Customer, String> CustStatusCol;
     ObservableList<Customer> CustomerList = FXCollections.observableArrayList();
 
-
-    // Product Pane Customers
+    // Product Pane Members
     @FXML private Label NewProductLabel;
     @FXML private Label DeleteProductLabel;
     @FXML private Label EditProductLabel;
@@ -277,6 +277,49 @@ public class Controller implements Initializable {
         stage.showAndWait();
     }
 
+    @FXML
+    public void RefreshOrderTable() throws NullPointerException{
+        CustomerList.clear();
+        String filter;
+        try {
+            // Checks if ComboBox is empty
+            try {
+                filter = CustomerComboBox.getValue().toString();
+            } catch (NullPointerException e) {
+                filter = "All";
+            }
+
+            Connection conn = Database.connect();
+            String sql = "SELECT * FROM customers";
+            if (filter.equals("Members")){
+                sql = "SELECT * FROM customers WHERE member = 1";
+            } else if (filter.equals("Non-Members")){
+                sql = "SELECT * FROM customers WHERE member = 0";
+            }
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            int colNo = 1;
+            while(rs.next()) {
+                CustomerList.add(new Customer(colNo, rs.getString("CustomerID"), rs.getString("Name"),
+                        rs.getString("PhoneNo"), rs.getString("Email"), rs.getBoolean("Member")));
+                colNo++;
+            }
+
+            rs.close();
+            conn.close();
+        } catch (SQLException e) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
+        }
+        CustNoCol.setCellValueFactory(new PropertyValueFactory<>("columnNo"));
+        CustIDCol.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
+        CustNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        CustPhoneCol.setCellValueFactory(new PropertyValueFactory<>("PhoneNo"));
+        CustEmailCol.setCellValueFactory(new PropertyValueFactory<>("Email"));
+        CustStatusCol.setCellValueFactory(new PropertyValueFactory<>("Member"));
+        CustomerTable.setItems(CustomerList);
+    }
+
     // Customer Pane Functions
     @FXML
     public void NewCustomerClicked() throws IOException {
@@ -289,9 +332,14 @@ public class Controller implements Initializable {
 
         Stage stage = new Stage(); // New stage (window)
 
-        // Passing data to CustomerFormController
+        // Get CurrentProductID; if no Product exist yet prevProductID set to 0
+        String prevCustomerID = "CUS00000";
+        if (!CustomerList.isEmpty()){
+            prevCustomerID = CustomerList.get(CustomerList.size()-1).getCustomerID();
+        }
+
+        // Passing data to ProductFormController
         CustomerFormController controller = loader.getController();
-        String prevCustomerID = CustomerList.get(CustomerList.size()-1).getCustomerID();
         controller.initData(this, prevCustomerID);
 
         // Setting the stage up
@@ -395,9 +443,14 @@ public class Controller implements Initializable {
 
         Stage stage = new Stage(); // New stage (window)
 
+        // Get CurrentProductID; if no Product exist yet prevProductID set to 0
+        String prevProductID = "PRO00000";
+        if (!ProductList.isEmpty()){
+            prevProductID = ProductList.get(ProductList.size()-1).getProductID();
+        }
+
         // Passing data to ProductFormController
         ProductFormController controller = loader.getController();
-        String prevProductID = ProductList.get(ProductList.size()-1).getProductID();
         controller.initData(this, prevProductID);
 
         // Setting the stage up
