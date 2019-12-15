@@ -3,7 +3,6 @@ package sample;
 import java.time.LocalDateTime;
 
 public class Order {
-    private int ColumnNo;
     private String OrderID;
     private String CustomerID;
     private String OrderType;
@@ -14,4 +13,84 @@ public class Order {
     private String OrderStatus;
     private int Payment;
     private int Discount;
+
+    public String getOrderID() {
+        return OrderID;
+    }
+
+    public void setOrderID(String orderID) {
+        OrderID = orderID;
+    }
+
+    public String getCustomerID() {
+        return CustomerID;
+    }
+
+    public void setCustomerID(String customerID) {
+        CustomerID = customerID;
+    }
+
+    public String getOrderType() {
+        return OrderType;
+    }
+
+    public void setOrderType(String orderType) {
+        OrderType = orderType;
+    }
+
+    public String getDeliveryAdress() {
+        return DeliveryAdress;
+    }
+
+    public void setDeliveryAdress(String deliveryAdress) {
+        DeliveryAdress = deliveryAdress;
+    }
+
+    public int getDeliveryPrice() {
+        return DeliveryPrice;
+    }
+
+    public void setDeliveryPrice(int deliveryPrice) {
+        DeliveryPrice = deliveryPrice;
+    }
+
+    public LocalDateTime getOrderDateTime() {
+        return OrderDateTime;
+    }
+
+    public void setOrderDateTime(LocalDateTime orderDateTime) {
+        OrderDateTime = orderDateTime;
+    }
+
+    public LocalDateTime getDeliveryDateTime() {
+        return DeliveryDateTime;
+    }
+
+    public void setDeliveryDateTime(LocalDateTime deliveryDateTime) {
+        DeliveryDateTime = deliveryDateTime;
+    }
+
+    public String getOrderStatus() {
+        return OrderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        OrderStatus = orderStatus;
+    }
+
+    public int getPayment() {
+        return Payment;
+    }
+
+    public void setPayment(int payment) {
+        Payment = payment;
+    }
+
+    public int getDiscount() {
+        return Discount;
+    }
+
+    public void setDiscount(int discount) {
+        Discount = discount;
+    }
 }

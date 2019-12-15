@@ -47,7 +47,7 @@
             </Label>
             <Label layoutX="101.0" layoutY="118.0" prefHeight="21.0" prefWidth="58.0" text="Delivery" />
             <Label layoutX="101.0" layoutY="139.0" prefHeight="21.0" prefWidth="58.0" text="Address" />
-            <Button fx:id="nextButton" layoutX="494.0" layoutY="423.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="Next" textFill="WHITE" />
+            <Button fx:id="nextButton" layoutX="494.0" layoutY="423.0" mnemonicParsing="false" onAction="#NextButtonClicked" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="Next" textFill="WHITE" />
             <TextArea fx:id="deliveryAddress" layoutX="175.0" layoutY="118.0" prefHeight="171.0" prefWidth="343.0" />
             <ComboBox fx:id="orderType" layoutX="175.0" layoutY="72.0" prefHeight="31.0" prefWidth="226.0" style="-fx-background-color: #D1D1D1;" />
             <DatePicker fx:id="deliveryDate" layoutX="175.0" layoutY="348.0" prefHeight="31.0" prefWidth="226.0" />
