@@ -42,7 +42,7 @@
             <Rectangle fx:id="ProductRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="293.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
+      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
          <children>
             <StackedAreaChart layoutX="209.0" layoutY="56.0">
               <xAxis>
@@ -61,12 +61,13 @@
          <children>
             <TableView fx:id="OrderTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
               <columns>
-                <TableColumn prefWidth="85.0" resizable="false" text="Order ID" />
-                  <TableColumn prefWidth="110.0" resizable="false" text="Created" />
-                  <TableColumn prefWidth="190.0" resizable="false" text="Customer" />
-                  <TableColumn prefWidth="110.0" resizable="false" text="Delivery Time" />
-                  <TableColumn prefWidth="105.0" resizable="false" text="Status" />
-                  <TableColumn prefWidth="100.0" resizable="false" text="Total" />
+                <TableColumn fx:id="OrdIDCol" prefWidth="121.0" resizable="false" text="Order ID" />
+                  <TableColumn fx:id="OrdCustCol" prefWidth="155.0" resizable="false" text="Customer" />
+                  <TableColumn fx:id="OrdTypeCol" minWidth="0.0" prefWidth="46.0" resizable="false" text="Type" />
+                  <TableColumn fx:id="OrdDateCol" prefWidth="116.0" resizable="false" text="Order Date" />
+                  <TableColumn fx:id="OrdDeliveryDateCol" prefWidth="109.0" resizable="false" text="Delivery Date" />
+                  <TableColumn fx:id="OrdStatusCol" prefWidth="125.0" resizable="false" text="Status" />
+                  <TableColumn fx:id="OrdTotalCol" prefWidth="177.0" resizable="false" text="Total" />
               </columns>
             </TableView>
             <Label layoutX="29.0" layoutY="23.0" text="Orders">

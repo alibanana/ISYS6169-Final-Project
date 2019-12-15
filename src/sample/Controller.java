@@ -58,6 +58,14 @@ public class Controller implements Initializable {
     @FXML private ComboBox FilterComboBox;
     @FXML private ComboBox DateComboBox;
     @FXML private TableView<Order> OrderTable;
+    @FXML private TableColumn<Order, String> OrdIDCol;
+    @FXML private TableColumn<Order, String> OrdCustCol;
+    @FXML private TableColumn<Order, String> OrdTypeCol;
+    @FXML private TableColumn<Order, String> OrdDateCol;
+    @FXML private TableColumn<Order, String> OrdDeliveryDateCol;
+    @FXML private TableColumn<Order, String> OrdStatusCol;
+    @FXML private TableColumn<Order, Integer> OrdTotalCol;
+    ObservableList<Order> OrderList = FXCollections.observableArrayList();
 
     // Customer Pane Members
     @FXML private Label NewCustomerLabel;
@@ -224,6 +232,16 @@ public class Controller implements Initializable {
         Parent OrderFormParent = loader.load();
 
         Stage stage = new Stage(); // New stage (window)
+
+        // Get CurrentProductID; if no Product exist yet prevProductID set to 0
+        String prevOrderID = "ORD00000";
+        if (!OrderList.isEmpty()){
+            prevOrderID = OrderList.get(OrderList.size()-1).getOrderID();
+        }
+
+        // Passing data to ProductFormController
+        OrderFormController controller = loader.getController();
+        controller.initData(this, prevOrderID);
 
         // Setting the stage up
         stage.initModality(Modality.APPLICATION_MODAL);
