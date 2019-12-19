@@ -42,7 +42,7 @@
             <Rectangle fx:id="ProductRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="293.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
+      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
          <children>
             <StackedAreaChart layoutX="209.0" layoutY="56.0">
               <xAxis>
@@ -57,7 +57,7 @@
             <Button layoutX="599.0" layoutY="551.0" mnemonicParsing="false" onAction="#ButtonClicked" prefHeight="25.0" prefWidth="99.0" text="Button" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034">
+      <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034" visible="false">
          <children>
             <TableView fx:id="OrderTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
               <columns>
@@ -163,7 +163,7 @@
             <Button layoutX="491.0" layoutY="24.0" mnemonicParsing="false" onAction="#RefreshCustomerTable" text="Refresh" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
+      <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
          <children>
             <TableView fx:id="ProductTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
                <columns>

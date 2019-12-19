@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="701.0" prefWidth="1162.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SubOrderFormController">
+<AnchorPane prefHeight="701.0" prefWidth="1157.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SubOrderFormController">
    <children>
       <AnchorPane layoutY="65.0" prefHeight="637.0" prefWidth="847.0" style="-fx-background-color: #f4f4f4; -fx-background-radius: 10;">
          <children>
@@ -146,10 +141,10 @@
       </AnchorPane>
       <AnchorPane layoutX="848.0" layoutY="65.0" prefHeight="637.0" prefWidth="310.0" style="-fx-background-color: #f4f4f4; -fx-background-radius: 10;">
          <children>
-            <TextField fx:id="paid1" layoutX="20.0" layoutY="46.0" prefHeight="31.0" prefWidth="277.0" />
-            <TextField fx:id="paid11" layoutX="20.0" layoutY="121.0" prefHeight="31.0" prefWidth="277.0" />
-            <TextField fx:id="paid111" layoutX="20.0" layoutY="197.0" prefHeight="31.0" prefWidth="277.0" />
-            <TextArea layoutX="20.0" layoutY="280.0" prefHeight="237.0" prefWidth="277.0" />
+            <TextField fx:id="productName" layoutX="20.0" layoutY="46.0" onAction="#ProductNameAction" prefHeight="31.0" prefWidth="277.0" />
+            <TextField fx:id="productPrice" editable="false" layoutX="20.0" layoutY="121.0" prefHeight="31.0" prefWidth="277.0" />
+            <TextField fx:id="qty" layoutX="20.0" layoutY="197.0" prefHeight="31.0" prefWidth="277.0" />
+            <TextArea fx:id="productDescription" layoutX="20.0" layoutY="280.0" prefHeight="237.0" prefWidth="277.0" />
             <Button fx:id="addItemButton" layoutX="17.0" layoutY="589.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="277.0" style="-fx-background-color: #00ab66;" text="+ Add Item" textFill="WHITE" />
             <Button fx:id="addPhotoButton" layoutX="181.0" layoutY="526.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="+ Add Photo" textFill="WHITE" />
             <Label layoutX="20.0" layoutY="16.0" prefHeight="27.0" prefWidth="116.0" text="Product Name">
