@@ -1,13 +1,14 @@
 package sample;
 
+import java.lang.reflect.Type;
 import java.sql.*;
-import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Database {
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/db_databasesystem";
     static final String USER = "root";
-    static final String PASS = "";
+    static final String PASS = "2201798295Binus";
     static Connection conn;
     static Statement stmt;
     static ResultSet rs;
@@ -20,6 +21,9 @@ public class Database {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void addOrder(){
     }
 
     public static void addCustomer(String id, String name, String phone, String email, boolean Member){
@@ -72,27 +76,156 @@ public class Database {
         }
     }
 
-    public static void addProduct(String ProductID, String ProductName, String Type, int Price){
+    public static void addProductType(String TypeID, String Type){
         try {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "INSERT INTO products(ProductID, ProductName, Type, Price) VALUE('%s', '%s', '%s', '%d')";
-            sql = String.format(sql, ProductID, ProductName, Type, Price);
+            String sql = "INSERT INTO product_type(TypeID, Type) value('%s', '%s')";
+            sql = String.format(sql, TypeID, Type);
             stmt.execute(sql);
 
+            System.out.println(String.format("Added %s to product_type", TypeID));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteProductTypeByID(String TypeID){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = String.format("DELETE FROM product_type where TypeID = '%s'", TypeID);
+            stmt.execute(sql);
+
+            System.out.println(String.format("Deleted %s from product_type", TypeID));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteProductTypeByType(String Type){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = String.format("DELETE FROM product_type where Type = '%s'", Type);
+            stmt.execute(sql);
+
+            System.out.println(String.format("Deleted %s from product_type", Type));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<String> getAllTypes() throws NullPointerException {
+        ArrayList<String> listofTypes = new ArrayList<>();
+        try {
+            conn = connect();
+            String sql = "SELECT Type FROM product_type";
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            while (rs.next()){
+                listofTypes.add(rs.getString("Type"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listofTypes;
+    }
+
+    public static boolean isProductTypeExist(String Type) throws SQLException {
+        conn = connect();
+
+        String sql = "SELECT * FROM product_type WHERE Type = '%s'";
+        sql = String.format(sql, Type);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        // Checks if ProductType exists
+        int counter = 0;
+        while (rs.next()){
+            counter++;
+        }
+
+        if (counter != 0) {
+            System.out.println(String.format("%s exists in product_type", Type));
+            return true;
+        } else {
+            System.out.println(String.format("%s doesn't exists in product_type", Type));
+            return false;
+        }
+    }
+
+    public static String getTypeID(String Type) throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT * FROM product_type WHERE Type = '%s'";
+        sql = String.format(sql, Type);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getString("TypeID");
+    }
+
+    public static String getType(String TypeID) throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT * FROM product_type WHERE TypeID = '%s'";
+        sql = String.format(sql, TypeID);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getString("Type");
+    }
+
+    public static String getLastTypeID() throws SQLException{
+        try {
+            conn = connect();
+
+            String sql = "SELECT MAX(TypeID) FROM product_type";
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            rs.next();
+
+            // If no data exists yet
+            if (rs.getString("MAX(TypeID)") == null){
+                System.out.println("Last TypeID = TYP00000");
+                return "TYP00000";
+            }
+
+            // If data exists
+            String LastTypeID = rs.getString("MAX(TypeID)");
+            System.out.println(String.format("Last TypeID = %s", LastTypeID));
+            return LastTypeID;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void addProduct(String ProductID, String ProductName, String TypeID, int Price){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = "INSERT INTO products(ProductID, ProductName, TypeID, Price) VALUE('%s', '%s', '%s', '%d')";
+            sql = String.format(sql, ProductID, ProductName, TypeID, Price);
+            stmt.execute(sql);
+
+            System.out.println(String.format("Added %s to product", ProductID));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void editProduct(String ProductID, String ProductName, String Type, int Price){
+    public static void editProduct(String ProductID, String ProductName, String TypeID, int Price){
         try {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "UPDATE products SET ProductName='%s', Type='%s', Price='%d' WHERE ProductID='%s'";
-            sql = String.format(sql, ProductName, Type, Price, ProductID);
+            String sql = "UPDATE products SET ProductName='%s', TypeID='%s', Price='%d' WHERE ProductID='%s'";
+            sql = String.format(sql, ProductName, TypeID, Price, ProductID);
             stmt.execute(sql);
 
         } catch (SQLException e) {
@@ -107,20 +240,54 @@ public class Database {
 
             String sql = String.format("DELETE FROM products where ProductID = '%s'", ProductID);
             stmt.execute(sql);
+
+            System.out.println(String.format("Deleted %s from product", ProductID));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // Not Done
-    // Convert Image to ByteStreams then store in database
-//    public static void addSubOrder(String OrderID, String ProductID, int Quantity, String Description){
+    public static boolean isProductTypeExistInProduct(String TypeID) throws SQLException{
+//        try {
+//            conn = connect();
 //
-//    }
+//            String sql = "SELECT TypeID FROM products WHERE TypeID = '%s'";
+//            sql = String.format(sql, TypeID);
+//            ResultSet rs = conn.createStatement().executeQuery(sql);
+//            rs.next();
+//
+//            try {
+//                // If data exist yet
+//                rs.getString("TypeID");
+//                System.out.println(String.format("TypeID (%s) does not exists in products", TypeID));
+//                return true;
+//            } catch (SQLException e) {
+//                System.out.println(String.format("TypeID (%s) exists in products", TypeID));
+//                return false;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
 
-    // Not Done
-    // Convert java.util's date to java.sql's date format.
-//    public static void addorder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress,
-//    int DeliveryPrice,)
+        conn = connect();
 
+        String sql = "SELECT * FROM products WHERE TypeID = '%s'";
+        sql = String.format(sql, TypeID);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        // Checks if ProductType exists
+        int counter = 0;
+        while (rs.next()){
+            counter++;
+        }
+
+        if (counter != 0) {
+            System.out.println(String.format("TypeID %s exists in products", TypeID));
+            return true;
+        } else {
+            System.out.println(String.format("TypeID %s doesn't exists in product_type", TypeID));
+            return false;
+        }
+    }
 }

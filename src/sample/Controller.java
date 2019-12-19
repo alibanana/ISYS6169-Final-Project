@@ -24,6 +24,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -123,11 +124,14 @@ public class Controller implements Initializable {
         EditProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         OverviewLabel3.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         FilterProduct.setPromptText("All");
-        FilterProduct.getItems().addAll("All", "Cake", "Cupcake", "Cookies");
+        RefreshProductFilter();
 
         // By Default, Home Label is Clicked
         HomeLabelClicked();
-//        OrderLabelClicked();
+
+        // Refresh Observable Lists
+        RefreshCustomerList();
+        RefreshProductList();
     }
 
     private void LabelDefault(){
@@ -241,7 +245,7 @@ public class Controller implements Initializable {
 
         // Passing data to ProductFormController
         OrderFormController controller = loader.getController();
-        controller.initData(this, prevOrderID);
+        controller.initData(this, prevOrderID, CustomerList, ProductList);
 
         // Setting the stage up
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -406,8 +410,7 @@ public class Controller implements Initializable {
         stage.showAndWait();
     }
 
-    @FXML
-    public void RefreshCustomerTable() throws NullPointerException{
+    private void RefreshCustomerList() throws NullPointerException{
         CustomerList.clear();
         String filter;
         try {
@@ -431,7 +434,7 @@ public class Controller implements Initializable {
             int colNo = 1;
             while(rs.next()) {
                 CustomerList.add(new Customer(colNo, rs.getString("CustomerID"), rs.getString("Name"),
-                rs.getString("PhoneNo"), rs.getString("Email"), rs.getBoolean("Member")));
+                        rs.getString("PhoneNo"), rs.getString("Email"), rs.getBoolean("Member")));
                 colNo++;
             }
 
@@ -440,6 +443,11 @@ public class Controller implements Initializable {
         } catch (SQLException e) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+
+    @FXML
+    public void RefreshCustomerTable(){
+        RefreshCustomerList();
         CustNoCol.setCellValueFactory(new PropertyValueFactory<>("columnNo"));
         CustIDCol.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
         CustNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
@@ -452,7 +460,7 @@ public class Controller implements Initializable {
     // Product Pane Functions
     @FXML
     public void NewProductClicked() throws IOException {
-        System.out.println("New Product Clicked");
+        System.out.println("New_Product_Label clicked in MainScreen.fxml");
         new FadeIn(NewProductLabel).setSpeed(5).play();
 
         FXMLLoader loader = new FXMLLoader();
@@ -481,21 +489,32 @@ public class Controller implements Initializable {
 
     @FXML
     public void DeleteProductClicked(){
-        System.out.println("Delete Product Clicked");
+        System.out.println("Delete_Product_Label clicked on MainScreen.fxml");
         new FadeIn(DeleteProductLabel).setSpeed(5).play();
 
         // Gets Selected Row
         Product selectedItem = ProductTable.getSelectionModel().getSelectedItem();
-        if(!(selectedItem == null)){
-            String id = selectedItem.getProductID();
-            Database.deleteProduct(id);
-            RefreshProductTable();
+        String id = selectedItem.getProductID();
+
+        // Checks if ProductFilter is selected
+        if (!(selectedItem == null)){
+            try {
+                Database.deleteProduct(id);
+                // If TypeId exists in products
+                if (!(Database.isProductTypeExistInProduct(Database.getTypeID(selectedItem.getType())))){
+                    Database.deleteProductTypeByType(selectedItem.getType());
+                    RefreshProductFilter();
+                }
+                RefreshProductTable();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @FXML
     public void EditProductClicked() throws IOException {
-        System.out.println("Edit Product Clicked");
+        System.out.println("Edit_Product_Label clicked on MainScreen.fxml");
         new FadeIn(EditProductLabel).setSpeed(5).play();
 
         FXMLLoader loader = new FXMLLoader();
@@ -517,32 +536,39 @@ public class Controller implements Initializable {
         stage.showAndWait();
     }
 
-    @FXML
-    public void RefreshProductTable() throws NullPointerException{
+    public void RefreshProductFilter(){
+        FilterProduct.getItems().clear();
+        ArrayList<String> listofTypes = Database.getAllTypes();
+        listofTypes.add(0, "All");
+        FilterProduct.setItems(FXCollections.observableArrayList(listofTypes));
+        System.out.println("Refreshed ProductFilter in MainScreen.fxml");
+    }
+
+    public void RefreshProductList(){
         ProductList.clear();
-        String filter;
+        String filter, sql;
         try {
-            // Checks if FilterComboBox is empty
+            // Checks if FilterComboBox is selected
             try {
                 filter = FilterProduct.getValue().toString();
+                // If user choose a specific filter
+                if (filter.equals("All")) {
+                    sql = "SELECT * FROM products";
+                } else {
+                    String TypeID = Database.getTypeID(filter);
+                    sql = String.format("SELECT * FROM products WHERE TypeID = '%s'", TypeID);
+                }
             } catch (NullPointerException e) {
-                filter = "All";
+                sql = "SELECT * FROM products";
             }
 
             Connection conn = Database.connect();
-            String sql = "SELECT * FROM products";
-            if (filter.equals("Cake")){
-                sql = "SELECT * FROM products WHERE Type='Cake'";
-            } else if (filter.equals("Cupcake")){
-                sql = "SELECT * FROM products WHERE Type='Cupcake'";
-            }
-
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             int colNo = 1;
             while(rs.next()) {
                 ProductList.add(new Product(colNo, rs.getString("ProductID"), rs.getString("ProductName"),
-                        rs.getString("Type"), rs.getInt("Price")));
+                        Database.getType(rs.getString("TypeID")), rs.getInt("Price")));
                 colNo++;
             }
 
@@ -551,6 +577,11 @@ public class Controller implements Initializable {
         } catch (SQLException e) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+
+    @FXML
+    public void RefreshProductTable() throws NullPointerException{
+        RefreshProductList();
         ProdNoCol.setCellValueFactory(new PropertyValueFactory<>("columnNo"));
         ProdIDCol.setCellValueFactory(new PropertyValueFactory<>("ProductID"));
         ProdNameCol.setCellValueFactory(new PropertyValueFactory<>("ProductName"));

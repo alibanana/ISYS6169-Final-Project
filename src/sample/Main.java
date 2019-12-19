@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import javax.xml.crypto.Data;
+import java.sql.SQLException;
 
 public class Main extends Application {
 
@@ -23,8 +23,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 //        Database.addCustomer("CUS00005", "Arvin Rasyid", "08112383399", "aarvin@gmail.com", false);
+//        Database.addProductType("TYP00001", "Cake");
+//        Database.addProductType("TYP00002", "Cookies");
         launch(args);
     }
 }

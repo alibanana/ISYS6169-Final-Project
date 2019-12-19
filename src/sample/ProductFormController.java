@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ProductFormController implements Initializable {
@@ -34,9 +35,23 @@ public class ProductFormController implements Initializable {
     }
 
     @FXML
-    public void addProduct(ActionEvent event){
-        Database.addProduct(newProductID, productName.getText(), productType.getText(), Integer.parseInt(productPrice.getText()));
-        System.out.println(String.format("Added %s to the database", productName.getText()));
+    public void addProduct(ActionEvent event) throws SQLException {
+        System.out.println("Add_Product_Button clicked in ProductForm.fxml");
+
+        // Store type of product
+        String ProductType = productType.getText();
+
+        // If ProductType does not exists
+        if (!Database.isProductTypeExist(ProductType)){
+            // Make new TypeID
+            int PrevTypeID = Integer.parseInt(Database.getLastTypeID().replaceAll("[^\\d.]", ""));
+            String NewTypeID = String.format("TYP%05d", PrevTypeID+1);
+            System.out.println(String.format("New TypeID (%s)", NewTypeID));
+            Database.addProductType(NewTypeID, ProductType);
+            parentController.RefreshProductFilter();
+        }
+
+        Database.addProduct(newProductID, productName.getText(), Database.getTypeID(ProductType), Integer.parseInt(productPrice.getText()));
 
         // Close Stage & Refresh Table
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

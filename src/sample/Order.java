@@ -1,6 +1,6 @@
 package sample;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Order {
     private String OrderID;
@@ -8,11 +8,24 @@ public class Order {
     private String OrderType;
     private String DeliveryAdress;
     private int DeliveryPrice;
-    private LocalDateTime OrderDateTime;
-    private LocalDateTime DeliveryDateTime;
+    private LocalDate OrderDateTime;
+    private LocalDate DeliveryDateTime;
     private String OrderStatus;
     private int Payment;
     private int Discount;
+
+    public Order(String orderID, String customerID, String orderType, String deliveryAdress, int deliveryPrice, LocalDate orderDateTime, LocalDate deliveryDateTime, String orderStatus, int payment, int discount) {
+        OrderID = orderID;
+        CustomerID = customerID;
+        OrderType = orderType;
+        DeliveryAdress = deliveryAdress;
+        DeliveryPrice = deliveryPrice;
+        OrderDateTime = orderDateTime;
+        DeliveryDateTime = deliveryDateTime;
+        OrderStatus = orderStatus;
+        Payment = payment;
+        Discount = discount;
+    }
 
     public String getOrderID() {
         return OrderID;
@@ -54,19 +67,19 @@ public class Order {
         DeliveryPrice = deliveryPrice;
     }
 
-    public LocalDateTime getOrderDateTime() {
+    public LocalDate getOrderDateTime() {
         return OrderDateTime;
     }
 
-    public void setOrderDateTime(LocalDateTime orderDateTime) {
+    public void setOrderDateTime(LocalDate orderDateTime) {
         OrderDateTime = orderDateTime;
     }
 
-    public LocalDateTime getDeliveryDateTime() {
+    public LocalDate getDeliveryDateTime() {
         return DeliveryDateTime;
     }
 
-    public void setDeliveryDateTime(LocalDateTime deliveryDateTime) {
+    public void setDeliveryDateTime(LocalDate deliveryDateTime) {
         DeliveryDateTime = deliveryDateTime;
     }
 
