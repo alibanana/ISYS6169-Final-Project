@@ -95,6 +95,7 @@ public class Controller implements Initializable {
     @FXML private TableColumn<Product, String> ProdNameCol;
     @FXML private TableColumn<Product, String> ProdTypeCol;
     @FXML private TableColumn<Product, Integer> ProdPriceCol;
+    ArrayList<String> ProductTypeList = new ArrayList<>();
     ObservableList<Product> ProductList = FXCollections.observableArrayList();
 
     @Override
@@ -132,6 +133,10 @@ public class Controller implements Initializable {
         // Refresh Observable Lists
         RefreshCustomerList();
         RefreshProductList();
+    }
+
+    public ArrayList<String> getProductTypeList(){
+        return this.ProductTypeList;
     }
 
     private void LabelDefault(){
@@ -538,9 +543,9 @@ public class Controller implements Initializable {
 
     public void RefreshProductFilter(){
         FilterProduct.getItems().clear();
-        ArrayList<String> listofTypes = Database.getAllTypes();
-        listofTypes.add(0, "All");
-        FilterProduct.setItems(FXCollections.observableArrayList(listofTypes));
+        ProductTypeList = Database.getAllTypes();
+        ProductTypeList.add(0, "All");
+        FilterProduct.setItems(FXCollections.observableArrayList(ProductTypeList));
         System.out.println("Refreshed ProductFilter in MainScreen.fxml");
     }
 
