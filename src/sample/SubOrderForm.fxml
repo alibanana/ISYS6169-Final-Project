@@ -14,8 +14,8 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Button fx:id="deleteItemButton" layoutX="717.0" layoutY="14.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #b92e34;" text="- Delete Item" textFill="WHITE" />
-            <TableView layoutX="10.0" layoutY="101.0" prefHeight="359.0" prefWidth="827.0">
+            <Button fx:id="deleteItemButton" layoutX="717.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteItemClicked" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #b92e34;" text="- Delete Item" textFill="WHITE" />
+            <TableView fx:id="SubOrderTable" layoutX="10.0" layoutY="101.0" prefHeight="359.0" prefWidth="827.0">
               <columns>
                   <TableColumn fx:id="noCol" prefWidth="54.0" text="#" />
                 <TableColumn fx:id="productNameCol" prefWidth="362.0" text="Product Name" />
@@ -145,7 +145,7 @@
             <TextField fx:id="productPrice" editable="false" layoutX="20.0" layoutY="121.0" prefHeight="31.0" prefWidth="277.0" />
             <TextField fx:id="qty" layoutX="20.0" layoutY="197.0" prefHeight="31.0" prefWidth="277.0" />
             <TextArea fx:id="productDescription" layoutX="20.0" layoutY="280.0" prefHeight="237.0" prefWidth="277.0" />
-            <Button fx:id="addItemButton" layoutX="17.0" layoutY="589.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="277.0" style="-fx-background-color: #00ab66;" text="+ Add Item" textFill="WHITE" />
+            <Button fx:id="addItemButton" layoutX="17.0" layoutY="589.0" mnemonicParsing="false" onAction="#addItemClicked" prefHeight="31.0" prefWidth="277.0" style="-fx-background-color: #00ab66;" text="+ Add Item" textFill="WHITE" />
             <Button fx:id="addPhotoButton" layoutX="181.0" layoutY="526.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="+ Add Photo" textFill="WHITE" />
             <Label layoutX="20.0" layoutY="16.0" prefHeight="27.0" prefWidth="116.0" text="Product Name">
                <font>

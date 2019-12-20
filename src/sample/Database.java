@@ -249,29 +249,29 @@ public class Database {
         }
     }
 
-    public static boolean isProductTypeExistInProduct(String TypeID) throws SQLException{
-//        try {
-//            conn = connect();
-//
-//            String sql = "SELECT TypeID FROM products WHERE TypeID = '%s'";
-//            sql = String.format(sql, TypeID);
-//            ResultSet rs = conn.createStatement().executeQuery(sql);
-//            rs.next();
-//
-//            try {
-//                // If data exist yet
-//                rs.getString("TypeID");
-//                System.out.println(String.format("TypeID (%s) does not exists in products", TypeID));
-//                return true;
-//            } catch (SQLException e) {
-//                System.out.println(String.format("TypeID (%s) exists in products", TypeID));
-//                return false;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
+    public static String getProductName(String ProductID) throws SQLException{
+        conn = connect();
 
+        String sql = "SELECT ProductName FROM product WHERE ProductID = '%s'";
+        sql = String.format(sql, ProductID);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getString("ProductName");
+    }
+
+    public static int getProductPrice(String ProductID) throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT Price FROM product WHERE ProductID = '%s'";
+        sql = String.format(sql, ProductID);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getInt("Price");
+    }
+
+    public static boolean isProductTypeExistInProduct(String TypeID) throws SQLException{
         conn = connect();
 
         String sql = "SELECT * FROM products WHERE TypeID = '%s'";

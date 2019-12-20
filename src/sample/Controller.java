@@ -215,25 +215,25 @@ public class Controller implements Initializable {
     }
 
     // Home Pane Functions
-//    @FXML
-//    public void TestAction(){
-//        test2.setText(test.getText());
-//    }
-//
-//    @FXML
-//    public void ButtonClicked() {
-//        FileChooser fc = new FileChooser();
-//        File selectedFile = fc.showOpenDialog(null);
-//        if (selectedFile != null){
-//            System.out.println(selectedFile.getAbsolutePath());
-//        } else {
-//            System.out.println("File is not valid");
-//        }
-//    }
+    // @FXML
+    // public void TestAction(){
+    //     test2.setText(test.getText());
+    // }
+
+    // @FXML
+    // public void ButtonClicked() {
+    //     FileChooser fc = new FileChooser();
+    //     File selectedFile = fc.showOpenDialog(null);
+    //     if (selectedFile != null){
+    //         System.out.println(selectedFile.getAbsolutePath());
+    //     } else {
+    //         System.out.println("File is not valid");
+    //     }
+    // }
+
     @FXML
     public void filterButtonClicked(){
-
-        System.out.println("filter clicked");
+        System.out.println("FilterButton clicked on MainScreen.fxml");
         try {
 //            Get dates from DatePickers
             LocalDate startdate = dateStart.getValue();
