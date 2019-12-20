@@ -8,6 +8,7 @@ public class Database {
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost/db_databasesystem";
     static final String USER = "root";
+//    passwordnya Aleep
 //    static final String PASS = "2201798295Binus";
     static final String PASS = "";
     static Connection conn;
@@ -291,4 +292,17 @@ public class Database {
             return false;
         }
     }
+
+//    Get weekly sum
+//    SELECT
+//    SUM(nb_like) AS nb_like,
+//    CONCAT
+//            (
+//                    STR_TO_DATE(CONCAT(YEARWEEK(date, 2), ' Sunday'), '%X%V %W'),
+//            '-',
+//    STR_TO_DATE(CONCAT(YEARWEEK(date, 2), ' Sunday'), '%X%V %W') + INTERVAL 6 DAY
+//  ) AS week
+//    FROM fb_stats
+//    GROUP BY YEARWEEK(date, 2)
+//    ORDER BY YEARWEEK(date, 2);
 }
