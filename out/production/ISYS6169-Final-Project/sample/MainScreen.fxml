@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.StackedAreaChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <AnchorPane prefHeight="700.0" prefWidth="166.0" style="-fx-background-color: #ffffff;">
          <children>
@@ -42,9 +49,9 @@
             <Rectangle fx:id="ProductRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="293.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
+      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
          <children>
-            <StackedAreaChart layoutX="209.0" layoutY="56.0">
+            <StackedAreaChart layoutX="132.0" layoutY="92.0" prefHeight="408.0" prefWidth="771.0">
               <xAxis>
                 <NumberAxis side="BOTTOM" />
               </xAxis>
@@ -52,9 +59,29 @@
                 <NumberAxis side="LEFT" />
               </yAxis>
             </StackedAreaChart>
-            <TextField fx:id="test" layoutX="303.0" layoutY="538.0" onAction="#TestAction" />
-            <TextField fx:id="test2" layoutX="303.0" layoutY="579.0" />
-            <Button layoutX="599.0" layoutY="551.0" mnemonicParsing="false" onAction="#ButtonClicked" prefHeight="25.0" prefWidth="99.0" text="Button" />
+            <Label layoutX="437.0" layoutY="38.0" text="Weekly Sales">
+               <font>
+                  <Font name="Arial Bold" size="26.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="dateStart" layoutX="141.0" layoutY="566.0" />
+            <DatePicker fx:id="dateEnd" layoutX="141.0" layoutY="619.0" />
+            <Label fx:id="OverviewLabel3" layoutX="148.0" layoutY="523.0" text="Filter by dates" textFill="#5596fd">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="OverviewLabel31" layoutX="40.0" layoutY="575.0" text="Start Date" textFill="#5596fd">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="OverviewLabel311" layoutX="40.0" layoutY="628.0" text="End Date" textFill="#5596fd">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="filterButton" layoutX="459.0" layoutY="619.0" mnemonicParsing="false" onAction="#filterButtonClicked" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="Filter" textFill="WHITE" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034" visible="false">
@@ -163,7 +190,7 @@
             <Button layoutX="491.0" layoutY="24.0" mnemonicParsing="false" onAction="#RefreshCustomerTable" text="Refresh" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
+      <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
          <children>
             <TableView fx:id="ProductTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
                <columns>

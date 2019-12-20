@@ -24,6 +24,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -47,8 +48,8 @@ public class Controller implements Initializable {
     @FXML private AnchorPane ProductPane;
 
     // Home Pane Members
-    @FXML private TextField test;
-    @FXML private TextField test2;
+    @FXML private DatePicker dateStart;
+    @FXML private DatePicker dateEnd;
 
     // Order Pane Members
     @FXML private Label NewOrderLabel;
@@ -214,19 +215,32 @@ public class Controller implements Initializable {
     }
 
     // Home Pane Functions
+//    @FXML
+//    public void TestAction(){
+//        test2.setText(test.getText());
+//    }
+//
+//    @FXML
+//    public void ButtonClicked() {
+//        FileChooser fc = new FileChooser();
+//        File selectedFile = fc.showOpenDialog(null);
+//        if (selectedFile != null){
+//            System.out.println(selectedFile.getAbsolutePath());
+//        } else {
+//            System.out.println("File is not valid");
+//        }
+//    }
     @FXML
-    public void TestAction(){
-        test2.setText(test.getText());
-    }
+    public void filterButtonClicked(){
 
-    @FXML
-    public void ButtonClicked() {
-        FileChooser fc = new FileChooser();
-        File selectedFile = fc.showOpenDialog(null);
-        if (selectedFile != null){
-            System.out.println(selectedFile.getAbsolutePath());
-        } else {
-            System.out.println("File is not valid");
+        System.out.println("filter clicked");
+        try {
+//            Get dates from DatePickers
+            LocalDate startdate = dateStart.getValue();
+            LocalDate enddate = dateEnd.getValue();
+            System.out.println(startdate.toString() + enddate.toString());
+        } catch (NullPointerException e){
+            System.out.println("Date not selected");
         }
     }
 
