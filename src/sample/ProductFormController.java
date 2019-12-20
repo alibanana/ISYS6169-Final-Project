@@ -5,9 +5,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ProductFormController implements Initializable {
@@ -32,6 +34,14 @@ public class ProductFormController implements Initializable {
         // Make new CustomerID
         newProductID = String.format("PRO%05d", this.prevProductID+1);
         System.out.println(newProductID);
+        // Bind productType TextField
+        bindTypeTextFields();
+    }
+
+    private void bindTypeTextFields(){
+        ArrayList<String> TypeLists = parentController.getProductTypeList();
+        TypeLists.remove(0);
+        TextFields.bindAutoCompletion(productType, TypeLists);
     }
 
     @FXML
