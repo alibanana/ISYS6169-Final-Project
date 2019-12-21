@@ -2,6 +2,7 @@ package sample;
 
 import java.lang.reflect.Type;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Database {
@@ -290,6 +291,36 @@ public class Database {
         } else {
             System.out.println(String.format("TypeID %s doesn't exists in product_type", TypeID));
             return false;
+        }
+    }
+
+    public static void addOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, int DeliveryPrice, LocalDate OrderDate, LocalDate DeliveryDate, String OrderStatus, int Payment, int Discount){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = "INSERT INTO orders(OrderID, CustomerID, OrderType, DeliveryAddress, DeliveryPrice, OrderDateTime, DeliveryDateTime, OrderStatus, Payment, Discount) VALUE('%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%d', '%d')";
+            sql = String.format(sql, OrderID, CustomerID, OrderType, DeliveryAddress, DeliveryPrice, OrderDate, DeliveryDate, OrderStatus, Payment, Discount);
+            stmt.execute(sql);
+
+            System.out.println(String.format("Added %s to orders", OrderID));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addSubOrder(String OrderID, String ProductID, int Qty, String Description, String DescriptionPhoto){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = "INSERT INTO suborders(OrderID, ProductID, Qty, Description, DescriptionPhoto) VALUE('%s', '%s', '%d', '%s', '%s')";
+            sql = String.format(sql, OrderID, ProductID, Qty, Description, DescriptionPhoto);
+            stmt.execute(sql);
+
+            System.out.println(String.format("Added %s to sub-orders", OrderID));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

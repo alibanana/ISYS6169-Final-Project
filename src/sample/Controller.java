@@ -57,8 +57,8 @@ public class Controller implements Initializable {
     @FXML private Label EditOrderLabel;
     @FXML private Label OverviewLabel;
     @FXML private Label DetailsOrderLabel;
-    @FXML private ComboBox FilterComboBox;
-    @FXML private ComboBox DateComboBox;
+    @FXML private ComboBox OrderFilterComboBox;
+    @FXML private DatePicker OrderDateFilter;
     @FXML private TableView<Order> OrderTable;
     @FXML private TableColumn<Order, String> OrdIDCol;
     @FXML private TableColumn<Order, String> OrdCustCol;
@@ -107,10 +107,8 @@ public class Controller implements Initializable {
         EditOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         OverviewLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         DetailsOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
-        FilterComboBox.setPromptText("Status: All");
-        FilterComboBox.getItems().addAll("All", "Pending", "Confirmed");
-        DateComboBox.setPromptText("Date: Today");
-        DateComboBox.getItems().addAll("All", "Today", "Yesterday");
+        OrderFilterComboBox.setPromptText("Status: All");
+        OrderFilterComboBox.getItems().addAll("All", "Pending", "Done");
 
         // Initialize Customer Pane
         NewCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
@@ -187,6 +185,7 @@ public class Controller implements Initializable {
         OrderPane.setDisable(false);
         OrderPane.setVisible(true);
         new FadeIn(OrderPane).play();
+        RefreshOrderTable();
     }
 
     @FXML
@@ -199,7 +198,6 @@ public class Controller implements Initializable {
         CustomerPane.setVisible(true);
         new FadeIn(CustomerPane).play();
         RefreshCustomerTable();
-
     }
 
     @FXML
@@ -319,31 +317,31 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void RefreshOrderTable() throws NullPointerException{
-        CustomerList.clear();
+    public void  RefreshOrderList() throws NullPointerException{
+        OrderList.clear();
         String filter;
         try {
             // Checks if ComboBox is empty
             try {
-                filter = CustomerComboBox.getValue().toString();
+                filter = OrderFilterComboBox.getValue().toString();
             } catch (NullPointerException e) {
                 filter = "All";
             }
 
             Connection conn = Database.connect();
-            String sql = "SELECT * FROM customers";
-            if (filter.equals("Members")){
-                sql = "SELECT * FROM customers WHERE member = 1";
-            } else if (filter.equals("Non-Members")){
-                sql = "SELECT * FROM customers WHERE member = 0";
+            String sql = "SELECT * FROM orders";
+            if (filter.equals("Pending")){
+                sql = "SELECT * FROM orders WHERE OrderStatus = 'Pending'";
+            } else if (filter.equals("Done")){
+                sql = "SELECT * FROM orders WHERE OrderStatus = 'Done'";
             }
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             int colNo = 1;
             while(rs.next()) {
-                CustomerList.add(new Customer(colNo, rs.getString("CustomerID"), rs.getString("Name"),
-                        rs.getString("PhoneNo"), rs.getString("Email"), rs.getBoolean("Member")));
+                OrderList.add(new Order(rs.getString("OrderID"), rs.getString("CustomerID"),
+                        rs.getString("OrderType"), rs.getDate("OrderDateTime").toLocalDate(), rs.getDate("DeliveryDateTime").toLocalDate(), rs.getString("OrderStatus"), rs.getInt("Payment")));
                 colNo++;
             }
 
@@ -352,13 +350,27 @@ public class Controller implements Initializable {
         } catch (SQLException e) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
         }
-        CustNoCol.setCellValueFactory(new PropertyValueFactory<>("columnNo"));
-        CustIDCol.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
-        CustNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        CustPhoneCol.setCellValueFactory(new PropertyValueFactory<>("PhoneNo"));
-        CustEmailCol.setCellValueFactory(new PropertyValueFactory<>("Email"));
-        CustStatusCol.setCellValueFactory(new PropertyValueFactory<>("Member"));
-        CustomerTable.setItems(CustomerList);
+        OrdIDCol.setCellValueFactory(new PropertyValueFactory<>("OrderID"));
+        OrdCustCol.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
+        OrdTypeCol.setCellValueFactory(new PropertyValueFactory<>("OrderType"));
+        OrdDateCol.setCellValueFactory(new PropertyValueFactory<>("OrderDateTime"));
+        OrdDeliveryDateCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryDateTime"));
+        OrdStatusCol.setCellValueFactory(new PropertyValueFactory<>("OrderStatus"));
+        OrdTotalCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
+        OrderTable.setItems(OrderList);
+    }
+
+    @FXML
+    public void RefreshOrderTable() throws NullPointerException{
+        RefreshOrderList();
+        OrdIDCol.setCellValueFactory(new PropertyValueFactory<>("OrderID"));
+        OrdCustCol.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
+        OrdTypeCol.setCellValueFactory(new PropertyValueFactory<>("OrderType"));
+        OrdDateCol.setCellValueFactory(new PropertyValueFactory<>("OrderDateTime"));
+        OrdDeliveryDateCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryDateTime"));
+        OrdStatusCol.setCellValueFactory(new PropertyValueFactory<>("OrderStatus"));
+        OrdTotalCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
+        OrderTable.setItems(OrderList);
     }
 
     // Customer Pane Functions

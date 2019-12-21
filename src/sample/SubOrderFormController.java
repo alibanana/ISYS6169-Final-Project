@@ -1,12 +1,16 @@
 package sample;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
 
 import javax.xml.crypto.Data;
@@ -15,6 +19,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -35,6 +40,7 @@ public class SubOrderFormController implements Initializable {
     @FXML private Label subTotal;
     @FXML private Label grandTotal;
     @FXML private Label balanceDue;
+    @FXML private TextField paid;
 
     @FXML private TextField productName;
     @FXML private TextField productPrice;
@@ -48,7 +54,6 @@ public class SubOrderFormController implements Initializable {
     @FXML private TableColumn<SubOrder, Integer> qtyCol;
     @FXML private TableColumn<SubOrder, Integer> priceCol;
     @FXML private ObservableList<SubOrder> SubOrderList = FXCollections.observableArrayList();
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
@@ -111,7 +116,8 @@ public class SubOrderFormController implements Initializable {
     @FXML
     public void addItemClicked() {
         System.out.println("AddItemButton clicked on SubOrderForm.fxml");
-        SubOrderList.add(new SubOrder(SubOrderList.size()+1, currentOrder.getOrderID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
+        String DescriptionPhoto = "";
+        SubOrderList.add(new SubOrder(SubOrderList.size()+1, currentOrder.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), DescriptionPhoto, selectedProduct.getPrice()));
         RefreshSubOrderTable();
         clearTextfields();
     }
@@ -129,6 +135,46 @@ public class SubOrderFormController implements Initializable {
         SubOrderList.remove(SubOrderTable.getSelectionModel().getSelectedIndex());
         RefreshSubOrderTable();
     }
+
+    @FXML
+    public void calculatePaid(){
+        int sTotal = 0;
+        // Getting Grand Total value
+        int gTotal = Integer.parseInt(grandTotal.getText());
+        // Getting Paid value
+        int Paid = Integer.parseInt(paid.getText());
+
+        sTotal = gTotal - Paid;
+        balanceDue.setText(String.valueOf(sTotal));
+    }
+
+    @FXML
+    public void addOrder(ActionEvent event) throws SQLException{
+        // Set Sub-Orders variables
+        String OrderID;
+        String ProductID;
+        int Qty;
+        String Description;
+        String DescriptionPhoto = "";
+
+        // SQL queries
+        Database.addOrder(currentOrder.getOrderID(), currentCustomer.getCustomerID(), currentOrder.getOrderType(), currentOrder.getDeliveryAddress(), currentOrder.getDeliveryPrice(), currentOrder.getOrderDateTime(), currentOrder.getDeliveryDateTime(), currentOrder.getOrderStatus(), Integer.parseInt(paid.getText()), currentOrder.getDiscount());
+
+        for (SubOrder subOrder: SubOrderList){
+            OrderID = currentOrder.getOrderID();
+            ProductID = subOrder.getProductID();
+            Qty = subOrder.getQty();
+            Description = subOrder.getDescription();
+            DescriptionPhoto = subOrder.getDescriptionPhoto();
+            Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
+        }
+
+        // Close Stage & Refresh Table
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+        parentController.RefreshOrderTable();
+    }
+
 
     private void RefreshSubOrderList(){
         SubOrderList.clear();
@@ -166,5 +212,4 @@ public class SubOrderFormController implements Initializable {
         subTotal.setText(String.valueOf(sTotal));
         grandTotal.setText(String.valueOf(sTotal + currentOrder.getDeliveryPrice() - currentOrder.getDiscount()));
     }
-
 }

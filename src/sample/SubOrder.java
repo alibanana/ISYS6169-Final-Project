@@ -3,9 +3,11 @@ package sample;
 public class SubOrder {
     private int ColNo;
     private String OrderID;
+    private String ProductID;
     private String ProductName;
     private int Qty;
     private String Description;
+    private String DescriptionPhoto;
     private int Price;
 
     public SubOrder(int ColNo, String orderID, String productName, int qty, String description, int price) {
@@ -15,6 +17,25 @@ public class SubOrder {
         Qty = qty;
         Description = description;
         Price = price;
+    }
+
+    public SubOrder(int ColNo, String orderID, String productID, String productName, int qty, String description, String descriptionPhoto, int price) {
+        this.ColNo = ColNo;
+        OrderID = orderID;
+        ProductID = productID;
+        ProductName = productName;
+        Qty = qty;
+        Description = description;
+        DescriptionPhoto = descriptionPhoto;
+        Price = price;
+    }
+
+    public String getDescriptionPhoto() {
+        return DescriptionPhoto;
+    }
+
+    public void setDescriptionPhoto(String descriptionPhoto) {
+        DescriptionPhoto = descriptionPhoto;
     }
 
     public int getColNo() {
@@ -63,5 +84,13 @@ public class SubOrder {
 
     public void setPrice(int price) {
         Price = price;
+    }
+
+    public String getProductID() {
+        return ProductID;
+    }
+
+    public void setProductID(String productID) {
+        ProductID = productID;
     }
 }

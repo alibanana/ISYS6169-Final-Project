@@ -6,7 +6,7 @@ public class Order {
     private String OrderID;
     private String CustomerID;
     private String OrderType;
-    private String DeliveryAdress;
+    private String DeliveryAddress;
     private int DeliveryPrice;
     private LocalDate OrderDateTime;
     private LocalDate DeliveryDateTime;
@@ -14,17 +14,28 @@ public class Order {
     private int Payment;
     private int Discount;
 
-    public Order(String orderID, String customerID, String orderType, String deliveryAdress, int deliveryPrice, LocalDate orderDateTime, LocalDate deliveryDateTime, String orderStatus, int payment, int discount) {
+    public Order(String orderID, String customerID, String orderType, String deliveryAddress, int deliveryPrice, LocalDate orderDateTime, LocalDate deliveryDateTime, String orderStatus, int payment, int discount) {
         OrderID = orderID;
         CustomerID = customerID;
         OrderType = orderType;
-        DeliveryAdress = deliveryAdress;
+        DeliveryAddress = deliveryAddress;
         DeliveryPrice = deliveryPrice;
         OrderDateTime = orderDateTime;
         DeliveryDateTime = deliveryDateTime;
         OrderStatus = orderStatus;
         Payment = payment;
         Discount = discount;
+    }
+
+    // Constructor for TableView
+    public Order(String orderID, String customerID, String orderType, LocalDate orderDateTime, LocalDate deliveryDateTime, String orderStatus, int payment) {
+        OrderID = orderID;
+        CustomerID = customerID;
+        OrderType = orderType;
+        OrderDateTime = orderDateTime;
+        DeliveryDateTime = deliveryDateTime;
+        OrderStatus = orderStatus;
+        Payment = payment;
     }
 
     public String getOrderID() {
@@ -51,12 +62,12 @@ public class Order {
         OrderType = orderType;
     }
 
-    public String getDeliveryAdress() {
-        return DeliveryAdress;
+    public String getDeliveryAddress() {
+        return DeliveryAddress;
     }
 
-    public void setDeliveryAdress(String deliveryAdress) {
-        DeliveryAdress = deliveryAdress;
+    public void setDeliveryAddress(String deliveryAdress) {
+        DeliveryAddress = deliveryAdress;
     }
 
     public int getDeliveryPrice() {

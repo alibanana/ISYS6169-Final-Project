@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2019 at 08:40 AM
+-- Generation Time: Dec 21, 2019 at 04:29 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -39,11 +39,7 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`CustomerID`, `Name`, `PhoneNo`, `Email`, `Member`) VALUES
-('CUS00001', 'Alifio Rasyid', '08112383399', 'alifio.rasyid@binus.ac.id', 1),
-('CUS00002', 'Nicholas Michael', '08112453366', 'nicholas.michael@binus.ac.id', 1),
-('CUS00003', 'Muchsin Hisyam', '08117766453', 'muchsin.hisyam@binus.ac.id', 1),
-('CUS00006', 'Jason Sianandar', '08112383399', 'jason@gmail.com', 0),
-('CUS00007', 'Bima Satria', '08112383399', 'bima@gmail.com', 0);
+('CUS00001', 'Muchsin', '08123918391', 'm@.com', 0);
 
 -- --------------------------------------------------------
 
@@ -55,7 +51,7 @@ CREATE TABLE `orders` (
   `OrderID` varchar(8) NOT NULL,
   `CustomerID` varchar(8) NOT NULL,
   `OrderType` varchar(10) NOT NULL,
-  `DeliveryAdress` text,
+  `DeliveryAddress` text,
   `DeliveryPrice` int(10) UNSIGNED DEFAULT NULL,
   `OrderDateTime` date NOT NULL,
   `DeliveryDateTime` datetime NOT NULL,
@@ -73,9 +69,39 @@ CREATE TABLE `orders` (
 CREATE TABLE `products` (
   `ProductID` varchar(8) NOT NULL,
   `ProductName` varchar(50) NOT NULL,
-  `Type` varchar(30) NOT NULL,
+  `TypeID` varchar(8) NOT NULL,
   `Price` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`ProductID`, `ProductName`, `TypeID`, `Price`) VALUES
+('PRO00001', 'Nutella Cheesecake', 'TYP00001', 27000),
+('PRO00002', 'Base Cake', 'TYP00004', 200000),
+('PRO00003', 'Base Cupcake', 'TYP00003', 15000),
+('PRO00004', 'Red Velvet', 'TYP00004', 20000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_type`
+--
+
+CREATE TABLE `product_type` (
+  `TypeID` varchar(8) NOT NULL,
+  `Type` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product_type`
+--
+
+INSERT INTO `product_type` (`TypeID`, `Type`) VALUES
+('TYP00001', 'Cheesecake'),
+('TYP00003', 'Cupcake'),
+('TYP00004', 'Cake');
 
 -- --------------------------------------------------------
 
@@ -88,7 +114,7 @@ CREATE TABLE `suborders` (
   `ProductID` varchar(8) NOT NULL,
   `Qty` int(11) NOT NULL,
   `Description` text,
-  `DescriptionPhoto` blob
+  `DescriptionPhoto` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -112,7 +138,14 @@ ALTER TABLE `orders`
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`ProductID`);
+  ADD PRIMARY KEY (`ProductID`),
+  ADD KEY `TypeID` (`TypeID`);
+
+--
+-- Indexes for table `product_type`
+--
+ALTER TABLE `product_type`
+  ADD PRIMARY KEY (`TypeID`);
 
 --
 -- Indexes for table `suborders`
@@ -130,6 +163,12 @@ ALTER TABLE `suborders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `customers` (`CustomerID`);
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`TypeID`) REFERENCES `product_type` (`TypeID`);
 
 --
 -- Constraints for table `suborders`
