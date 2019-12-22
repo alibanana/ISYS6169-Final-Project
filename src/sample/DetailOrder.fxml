@@ -196,7 +196,7 @@
             <TextField fx:id="productPrice" editable="false" layoutX="20.0" layoutY="121.0" prefHeight="31.0" prefWidth="277.0" />
             <TextField fx:id="qty" layoutX="20.0" layoutY="197.0" prefHeight="31.0" prefWidth="277.0" />
             <TextArea fx:id="productDescription" layoutX="20.0" layoutY="280.0" prefHeight="334.0" prefWidth="277.0" />
-            <Button fx:id="addItemButton" layoutX="17.0" layoutY="701.0" mnemonicParsing="false" onAction="#addItemClicked" prefHeight="31.0" prefWidth="277.0" style="-fx-background-color: #00ab66;" text="+ Add Item" textFill="WHITE" />
+            <Button fx:id="addItemButton" layoutX="17.0" layoutY="701.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="277.0" style="-fx-background-color: #00ab66;" text="+ Add Item" textFill="WHITE" />
             <Button fx:id="addPhotoButton" layoutX="164.0" layoutY="627.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="132.0" style="-fx-background-color: #00ab66;" text="+ Add Photo" textFill="WHITE" />
             <Label layoutX="20.0" layoutY="16.0" prefHeight="27.0" prefWidth="116.0" text="Product Name">
                <font>

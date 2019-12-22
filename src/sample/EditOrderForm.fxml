@@ -22,7 +22,7 @@
       </AnchorPane>
       <AnchorPane layoutX="14.0" layoutY="84.0" prefHeight="201.0" prefWidth="624.0" style="-fx-background-color: #f4f4f4; -fx-background-radius: 10;">
          <children>
-            <TextField fx:id="customerName" layoutX="167.0" layoutY="60.0" prefHeight="31.0" prefWidth="343.0" />
+            <TextField fx:id="customerName" layoutX="167.0" layoutY="60.0" onAction="#CustomerNameAction" prefHeight="31.0" prefWidth="343.0" />
             <Label layoutX="110.0" layoutY="65.0" text="Name" />
             <Label layoutX="110.0" layoutY="161.0" prefHeight="21.0" prefWidth="40.0" text="Email" />
             <Label layoutX="83.0" layoutY="114.0" text="Phone No" />
@@ -45,7 +45,7 @@
             </Label>
             <Label layoutX="101.0" layoutY="118.0" prefHeight="21.0" prefWidth="58.0" text="Delivery" />
             <Label layoutX="101.0" layoutY="139.0" prefHeight="21.0" prefWidth="58.0" text="Address" />
-            <Button fx:id="editOrderButton" layoutX="494.0" layoutY="423.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="Edit Order" textFill="WHITE" />
+            <Button fx:id="editOrderButton" layoutX="494.0" layoutY="423.0" mnemonicParsing="false" onAction="#editOrder" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="Edit Order" textFill="WHITE" />
             <TextArea fx:id="deliveryAddress" layoutX="175.0" layoutY="118.0" prefHeight="171.0" prefWidth="343.0" />
             <ComboBox fx:id="orderType" layoutX="175.0" layoutY="72.0" prefHeight="31.0" prefWidth="226.0" style="-fx-background-color: #D1D1D1;" />
             <DatePicker fx:id="deliveryDate" layoutX="175.0" layoutY="348.0" prefHeight="31.0" prefWidth="226.0" />

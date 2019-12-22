@@ -94,7 +94,7 @@
                   <TableColumn fx:id="OrdDateCol" prefWidth="113.0" resizable="false" text="Order Date" />
                   <TableColumn fx:id="OrdDeliveryDateCol" prefWidth="128.0" resizable="false" text="Delivery Date" />
                   <TableColumn fx:id="OrdStatusCol" prefWidth="103.0" resizable="false" text="Status" />
-                  <TableColumn fx:id="OrdTotalCol" prefWidth="151.0" resizable="false" text="Total" />
+                  <TableColumn fx:id="OrdBalanceDueCol" prefWidth="151.0" resizable="false" text="Balance Due" />
               </columns>
             </TableView>
             <Label layoutX="29.0" layoutY="23.0" text="Orders">

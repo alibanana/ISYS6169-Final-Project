@@ -66,7 +66,7 @@ public class Controller implements Initializable {
     @FXML private TableColumn<Order, String> OrdDateCol;
     @FXML private TableColumn<Order, String> OrdDeliveryDateCol;
     @FXML private TableColumn<Order, String> OrdStatusCol;
-    @FXML private TableColumn<Order, Integer> OrdTotalCol;
+    @FXML private TableColumn<Order, Integer> OrdBalanceDueCol;
     ObservableList<Order> OrderList = FXCollections.observableArrayList();
 
     // Customer Pane Members
@@ -276,6 +276,14 @@ public class Controller implements Initializable {
     public void DeleteOrderClicked(){
         System.out.println("Delete Order Clicked");
         new FadeIn(DeleteOrderLabel).setSpeed(5).play();
+
+        // Gets Selected Row
+        Order selectedOrder = OrderTable.getSelectionModel().getSelectedItem();
+        if(!(selectedOrder == null)){
+            String id = selectedOrder.getOrderID();
+            Database.deleteOrder(id);
+            RefreshCustomerTable();
+        }
     }
 
     @FXML
@@ -285,15 +293,20 @@ public class Controller implements Initializable {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("DetailOrder.fxml"));
-        Parent OrderFormParent = loader.load();
+        Parent DetailOrderParent = loader.load();
 
         Stage stage = new Stage(); // New stage (window)
+
+        // Passing data to CustomerFormController
+        DetailOrderController controller = loader.getController();
+        Order selectedOrder = OrderTable.getSelectionModel().getSelectedItem();
+        controller.initData(this, selectedOrder, ProductList);
 
         // Setting the stage up
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
         stage.setTitle("Details Order Form");
-        stage.setScene(new Scene(OrderFormParent));
+        stage.setScene(new Scene(DetailOrderParent));
         stage.showAndWait();
     }
 
@@ -304,20 +317,25 @@ public class Controller implements Initializable {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("EditOrderForm.fxml"));
-        Parent OrderFormParent = loader.load();
+        Parent EditOrderFormParent = loader.load();
 
         Stage stage = new Stage(); // New stage (window)
+
+        // Passing data to CustomerFormController
+        EditOrderFormController controller = loader.getController();
+        Order selectedOrder = OrderTable.getSelectionModel().getSelectedItem();
+        controller.initData(this, selectedOrder, CustomerList);
 
         // Setting the stage up
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
         stage.setTitle("Edit Order Form");
-        stage.setScene(new Scene(OrderFormParent));
+        stage.setScene(new Scene(EditOrderFormParent));
         stage.showAndWait();
     }
 
     @FXML
-    public void  RefreshOrderList() throws NullPointerException{
+    public void RefreshOrderList() throws NullPointerException{
         OrderList.clear();
         String filter;
         try {
@@ -340,7 +358,7 @@ public class Controller implements Initializable {
 
             int colNo = 1;
             while(rs.next()) {
-                OrderList.add(new Order(rs.getString("OrderID"), rs.getString("CustomerID"),
+                OrderList.add(new Order(rs.getString("OrderID"), Database.getCustomer(rs.getString("CustomerID")),
                         rs.getString("OrderType"), rs.getDate("OrderDateTime").toLocalDate(), rs.getDate("DeliveryDateTime").toLocalDate(), rs.getString("OrderStatus"), rs.getInt("Payment")));
                 colNo++;
             }
@@ -356,7 +374,7 @@ public class Controller implements Initializable {
         OrdDateCol.setCellValueFactory(new PropertyValueFactory<>("OrderDateTime"));
         OrdDeliveryDateCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryDateTime"));
         OrdStatusCol.setCellValueFactory(new PropertyValueFactory<>("OrderStatus"));
-        OrdTotalCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
+        OrdBalanceDueCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
         OrderTable.setItems(OrderList);
     }
 
@@ -369,7 +387,7 @@ public class Controller implements Initializable {
         OrdDateCol.setCellValueFactory(new PropertyValueFactory<>("OrderDateTime"));
         OrdDeliveryDateCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryDateTime"));
         OrdStatusCol.setCellValueFactory(new PropertyValueFactory<>("OrderStatus"));
-        OrdTotalCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
+        OrdBalanceDueCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
         OrderTable.setItems(OrderList);
     }
 

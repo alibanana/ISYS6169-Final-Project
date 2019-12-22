@@ -79,6 +79,17 @@ public class Database {
         }
     }
 
+    public static String getCustomer(String CustomerID) throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT * FROM customers WHERE CustomerID = '%s'";
+        sql = String.format(sql, CustomerID);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getString("Name");
+    }
+
     public static void addProductType(String TypeID, String Type){
         try {
             conn = connect();
@@ -320,6 +331,32 @@ public class Database {
 
             System.out.println(String.format("Added %s to sub-orders", OrderID));
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteOrder(String id){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = String.format("DELETE FROM orders where OrderID = '%s'", id);
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, LocalDate OrderDate, LocalDate DeliveryDate){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = "UPDATE orders SET CustomerName='%s', CustomerPhone='%s', CustomerEmail='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDate='%s' WHERE OrderID='%s'";
+            sql = String.format(sql, CustomerID, OrderType, DeliveryAddress, OrderDate, DeliveryDate, OrderID);
+            stmt.execute(sql);
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

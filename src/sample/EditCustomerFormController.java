@@ -17,8 +17,7 @@ public class EditCustomerFormController implements Initializable {
     private Customer customer;
     private boolean memberStatus;
 
-    @FXML
-    private TextField customerName;
+    @FXML private TextField customerName;
     @FXML private TextField customerPhone;
     @FXML private TextField customerEmail;
     @FXML private ComboBox customerStatus;

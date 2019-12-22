@@ -207,9 +207,11 @@ public class SubOrderFormController implements Initializable {
         for (SubOrder suborder : SubOrderList) {
             sTotal += suborder.getQty() * suborder.getPrice();
         }
+        int gTotal = sTotal + currentOrder.getDeliveryPrice() - currentOrder.getDiscount();
 
-        // Set Labels;
+                // Set Labels;
         subTotal.setText(String.valueOf(sTotal));
-        grandTotal.setText(String.valueOf(sTotal + currentOrder.getDeliveryPrice() - currentOrder.getDiscount()));
+        grandTotal.setText(String.valueOf(gTotal));
+        balanceDue.setText(String.valueOf(gTotal));
     }
 }
