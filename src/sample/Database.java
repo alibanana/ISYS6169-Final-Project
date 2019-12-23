@@ -361,6 +361,27 @@ public class Database {
         }
     }
 
+    public static ResultSet getWeeklySales(String dateStart, String dateEnd){
+        try{
+            conn = connect();
+
+//            get weekly sum based on the Payment column of orders
+            String sql = "SELECT SUM(Payment) AS revenue," +
+                    " CONCAT( STR_TO_DATE(CONCAT(YEARWEEK(OrderDateTime, 2), ' Sunday'), '%X%V %W'), '-', STR_TO_DATE(CONCAT(YEARWEEK(OrderDateTime, 2), ' Sunday'), '%X%V %W') + INTERVAL 6 DAY ) AS week FROM orders " +
+                    "WHERE OrderDateTime BETWEEN \'" + dateStart + "\' and \'" + dateEnd +"\' GROUP BY YEARWEEK(OrderDateTime, 2) ORDER BY YEARWEEK(OrderDateTime, 2);";
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+//          return the entire result set to be processed
+            return rs;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 //    Get weekly sum
 //    SELECT
 //    SUM(nb_like) AS nb_like,

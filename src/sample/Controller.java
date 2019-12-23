@@ -8,6 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.StackedAreaChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -50,6 +53,7 @@ public class Controller implements Initializable {
     // Home Pane Members
     @FXML private DatePicker dateStart;
     @FXML private DatePicker dateEnd;
+    @FXML private BarChart weeklyRevenueChart;
 
     // Order Pane Members
     @FXML private Label NewOrderLabel;
@@ -132,6 +136,9 @@ public class Controller implements Initializable {
         // Refresh Observable Lists
         RefreshCustomerList();
         RefreshProductList();
+
+        // Remove bug caused by animation
+        weeklyRevenueChart.getXAxis().setAnimated(false);
     }
 
     public ArrayList<String> getProductTypeList(){
@@ -232,13 +239,37 @@ public class Controller implements Initializable {
     @FXML
     public void filterButtonClicked(){
         System.out.println("FilterButton clicked on MainScreen.fxml");
+        weeklyRevenueChart.getData().clear();
         try {
 //            Get dates from DatePickers
             LocalDate startdate = dateStart.getValue();
             LocalDate enddate = dateEnd.getValue();
-            System.out.println(startdate.toString() + enddate.toString());
+
+//            get result set from database
+            ResultSet result = Database.getWeeklySales(startdate.toString(), enddate.toString());
+
+            XYChart.Series set1 = new XYChart.Series<String,Integer>();
+            set1.setName("Weekly Revenue");
+
+//            put results into a series
+            while(result.next()){
+                String week = result.getString("week");
+                System.out.println(week);
+                int data = result.getInt("revenue");
+                System.out.println(data);
+                set1.getData().add(new XYChart.Data(week, data));
+            }
+
+//            insert all series into the bar graph
+            weeklyRevenueChart.getData().addAll(set1);
+
+//            System.out.println(result);
+
+
         } catch (NullPointerException e){
             System.out.println("Date not selected");
+        } catch (SQLException e) {
+            System.out.println("broke");e.printStackTrace();
         }
     }
 
