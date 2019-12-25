@@ -139,6 +139,8 @@ public class Controller implements Initializable {
 
         // Remove bug caused by animation
         weeklyRevenueChart.getXAxis().setAnimated(false);
+
+        initGraph();
     }
 
     public ArrayList<String> getProductTypeList(){
@@ -219,22 +221,17 @@ public class Controller implements Initializable {
         RefreshProductTable();
     }
 
-    // Home Pane Functions
-    // @FXML
-    // public void TestAction(){
-    //     test2.setText(test.getText());
-    // }
+    @FXML
+    public void initGraph(){
+        System.out.println("initializing graph");
+        weeklyRevenueChart.getData().clear();
 
-    // @FXML
-    // public void ButtonClicked() {
-    //     FileChooser fc = new FileChooser();
-    //     File selectedFile = fc.showOpenDialog(null);
-    //     if (selectedFile != null){
-    //         System.out.println(selectedFile.getAbsolutePath());
-    //     } else {
-    //         System.out.println("File is not valid");
-    //     }
-    // }
+        ResultSet result = Database.getWeeklySales(Database.getFirstSale(), Database.getLastSale());
+
+        insertIntoGraph(result);
+
+
+    }
 
     @FXML
     public void filterButtonClicked(){
@@ -248,29 +245,31 @@ public class Controller implements Initializable {
 //            get result set from database
             ResultSet result = Database.getWeeklySales(startdate.toString(), enddate.toString());
 
-            XYChart.Series set1 = new XYChart.Series<String,Integer>();
-            set1.setName("Weekly Revenue");
-
-//            put results into a series
-            while(result.next()){
-                String week = result.getString("week");
-                System.out.println(week);
-                int data = result.getInt("revenue");
-                System.out.println(data);
-                set1.getData().add(new XYChart.Data(week, data));
-            }
-
-//            insert all series into the bar graph
-            weeklyRevenueChart.getData().addAll(set1);
-
-//            System.out.println(result);
-
+            insertIntoGraph(result);
 
         } catch (NullPointerException e){
             System.out.println("Date not selected");
-        } catch (SQLException e) {
-            System.out.println("broke");e.printStackTrace();
         }
+
+    }
+
+    @FXML
+    public void insertIntoGraph(ResultSet rs) {
+        XYChart.Series set1 = new XYChart.Series<String, Integer>();
+        set1.setName("Weekly Revenue");
+        try {
+            while (rs.next()) {
+                String week = rs.getString("week");
+                System.out.println(week);
+                int data = rs.getInt("revenue");
+                System.out.println(data);
+                set1.getData().add(new XYChart.Data(week, data));
+            }
+            weeklyRevenueChart.getData().addAll(set1);
+
+        } catch (SQLException e){
+                e.printStackTrace();
+            }
     }
 
     // Order Pane Functions

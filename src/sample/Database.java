@@ -382,6 +382,42 @@ public class Database {
         }
     }
 
+    public static String getFirstSale(){
+        try{
+            conn = connect();
+
+            String sql = "SELECT OrderDateTime from orders ORDER BY OrderDateTime ASC LIMIT 1";
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            rs.next();
+
+            return rs.getString("OrderDateTime");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String getLastSale(){
+        try{
+            conn = connect();
+
+            String sql = "SELECT OrderDateTime from orders ORDER BY OrderDateTime DESC LIMIT 1";
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            rs.next();
+
+            return rs.getString("OrderDateTime");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 //    Get weekly sum
 //    SELECT
 //    SUM(nb_like) AS nb_like,
