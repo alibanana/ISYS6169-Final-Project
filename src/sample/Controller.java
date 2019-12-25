@@ -54,6 +54,7 @@ public class Controller implements Initializable {
     @FXML private DatePicker dateStart;
     @FXML private DatePicker dateEnd;
     @FXML private BarChart weeklyRevenueChart;
+    @FXML private ChoiceBox<String> bgModePicker;
 
     // Order Pane Members
     @FXML private Label NewOrderLabel;
@@ -105,6 +106,10 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        // Initialize Home Pane
+        bgModePicker.getItems().addAll("Weekly","Monthly");
+        bgModePicker.setValue("Weekly");
+
         // Initialize Order Pane
         NewOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         DeleteOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
@@ -140,7 +145,7 @@ public class Controller implements Initializable {
         // Remove bug caused by animation
         weeklyRevenueChart.getXAxis().setAnimated(false);
 
-        initGraph();
+        getAllWeeklyGraph();
     }
 
     public ArrayList<String> getProductTypeList(){
@@ -221,14 +226,29 @@ public class Controller implements Initializable {
         RefreshProductTable();
     }
 
+    // Home Page Functions
     @FXML
-    public void initGraph(){
-        System.out.println("initializing graph");
+    public void getAllWeeklyGraph(){
+        System.out.println("initializing graph weekly");
         weeklyRevenueChart.getData().clear();
 
+        // get a weekly sales result set from the first and last sales
         ResultSet result = Database.getWeeklySales(Database.getFirstSale(), Database.getLastSale());
 
-        insertIntoGraph(result);
+        insertIntoGraph(result, "Weekly graph");
+
+
+    }
+
+    @FXML
+    public void getAllMonthlyGraph(){
+        System.out.println("initializing graph monthly");
+        weeklyRevenueChart.getData().clear();
+
+        // get a monthly sales result set from the first and last sales
+        ResultSet result = Database.getMonthlySales(Database.getFirstSale(), Database.getLastSale());
+
+        insertIntoGraph(result, "Monthly graph");
 
 
     }
@@ -237,29 +257,53 @@ public class Controller implements Initializable {
     public void filterButtonClicked(){
         System.out.println("FilterButton clicked on MainScreen.fxml");
         weeklyRevenueChart.getData().clear();
-        try {
+        String mode = bgModePicker.getValue();
+
+        // checks what mode the graph should be in
+        if (mode.equals("Weekly")) {
+            System.out.println("mode = Weekly");
+            try {
 //            Get dates from DatePickers
-            LocalDate startdate = dateStart.getValue();
-            LocalDate enddate = dateEnd.getValue();
+                LocalDate startdate = dateStart.getValue();
+                LocalDate enddate = dateEnd.getValue();
 
 //            get result set from database
-            ResultSet result = Database.getWeeklySales(startdate.toString(), enddate.toString());
+                ResultSet result = Database.getWeeklySales(startdate.toString(), enddate.toString());
 
-            insertIntoGraph(result);
+                insertIntoGraph(result, "Weekly Filtered Graph");
 
-        } catch (NullPointerException e){
-            System.out.println("Date not selected");
+            } catch (NullPointerException e) {
+                System.out.println("Date not selected");
+                getAllWeeklyGraph();
+            }
+        } else{
+            System.out.println("mode = Monthly");
+
+            try {
+//            Get dates from DatePickers
+                LocalDate startdate = dateStart.getValue();
+                LocalDate enddate = dateEnd.getValue();
+
+//            get result set from database
+                ResultSet result = Database.getMonthlySales(startdate.toString(), enddate.toString());
+
+                insertIntoGraph(result, "Monthly Filtered Graph");
+
+            } catch (NullPointerException e) {
+                System.out.println("Date not selected");
+                getAllMonthlyGraph();
+            }
         }
 
     }
 
     @FXML
-    public void insertIntoGraph(ResultSet rs) {
+    public void insertIntoGraph(ResultSet rs, String mode) {
         XYChart.Series set1 = new XYChart.Series<String, Integer>();
-        set1.setName("Weekly Revenue");
+        set1.setName(mode);
         try {
             while (rs.next()) {
-                String week = rs.getString("week");
+                String week = rs.getString("t");
                 System.out.println(week);
                 int data = rs.getInt("revenue");
                 System.out.println(data);

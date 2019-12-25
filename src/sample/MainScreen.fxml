@@ -4,6 +4,7 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <AnchorPane prefHeight="700.0" prefWidth="166.0" style="-fx-background-color: #ffffff;">
          <children>
@@ -52,7 +53,7 @@
       </AnchorPane>
       <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
          <children>
-            <Label layoutX="437.0" layoutY="38.0" text="Weekly Revenue">
+            <Label layoutX="437.0" layoutY="38.0" text="Revenue Graph">
                <font>
                   <Font name="Arial Bold" size="26.0" />
                </font>
@@ -74,7 +75,7 @@
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="filterButton" layoutX="459.0" layoutY="619.0" mnemonicParsing="false" onAction="#filterButtonClicked" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="Filter" textFill="WHITE" />
+            <Button fx:id="filterButton" layoutX="459.0" layoutY="619.0" mnemonicParsing="false" onAction="#filterButtonClicked" prefHeight="39.0" prefWidth="150.0" style="-fx-background-color: #00ab66;" text="Filter" textFill="WHITE" />
             <BarChart fx:id="weeklyRevenueChart" layoutX="127.0" layoutY="105.0" prefHeight="400.0" prefWidth="827.0">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
@@ -83,6 +84,7 @@
                 <NumberAxis side="LEFT" />
               </yAxis>
             </BarChart>
+            <ChoiceBox fx:id="bgModePicker" layoutX="459.0" layoutY="566.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034" visible="false">

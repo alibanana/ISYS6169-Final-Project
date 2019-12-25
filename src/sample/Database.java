@@ -367,8 +367,27 @@ public class Database {
 
 //            get weekly sum based on the Payment column of orders
             String sql = "SELECT SUM(Payment) AS revenue," +
-                    " CONCAT( STR_TO_DATE(CONCAT(YEARWEEK(OrderDateTime, 2), ' Sunday'), '%X%V %W'), '-', STR_TO_DATE(CONCAT(YEARWEEK(OrderDateTime, 2), ' Sunday'), '%X%V %W') + INTERVAL 6 DAY ) AS week FROM orders " +
+                    " CONCAT( STR_TO_DATE(CONCAT(YEARWEEK(OrderDateTime, 2), ' Sunday'), '%X%V %W'), ' to ', STR_TO_DATE(CONCAT(YEARWEEK(OrderDateTime, 2), ' Sunday'), '%X%V %W') + INTERVAL 6 DAY ) AS t FROM orders " +
                     "WHERE OrderDateTime BETWEEN \'" + dateStart + "\' and \'" + dateEnd +"\' GROUP BY YEARWEEK(OrderDateTime, 2) ORDER BY YEARWEEK(OrderDateTime, 2);";
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+//          return the entire result set to be processed
+            return rs;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ResultSet getMonthlySales(String dateStart, String dateEnd){
+        try{
+            conn = connect();
+
+//            get weekly sum based on the Payment column of orders
+            String sql = "SELECT MONTHNAME(OrderDateTime) AS t, SUM(Payment) AS revenue FROM orders WHERE OrderDateTime BETWEEN '"+dateStart+"' and '"+dateEnd+"' GROUP BY YEAR(OrderDateTime), MONTH(OrderDateTime)";
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
@@ -417,17 +436,4 @@ public class Database {
             return null;
         }
     }
-
-//    Get weekly sum
-//    SELECT
-//    SUM(nb_like) AS nb_like,
-//    CONCAT
-//            (
-//                    STR_TO_DATE(CONCAT(YEARWEEK(date, 2), ' Sunday'), '%X%V %W'),
-//            '-',
-//    STR_TO_DATE(CONCAT(YEARWEEK(date, 2), ' Sunday'), '%X%V %W') + INTERVAL 6 DAY
-//  ) AS week
-//    FROM fb_stats
-//    GROUP BY YEARWEEK(date, 2)
-//    ORDER BY YEARWEEK(date, 2);
 }
