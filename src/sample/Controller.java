@@ -107,7 +107,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb){
         // Initialize Home Pane
-        bgModePicker.getItems().addAll("Weekly","Monthly");
+        bgModePicker.getItems().addAll("Weekly","Monthly", "Yearly");
         bgModePicker.setValue("Weekly");
 
         // Initialize Order Pane
@@ -254,6 +254,19 @@ public class Controller implements Initializable {
     }
 
     @FXML
+    public void getAllYearlyGraph(){
+        System.out.println("initializing graph yearly");
+        weeklyRevenueChart.getData().clear();
+
+        // get a monthly sales result set from the first and last sales
+        ResultSet result = Database.getYearlySales(Database.getFirstSale(), Database.getLastSale());
+
+        insertIntoGraph(result, "Yearly graph");
+
+
+    }
+
+    @FXML
     public void filterButtonClicked(){
         System.out.println("FilterButton clicked on MainScreen.fxml");
         weeklyRevenueChart.getData().clear();
@@ -276,7 +289,7 @@ public class Controller implements Initializable {
                 System.out.println("Date not selected");
                 getAllWeeklyGraph();
             }
-        } else{
+        } else if(mode.equals("Monthly")){
             System.out.println("mode = Monthly");
 
             try {
@@ -292,6 +305,23 @@ public class Controller implements Initializable {
             } catch (NullPointerException e) {
                 System.out.println("Date not selected");
                 getAllMonthlyGraph();
+            }
+        } else{
+            System.out.println("mode = Yearly");
+
+            try {
+//            Get dates from DatePickers
+                LocalDate startdate = dateStart.getValue();
+                LocalDate enddate = dateEnd.getValue();
+
+//            get result set from database
+                ResultSet result = Database.getYearlySales(startdate.toString(), enddate.toString());
+
+                insertIntoGraph(result, "Yearly Graph");
+
+            } catch (NullPointerException e) {
+                System.out.println("Date not selected");
+                getAllYearlyGraph();
             }
         }
 

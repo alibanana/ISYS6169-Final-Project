@@ -387,7 +387,26 @@ public class Database {
             conn = connect();
 
 //            get weekly sum based on the Payment column of orders
-            String sql = "SELECT MONTHNAME(OrderDateTime) AS t, SUM(Payment) AS revenue FROM orders WHERE OrderDateTime BETWEEN '"+dateStart+"' and '"+dateEnd+"' GROUP BY YEAR(OrderDateTime), MONTH(OrderDateTime)";
+            String sql = "SELECT CONCAT( MONTHNAME(OrderDateTime), ' ', YEAR(OrderDateTime)) AS t, SUM(Payment) AS revenue FROM orders WHERE OrderDateTime BETWEEN '"+dateStart+"' and '"+dateEnd+"' GROUP BY YEAR(OrderDateTime), MONTH(OrderDateTime)";
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+//          return the entire result set to be processed
+            return rs;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ResultSet getYearlySales(String dateStart, String dateEnd){
+        try{
+            conn = connect();
+
+//            get weekly sum based on the Payment column of orders
+            String sql = "SELECT YEAR(OrderDateTime) AS t, SUM(Payment) AS revenue FROM orders WHERE OrderDateTime BETWEEN '"+dateStart+"' and '"+dateEnd+"' GROUP BY YEAR(OrderDateTime)";
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
