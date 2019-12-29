@@ -157,8 +157,13 @@ public class SubOrderFormController implements Initializable {
         String Description;
         String DescriptionPhoto = "";
 
+        // Check Order Status
+        if ((currentOrder.getDeliveryDate().compareTo(LocalDate.now()) < 0) && (balanceDue.getText().equals("0"))) {
+            currentOrder.setOrderStatus("Completed");
+        }
+
         // SQL queries
-        Database.addOrder(currentOrder.getOrderID(), currentCustomer.getCustomerID(), currentOrder.getOrderType(), currentOrder.getDeliveryAddress(), currentOrder.getDeliveryPrice(), currentOrder.getOrderDateTime(), currentOrder.getDeliveryDateTime(), currentOrder.getOrderStatus(), Integer.parseInt(paid.getText()), currentOrder.getDiscount());
+        Database.addOrder(currentOrder.getOrderID(), currentCustomer.getCustomerID(), currentOrder.getOrderType(), currentOrder.getDeliveryAddress(), currentOrder.getDeliveryPrice(), currentOrder.getOrderDate(), currentOrder.getDeliveryDate(), currentOrder.getOrderStatus(), Integer.parseInt(paid.getText()), currentOrder.getDiscount());
 
         for (SubOrder subOrder: SubOrderList){
             OrderID = currentOrder.getOrderID();

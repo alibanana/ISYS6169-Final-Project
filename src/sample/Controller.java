@@ -463,7 +463,9 @@ public class Controller implements Initializable {
             int colNo = 1;
             while(rs.next()) {
                 OrderList.add(new Order(rs.getString("OrderID"), Database.getCustomer(rs.getString("CustomerID")),
-                        rs.getString("OrderType"), rs.getDate("OrderDateTime").toLocalDate(), rs.getDate("DeliveryDateTime").toLocalDate(), rs.getString("OrderStatus"), rs.getInt("Payment")));
+                        rs.getString("OrderType"), rs.getString("DeliveryAddress"), rs.getInt("DeliveryPrice"),
+                        rs.getDate("OrderDate").toLocalDate(), rs.getDate("DeliveryDate").toLocalDate(),
+                        rs.getString("OrderStatus"), rs.getInt("Payment"), rs.getInt("Discount")));
                 colNo++;
             }
 
@@ -472,24 +474,16 @@ public class Controller implements Initializable {
         } catch (SQLException e) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
         }
-        OrdIDCol.setCellValueFactory(new PropertyValueFactory<>("OrderID"));
-        OrdCustCol.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
-        OrdTypeCol.setCellValueFactory(new PropertyValueFactory<>("OrderType"));
-        OrdDateCol.setCellValueFactory(new PropertyValueFactory<>("OrderDateTime"));
-        OrdDeliveryDateCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryDateTime"));
-        OrdStatusCol.setCellValueFactory(new PropertyValueFactory<>("OrderStatus"));
-        OrdBalanceDueCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
-        OrderTable.setItems(OrderList);
     }
 
     @FXML
     public void RefreshOrderTable() throws NullPointerException{
         RefreshOrderList();
         OrdIDCol.setCellValueFactory(new PropertyValueFactory<>("OrderID"));
-        OrdCustCol.setCellValueFactory(new PropertyValueFactory<>("CustomerID"));
+        OrdCustCol.setCellValueFactory(new PropertyValueFactory<>("CustomerName"));
         OrdTypeCol.setCellValueFactory(new PropertyValueFactory<>("OrderType"));
-        OrdDateCol.setCellValueFactory(new PropertyValueFactory<>("OrderDateTime"));
-        OrdDeliveryDateCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryDateTime"));
+        OrdDateCol.setCellValueFactory(new PropertyValueFactory<>("OrderDate"));
+        OrdDeliveryDateCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryDate"));
         OrdStatusCol.setCellValueFactory(new PropertyValueFactory<>("OrderStatus"));
         OrdBalanceDueCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
         OrderTable.setItems(OrderList);

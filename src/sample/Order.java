@@ -4,36 +4,36 @@ import java.time.LocalDate;
 
 public class Order {
     private String OrderID;
-    private String CustomerID;
+    private String CustomerName;
     private String OrderType;
     private String DeliveryAddress;
     private int DeliveryPrice;
-    private LocalDate OrderDateTime;
-    private LocalDate DeliveryDateTime;
+    private LocalDate OrderDate;
+    private LocalDate DeliveryDate;
     private String OrderStatus;
     private int Payment;
     private int Discount;
 
-    public Order(String orderID, String customerID, String orderType, String deliveryAddress, int deliveryPrice, LocalDate orderDateTime, LocalDate deliveryDateTime, String orderStatus, int payment, int discount) {
+    public Order(String orderID, String customerName, String orderType, String deliveryAddress, int deliveryPrice, LocalDate orderDate, LocalDate deliveryDate, String orderStatus, int payment, int discount) {
         OrderID = orderID;
-        CustomerID = customerID;
+        CustomerName = customerName;
         OrderType = orderType;
         DeliveryAddress = deliveryAddress;
         DeliveryPrice = deliveryPrice;
-        OrderDateTime = orderDateTime;
-        DeliveryDateTime = deliveryDateTime;
+        OrderDate = orderDate;
+        DeliveryDate = deliveryDate;
         OrderStatus = orderStatus;
         Payment = payment;
         Discount = discount;
     }
 
     // Constructor for TableView
-    public Order(String orderID, String customerID, String orderType, LocalDate orderDateTime, LocalDate deliveryDateTime, String orderStatus, int payment) {
+    public Order(String orderID, String customerName, String orderType, LocalDate orderDate, LocalDate deliveryDate, String orderStatus, int payment) {
         OrderID = orderID;
-        CustomerID = customerID;
+        CustomerName = customerName;
         OrderType = orderType;
-        OrderDateTime = orderDateTime;
-        DeliveryDateTime = deliveryDateTime;
+        OrderDate = orderDate;
+        DeliveryDate = deliveryDate;
         OrderStatus = orderStatus;
         Payment = payment;
     }
@@ -46,12 +46,12 @@ public class Order {
         OrderID = orderID;
     }
 
-    public String getCustomerID() {
-        return CustomerID;
+    public String getCustomerName() {
+        return CustomerName;
     }
 
-    public void setCustomerID(String customerID) {
-        CustomerID = customerID;
+    public void setCustomerName(String customerName) {
+        CustomerName = customerName;
     }
 
     public String getOrderType() {
@@ -78,20 +78,20 @@ public class Order {
         DeliveryPrice = deliveryPrice;
     }
 
-    public LocalDate getOrderDateTime() {
-        return OrderDateTime;
+    public LocalDate getOrderDate() {
+        return OrderDate;
     }
 
-    public void setOrderDateTime(LocalDate orderDateTime) {
-        OrderDateTime = orderDateTime;
+    public void setOrderDate(LocalDate orderDate) {
+        OrderDate = orderDate;
     }
 
-    public LocalDate getDeliveryDateTime() {
-        return DeliveryDateTime;
+    public LocalDate getDeliveryDate() {
+        return DeliveryDate;
     }
 
-    public void setDeliveryDateTime(LocalDate deliveryDateTime) {
-        DeliveryDateTime = deliveryDateTime;
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        DeliveryDate = deliveryDate;
     }
 
     public String getOrderStatus() {

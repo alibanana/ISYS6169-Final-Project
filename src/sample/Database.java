@@ -10,8 +10,8 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/db_databasesystem";
     static final String USER = "root";
 //    passwordnya Aleep
-//    static final String PASS = "2201798295Binus";
-    static final String PASS = "";
+    static final String PASS = "2201798295Binus";
+//    static final String PASS = "";
     static Connection conn;
     static Statement stmt;
     static ResultSet rs;
@@ -310,7 +310,7 @@ public class Database {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "INSERT INTO orders(OrderID, CustomerID, OrderType, DeliveryAddress, DeliveryPrice, OrderDateTime, DeliveryDateTime, OrderStatus, Payment, Discount) VALUE('%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%d', '%d')";
+            String sql = "INSERT INTO orders(OrderID, CustomerID, OrderType, DeliveryAddress, DeliveryPrice, OrderDate, DeliveryDate, OrderStatus, Payment, Discount) VALUE('%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%d', '%d')";
             sql = String.format(sql, OrderID, CustomerID, OrderType, DeliveryAddress, DeliveryPrice, OrderDate, DeliveryDate, OrderStatus, Payment, Discount);
             stmt.execute(sql);
 
@@ -352,7 +352,7 @@ public class Database {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "UPDATE orders SET CustomerName='%s', CustomerPhone='%s', CustomerEmail='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDate='%s' WHERE OrderID='%s'";
+            String sql = "UPDATE orders SET CustomerID='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDate='%s' WHERE OrderID='%s'";
             sql = String.format(sql, CustomerID, OrderType, DeliveryAddress, OrderDate, DeliveryDate, OrderID);
             stmt.execute(sql);
 
@@ -367,8 +367,8 @@ public class Database {
 
 //            get weekly sum based on the Payment column of orders
             String sql = "SELECT SUM(Payment) AS revenue," +
-                    " CONCAT( STR_TO_DATE(CONCAT(YEARWEEK(OrderDateTime, 2), ' Sunday'), '%X%V %W'), ' to ', STR_TO_DATE(CONCAT(YEARWEEK(OrderDateTime, 2), ' Sunday'), '%X%V %W') + INTERVAL 6 DAY ) AS t FROM orders " +
-                    "WHERE OrderDateTime BETWEEN \'" + dateStart + "\' and \'" + dateEnd +"\' GROUP BY YEARWEEK(OrderDateTime, 2) ORDER BY YEARWEEK(OrderDateTime, 2);";
+                    " CONCAT( STR_TO_DATE(CONCAT(YEARWEEK(OrderDate, 2), ' Sunday'), '%X%V %W'), ' to ', STR_TO_DATE(CONCAT(YEARWEEK(OrderDate, 2), ' Sunday'), '%X%V %W') + INTERVAL 6 DAY ) AS t FROM orders " +
+                    "WHERE OrderDate BETWEEN \'" + dateStart + "\' and \'" + dateEnd +"\' GROUP BY YEARWEEK(OrderDate, 2) ORDER BY YEARWEEK(OrderDate, 2);";
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
@@ -387,7 +387,7 @@ public class Database {
             conn = connect();
 
 //            get weekly sum based on the Payment column of orders
-            String sql = "SELECT CONCAT( MONTHNAME(OrderDateTime), ' ', YEAR(OrderDateTime)) AS t, SUM(Payment) AS revenue FROM orders WHERE OrderDateTime BETWEEN '"+dateStart+"' and '"+dateEnd+"' GROUP BY YEAR(OrderDateTime), MONTH(OrderDateTime)";
+            String sql = "SELECT CONCAT( MONTHNAME(OrderDate), ' ', YEAR(OrderDate)) AS t, SUM(Payment) AS revenue FROM orders WHERE OrderDate BETWEEN '"+dateStart+"' and '"+dateEnd+"' GROUP BY YEAR(OrderDate), MONTH(OrderDate)";
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
@@ -406,7 +406,7 @@ public class Database {
             conn = connect();
 
 //            get weekly sum based on the Payment column of orders
-            String sql = "SELECT YEAR(OrderDateTime) AS t, SUM(Payment) AS revenue FROM orders WHERE OrderDateTime BETWEEN '"+dateStart+"' and '"+dateEnd+"' GROUP BY YEAR(OrderDateTime)";
+            String sql = "SELECT YEAR(OrderDate) AS t, SUM(Payment) AS revenue FROM orders WHERE OrderDate BETWEEN '"+dateStart+"' and '"+dateEnd+"' GROUP BY YEAR(OrderDate)";
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
@@ -424,13 +424,13 @@ public class Database {
         try{
             conn = connect();
 
-            String sql = "SELECT OrderDateTime from orders ORDER BY OrderDateTime ASC LIMIT 1";
+            String sql = "SELECT OrderDate from orders ORDER BY OrderDate ASC LIMIT 1";
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             rs.next();
 
-            return rs.getString("OrderDateTime");
+            return rs.getString("OrderDate");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -442,13 +442,13 @@ public class Database {
         try{
             conn = connect();
 
-            String sql = "SELECT OrderDateTime from orders ORDER BY OrderDateTime DESC LIMIT 1";
+            String sql = "SELECT OrderDate from orders ORDER BY OrderDate DESC LIMIT 1";
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             rs.next();
 
-            return rs.getString("OrderDateTime");
+            return rs.getString("OrderDate");
 
         } catch (SQLException e) {
             e.printStackTrace();

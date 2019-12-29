@@ -42,18 +42,23 @@ public class EditOrderFormController implements Initializable {
         this.CustomerList = CustomerList;
         bindCustomerTextFields();
 
-        customerName.setText(order.getCustomerID());
-//        customerPhone.setText();
-//        customerEmail.setText();
+        // Set Initial Selected Customer
+        setSelectedCustomer(order.getCustomerName());
+
+        customerName.setText(selectedCustomer.getName());
+        customerPhone.setText(selectedCustomer.getPhoneNo());
+        customerEmail.setText(selectedCustomer.getEmail());
+
         if(order.getOrderType().equals("Pick-Up")){
             orderType.setPromptText(orderType.getItems().get(1).toString());
         } else if(order.getOrderType().equals("Delivery")){
             orderType.setPromptText(orderType.getItems().get(0).toString());
         }
+
         // Delivery address not set a text
         deliveryAddress.setText(order.getDeliveryAddress());
-        orderDate.setValue(order.getOrderDateTime());
-        deliveryDate.setValue(order.getDeliveryDateTime());
+        orderDate.setValue(order.getOrderDate());
+        deliveryDate.setValue(order.getDeliveryDate());
     }
 
     private void bindCustomerTextFields() {
@@ -82,11 +87,17 @@ public class EditOrderFormController implements Initializable {
 
     @FXML
     public void editOrder(ActionEvent event){
-//        if (!orderType.getSelectionModel().isEmpty()){
-//            alert
-//        }
-        Database.editOrder(order.getOrderID(), order.getCustomerID(), order.getOrderType(), order.getDeliveryAddress(), order.getOrderDateTime(), order.getDeliveryDateTime());
-        System.out.println(String.format("Edited %s's data", customerName.getText()));
+        String ordertype;
+        if (orderType.getSelectionModel().isEmpty()){
+            ordertype = order.getOrderType();
+        } else {
+            ordertype = orderType.getValue().toString();
+        }
+
+        System.out.println("Order Type = " + ordertype);
+
+        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliveryDate.getValue());
+        System.out.println(String.format("Edited order ", order.getOrderID()));
 
         // Close Stage & Refresh Table
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

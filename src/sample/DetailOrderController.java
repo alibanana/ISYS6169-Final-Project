@@ -50,11 +50,11 @@ public class DetailOrderController implements Initializable {
         this.ProductList = ProductList;
         bindProductName();
 
-        customerName.setText(order.getCustomerID());
+        customerName.setText(order.getCustomerName());
         orderID.setText(order.getOrderID());
         orderType.setText(order.getOrderType());
-        orderDate.setText(String.valueOf(order.getOrderDateTime()));
-        deliveryDate.setText(String.valueOf(order.getDeliveryDateTime()));
+        orderDate.setText(String.valueOf(order.getOrderDate()));
+        deliveryDate.setText(String.valueOf(order.getDeliveryDate()));
         orderStatus.setText(order.getOrderStatus());
         deliveryAddress.setText(order.getDeliveryAddress());
         discount.setText(String.valueOf(order.getDiscount()));
