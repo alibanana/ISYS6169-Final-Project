@@ -180,31 +180,7 @@ public class SubOrderFormController implements Initializable {
         parentController.RefreshOrderTable();
     }
 
-
-    private void RefreshSubOrderList(){
-        SubOrderList.clear();
-        try {
-            String sql = "SELECT * FROM suborders";
-
-            Connection conn = Database.connect();
-            ResultSet rs = conn.createStatement().executeQuery(sql);
-
-            int colNo = 1;
-            while(rs.next()) {
-                SubOrderList.add(new SubOrder(colNo, rs.getString("OrderID"), Database.getProductName(rs.getString("ProductID")),
-                        rs.getInt("Qty"), rs.getString("Description"), Database.getProductPrice(rs.getString("ProductID"))));
-                colNo++;
-            }
-
-            rs.close();
-            conn.close();
-        } catch (SQLException e) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
-
     private void RefreshSubOrderTable(){
-//        RefreshSubOrderList();
         SubOrderTable.setItems(SubOrderList);
 
         // Calculate subTotal

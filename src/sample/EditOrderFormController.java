@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -94,9 +95,28 @@ public class EditOrderFormController implements Initializable {
             ordertype = orderType.getValue().toString();
         }
 
-        System.out.println("Order Type = " + ordertype);
+        // Get SubTotal
+        int sTotal = 0;
+        for (SubOrder suborder : Database.getSubOrderList(order.getOrderID())) {
+            sTotal += suborder.getQty() * suborder.getPrice();
+        }
+        int gTotal = sTotal + order.getDeliveryPrice() - order.getDiscount();
 
-        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliveryDate.getValue());
+        System.out.println("Grand Total = " + gTotal);
+        System.out.println("Amount Paid = " + order.getPayment());
+        System.out.println("Date Compared = " + deliveryDate.getValue().compareTo(LocalDate.now()));
+
+        // Check Order Status
+        if ((deliveryDate.getValue().compareTo(LocalDate.now()) < 0) && (gTotal == order.getPayment())){
+            order.setOrderStatus("Completed");
+        } else {
+            order.setOrderStatus("Pending");
+        }
+
+        System.out.println("Order Status = " + order.getOrderStatus());
+
+        // SQL Query
+        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliveryDate.getValue(), order.getOrderStatus());
         System.out.println(String.format("Edited order ", order.getOrderID()));
 
         // Close Stage & Refresh Table

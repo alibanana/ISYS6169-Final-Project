@@ -386,7 +386,7 @@ public class Controller implements Initializable {
         if(!(selectedOrder == null)){
             String id = selectedOrder.getOrderID();
             Database.deleteOrder(id);
-            RefreshCustomerTable();
+            RefreshOrderTable();
         }
     }
 

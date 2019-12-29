@@ -1,9 +1,14 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Database {
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -24,9 +29,6 @@ public class Database {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public static void addOrder(){
     }
 
     public static void addCustomer(String id, String name, String phone, String email, boolean Member){
@@ -264,7 +266,7 @@ public class Database {
     public static String getProductName(String ProductID) throws SQLException{
         conn = connect();
 
-        String sql = "SELECT ProductName FROM product WHERE ProductID = '%s'";
+        String sql = "SELECT ProductName FROM products WHERE ProductID = '%s'";
         sql = String.format(sql, ProductID);
         ResultSet rs = conn.createStatement().executeQuery(sql);
 
@@ -275,7 +277,7 @@ public class Database {
     public static int getProductPrice(String ProductID) throws SQLException{
         conn = connect();
 
-        String sql = "SELECT Price FROM product WHERE ProductID = '%s'";
+        String sql = "SELECT Price FROM products WHERE ProductID = '%s'";
         sql = String.format(sql, ProductID);
         ResultSet rs = conn.createStatement().executeQuery(sql);
 
@@ -320,6 +322,32 @@ public class Database {
         }
     }
 
+    public static void deleteOrder(String id){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = String.format("DELETE FROM orders where OrderID = '%s'", id);
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, LocalDate OrderDate, LocalDate DeliveryDate, String OrderStatus){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = "UPDATE orders SET CustomerID='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDate='%s', OrderStatus='%s' WHERE OrderID='%s'";
+            sql = String.format(sql, CustomerID, OrderType, DeliveryAddress, OrderDate, DeliveryDate, OrderStatus, OrderID);
+            stmt.execute(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void addSubOrder(String OrderID, String ProductID, int Qty, String Description, String DescriptionPhoto){
         try {
             conn = connect();
@@ -335,30 +363,28 @@ public class Database {
         }
     }
 
-    public static void deleteOrder(String id){
+    public static ObservableList<SubOrder> getSubOrderList(String OrderID){
+        ObservableList<SubOrder> SubOrderList = FXCollections.observableArrayList();
         try {
-            conn = connect();
-            stmt = conn.createStatement();
+            String sql = "SELECT * FROM suborders WHERE OrderID = '%s'";
+            sql = String.format(sql, OrderID);
 
-            String sql = String.format("DELETE FROM orders where OrderID = '%s'", id);
-            stmt.execute(sql);
+            Connection conn = Database.connect();
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            int colNo = 1;
+            while(rs.next()) {
+                SubOrderList.add(new SubOrder(colNo, rs.getString("OrderID"), Database.getProductName(rs.getString("ProductID")),
+                        rs.getInt("Qty"), rs.getString("Description"), Database.getProductPrice(rs.getString("ProductID"))));
+                colNo++;
+            }
+
+            rs.close();
+            conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
         }
-    }
-
-    public static void editOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, LocalDate OrderDate, LocalDate DeliveryDate){
-        try {
-            conn = connect();
-            stmt = conn.createStatement();
-
-            String sql = "UPDATE orders SET CustomerID='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDate='%s' WHERE OrderID='%s'";
-            sql = String.format(sql, CustomerID, OrderType, DeliveryAddress, OrderDate, DeliveryDate, OrderID);
-            stmt.execute(sql);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return SubOrderList;
     }
 
     public static ResultSet getWeeklySales(String dateStart, String dateEnd){
