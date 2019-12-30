@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <AnchorPane prefHeight="700.0" prefWidth="166.0" style="-fx-background-color: #ffffff;">
          <children>
@@ -58,24 +58,24 @@
                   <Font name="Arial Bold" size="26.0" />
                </font>
             </Label>
-            <DatePicker fx:id="dateStart" layoutX="141.0" layoutY="566.0" />
-            <DatePicker fx:id="dateEnd" layoutX="141.0" layoutY="619.0" />
-            <Label fx:id="" layoutX="148.0" layoutY="523.0" text="Filter by dates" textFill="#5596fd">
+            <DatePicker fx:id="dateStart" layoutX="269.0" layoutY="566.0" />
+            <DatePicker fx:id="dateEnd" layoutX="269.0" layoutY="607.0" />
+            <Label fx:id="FilterDateTitle" layoutX="147.0" layoutY="522.0" text="Filter By Date" textFill="#5596fd">
                <font>
-                  <Font name="Arial" size="20.0" />
+                  <Font name="Arial Bold" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="OverviewLabel31" layoutX="40.0" layoutY="575.0" text="Start Date" textFill="#5596fd">
-               <font>
-                  <Font name="Arial" size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="OverviewLabel311" layoutX="40.0" layoutY="628.0" text="End Date" textFill="#5596fd">
+            <Label fx:id="StartDate" layoutX="147.0" layoutY="568.0" text="Start Date" textFill="#5596fd">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="filterButton" layoutX="459.0" layoutY="619.0" mnemonicParsing="false" onAction="#filterButtonClicked" prefHeight="39.0" prefWidth="150.0" style="-fx-background-color: #00ab66;" text="Filter" textFill="WHITE" />
+            <Label fx:id="EndDate" layoutX="147.0" layoutY="609.0" text="End Date" textFill="#5596fd">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="filterButton" layoutX="459.0" layoutY="607.0" mnemonicParsing="false" onAction="#filterButtonClicked" prefHeight="21.0" prefWidth="150.0" style="-fx-background-color: #00ab66;" text="Filter" textFill="WHITE" />
             <BarChart fx:id="weeklyRevenueChart" layoutX="127.0" layoutY="105.0" prefHeight="400.0" prefWidth="827.0">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
@@ -91,13 +91,14 @@
          <children>
             <TableView fx:id="OrderTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
               <columns>
-                <TableColumn fx:id="OrdIDCol" prefWidth="121.0" resizable="false" text="Order ID" />
-                  <TableColumn fx:id="OrdCustCol" prefWidth="125.0" resizable="false" text="Customer" />
-                  <TableColumn fx:id="OrdTypeCol" minWidth="0.0" prefWidth="108.0" resizable="false" text="Type" />
-                  <TableColumn fx:id="OrdDateCol" prefWidth="113.0" resizable="false" text="Order Date" />
-                  <TableColumn fx:id="OrdDeliveryDateCol" prefWidth="128.0" resizable="false" text="Delivery Date" />
-                  <TableColumn fx:id="OrdStatusCol" prefWidth="103.0" resizable="false" text="Status" />
-                  <TableColumn fx:id="OrdBalanceDueCol" prefWidth="151.0" resizable="false" text="Balance Due" />
+                <TableColumn fx:id="OrdIDCol" prefWidth="116.0" resizable="false" text="Order ID" />
+                  <TableColumn fx:id="OrdCustCol" prefWidth="113.0" resizable="false" text="Customer" />
+                  <TableColumn fx:id="OrdTypeCol" minWidth="0.0" prefWidth="77.0" resizable="false" text="Type" />
+                  <TableColumn fx:id="OrdDateCol" prefWidth="116.0" resizable="false" text="Order Date" />
+                  <TableColumn fx:id="OrdDeliveryDateCol" prefWidth="111.0" resizable="false" text="Delivery Date" />
+                  <TableColumn fx:id="OrdDeliveryTimeCol" prefWidth="82.0" resizable="false" text="Time" />
+                  <TableColumn fx:id="OrdStatusCol" prefWidth="124.0" resizable="false" text="Status" />
+                  <TableColumn fx:id="OrdBalanceDueCol" prefWidth="110.0" resizable="false" text="Balance Due" />
               </columns>
             </TableView>
             <Label layoutX="29.0" layoutY="23.0" text="Orders">
@@ -125,22 +126,22 @@
                </font>
             </Label>
             <ComboBox fx:id="OrderFilterComboBox" layoutX="145.0" layoutY="24.0" prefHeight="31.0" prefWidth="166.0" style="-fx-background-color: #D1D1D1;" />
-            <Label fx:id="OverviewLabel1" layoutX="909.0" layoutY="147.0" text="Done Orders">
+            <Label fx:id="DoneOrderLabel" layoutX="909.0" layoutY="147.0" text="Done Orders">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="OverviewLabel11" layoutX="897.0" layoutY="237.0" text="Ongoing Orders">
+            <Label fx:id="OngoingOrderLabel" layoutX="897.0" layoutY="237.0" text="Ongoing Orders">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="OverviewLabel111" layoutX="890.0" layoutY="329.0" text="Payment Pending">
+            <Label fx:id="PaymentPendingLabel" layoutX="890.0" layoutY="332.0" text="Payment Pending">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="OverviewLabel1111" layoutX="902.0" layoutY="427.0" text="Total Revenue">
+            <Label fx:id="TotalRevenueLabel" layoutX="902.0" layoutY="427.0" text="Total Revenue">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>

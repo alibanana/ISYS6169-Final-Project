@@ -51,6 +51,9 @@ public class Controller implements Initializable {
     @FXML private AnchorPane ProductPane;
 
     // Home Pane Members
+    @FXML private Label FilterDateTitle;
+    @FXML private Label StartDate;
+    @FXML private Label EndDate;
     @FXML private DatePicker dateStart;
     @FXML private DatePicker dateEnd;
     @FXML private BarChart weeklyRevenueChart;
@@ -61,6 +64,10 @@ public class Controller implements Initializable {
     @FXML private Label DeleteOrderLabel;
     @FXML private Label EditOrderLabel;
     @FXML private Label OverviewLabel;
+    @FXML private Label DoneOrderLabel;
+    @FXML private Label OngoingOrderLabel;
+    @FXML private Label PaymentPendingLabel;
+    @FXML private Label TotalRevenueLabel;
     @FXML private Label DetailsOrderLabel;
     @FXML private ComboBox OrderFilterComboBox;
     @FXML private DatePicker OrderDateFilter;
@@ -70,6 +77,7 @@ public class Controller implements Initializable {
     @FXML private TableColumn<Order, String> OrdTypeCol;
     @FXML private TableColumn<Order, String> OrdDateCol;
     @FXML private TableColumn<Order, String> OrdDeliveryDateCol;
+    @FXML private TableColumn<Order, String> OrdDeliveryTimeCol;
     @FXML private TableColumn<Order, String> OrdStatusCol;
     @FXML private TableColumn<Order, Integer> OrdBalanceDueCol;
     ObservableList<Order> OrderList = FXCollections.observableArrayList();
@@ -110,11 +118,20 @@ public class Controller implements Initializable {
         bgModePicker.getItems().addAll("Weekly","Monthly", "Yearly");
         bgModePicker.setValue("Weekly");
 
+        // Initialize Home Pane
+        FilterDateTitle.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
+        StartDate.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
+        EndDate.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
+
         // Initialize Order Pane
         NewOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         DeleteOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         EditOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         OverviewLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
+        DoneOrderLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
+        OngoingOrderLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
+        PaymentPendingLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
+        TotalRevenueLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         DetailsOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         OrderFilterComboBox.setPromptText("Status: All");
         OrderFilterComboBox.getItems().addAll("All", "Pending", "Done");
@@ -464,7 +481,7 @@ public class Controller implements Initializable {
             while(rs.next()) {
                 OrderList.add(new Order(rs.getString("OrderID"), Database.getCustomer(rs.getString("CustomerID")),
                         rs.getString("OrderType"), rs.getString("DeliveryAddress"), rs.getInt("DeliveryPrice"),
-                        rs.getDate("OrderDate").toLocalDate(), rs.getDate("DeliveryDate").toLocalDate(),
+                        rs.getDate("OrderDate").toLocalDate(), rs.getDate("DeliveryDate").toLocalDate(), rs.getTime("DeliveryTime").toLocalTime(),
                         rs.getString("OrderStatus"), rs.getInt("Payment"), rs.getInt("Discount")));
                 colNo++;
             }
@@ -484,6 +501,7 @@ public class Controller implements Initializable {
         OrdTypeCol.setCellValueFactory(new PropertyValueFactory<>("OrderType"));
         OrdDateCol.setCellValueFactory(new PropertyValueFactory<>("OrderDate"));
         OrdDeliveryDateCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryDate"));
+        OrdDeliveryTimeCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryTime"));
         OrdStatusCol.setCellValueFactory(new PropertyValueFactory<>("OrderStatus"));
         OrdBalanceDueCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
         OrderTable.setItems(OrderList);

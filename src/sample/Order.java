@@ -1,6 +1,7 @@
 package sample;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Order {
     private String OrderID;
@@ -10,11 +11,12 @@ public class Order {
     private int DeliveryPrice;
     private LocalDate OrderDate;
     private LocalDate DeliveryDate;
+    private LocalTime DeliveryTime;
     private String OrderStatus;
     private int Payment;
     private int Discount;
 
-    public Order(String orderID, String customerName, String orderType, String deliveryAddress, int deliveryPrice, LocalDate orderDate, LocalDate deliveryDate, String orderStatus, int payment, int discount) {
+    public Order(String orderID, String customerName, String orderType, String deliveryAddress, int deliveryPrice, LocalDate orderDate, LocalDate deliveryDate, LocalTime deliveryTime, String orderStatus, int payment, int discount) {
         OrderID = orderID;
         CustomerName = customerName;
         OrderType = orderType;
@@ -22,18 +24,20 @@ public class Order {
         DeliveryPrice = deliveryPrice;
         OrderDate = orderDate;
         DeliveryDate = deliveryDate;
+        DeliveryTime = deliveryTime;
         OrderStatus = orderStatus;
         Payment = payment;
         Discount = discount;
     }
 
     // Constructor for TableView
-    public Order(String orderID, String customerName, String orderType, LocalDate orderDate, LocalDate deliveryDate, String orderStatus, int payment) {
+    public Order(String orderID, String customerName, String orderType, LocalDate orderDate, LocalDate deliveryDate, LocalTime deliveryTime, String orderStatus, int payment) {
         OrderID = orderID;
         CustomerName = customerName;
         OrderType = orderType;
         OrderDate = orderDate;
         DeliveryDate = deliveryDate;
+        DeliveryTime = deliveryTime;
         OrderStatus = orderStatus;
         Payment = payment;
     }
@@ -117,4 +121,8 @@ public class Order {
     public void setDiscount(int discount) {
         Discount = discount;
     }
+
+    public LocalTime getDeliveryTime() { return DeliveryTime; }
+
+    public void setDeliveryTime(LocalTime deliveryTime) { DeliveryTime = deliveryTime; }
 }

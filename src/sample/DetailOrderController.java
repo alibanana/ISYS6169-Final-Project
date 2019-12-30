@@ -22,6 +22,7 @@ public class DetailOrderController implements Initializable {
     @FXML private Label orderType;
     @FXML private Label orderDate;
     @FXML private Label deliveryDate;
+    @FXML private Label deliveryTime;
     @FXML private Label orderStatus;
     @FXML private TextArea deliveryAddress;
     @FXML private Label subTotal;
@@ -55,6 +56,7 @@ public class DetailOrderController implements Initializable {
         orderType.setText(order.getOrderType());
         orderDate.setText(String.valueOf(order.getOrderDate()));
         deliveryDate.setText(String.valueOf(order.getDeliveryDate()));
+        deliveryTime.setText(String.valueOf(order.getDeliveryTime()));
         orderStatus.setText(order.getOrderStatus());
         deliveryAddress.setText(order.getDeliveryAddress());
         discount.setText(String.valueOf(order.getDiscount()));

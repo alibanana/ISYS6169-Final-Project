@@ -1,4 +1,6 @@
 package sample;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTimePicker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,8 +31,9 @@ public class EditOrderFormController implements Initializable {
     @FXML private TextField customerEmail;
     @FXML private ComboBox orderType;
     @FXML private TextArea deliveryAddress;
-    @FXML private DatePicker orderDate;
-    @FXML private DatePicker deliveryDate;
+    @FXML private JFXDatePicker orderDate;
+    @FXML private JFXDatePicker deliveryDate;
+    @FXML private JFXTimePicker deliveryTime;
 
     @Override
     public void initialize(URL url, ResourceBundle rb){orderType.getItems().addAll("Delivery", "Pick-Up");}
@@ -60,6 +63,7 @@ public class EditOrderFormController implements Initializable {
         deliveryAddress.setText(order.getDeliveryAddress());
         orderDate.setValue(order.getOrderDate());
         deliveryDate.setValue(order.getDeliveryDate());
+        deliveryTime.setValue(order.getDeliveryTime());
     }
 
     private void bindCustomerTextFields() {
@@ -116,7 +120,7 @@ public class EditOrderFormController implements Initializable {
         System.out.println("Order Status = " + order.getOrderStatus());
 
         // SQL Query
-        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliveryDate.getValue(), order.getOrderStatus());
+        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliveryDate.getValue(), deliveryTime.getValue(), order.getOrderStatus());
         System.out.println(String.format("Edited order ", order.getOrderID()));
 
         // Close Stage & Refresh Table

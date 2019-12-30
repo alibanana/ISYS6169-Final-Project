@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,8 +16,8 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/db_databasesystem";
     static final String USER = "root";
 //    passwordnya Aleep
-    static final String PASS = "2201798295Binus";
-//    static final String PASS = "";
+//    static final String PASS = "2201798295Binus";
+    static final String PASS = "";
     static Connection conn;
     static Statement stmt;
     static ResultSet rs;
@@ -307,13 +308,13 @@ public class Database {
         }
     }
 
-    public static void addOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, int DeliveryPrice, LocalDate OrderDate, LocalDate DeliveryDate, String OrderStatus, int Payment, int Discount){
+    public static void addOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, int DeliveryPrice, LocalDate OrderDate, LocalDate DeliveryDate, LocalTime DeliveryTime, String OrderStatus, int Payment, int Discount){
         try {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "INSERT INTO orders(OrderID, CustomerID, OrderType, DeliveryAddress, DeliveryPrice, OrderDate, DeliveryDate, OrderStatus, Payment, Discount) VALUE('%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%d', '%d')";
-            sql = String.format(sql, OrderID, CustomerID, OrderType, DeliveryAddress, DeliveryPrice, OrderDate, DeliveryDate, OrderStatus, Payment, Discount);
+            String sql = "INSERT INTO orders(OrderID, CustomerID, OrderType, DeliveryAddress, DeliveryPrice, OrderDate, DeliveryDate, DeliveryTime, OrderStatus, Payment, Discount) VALUE('%s', '%s', '%s', '%s', '%d', '%s', '%s','%s', '%s', '%d', '%d')";
+            sql = String.format(sql, OrderID, CustomerID, OrderType, DeliveryAddress, DeliveryPrice, OrderDate, DeliveryDate, DeliveryTime, OrderStatus, Payment, Discount);
             stmt.execute(sql);
 
             System.out.println(String.format("Added %s to orders", OrderID));
@@ -334,13 +335,13 @@ public class Database {
         }
     }
 
-    public static void editOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, LocalDate OrderDate, LocalDate DeliveryDate, String OrderStatus){
+    public static void editOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, LocalDate OrderDate, LocalDate DeliveryDate, LocalTime DeliveryTime, String OrderStatus){
         try {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "UPDATE orders SET CustomerID='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDate='%s', OrderStatus='%s' WHERE OrderID='%s'";
-            sql = String.format(sql, CustomerID, OrderType, DeliveryAddress, OrderDate, DeliveryDate, OrderStatus, OrderID);
+            String sql = "UPDATE orders SET CustomerID='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDate='%s', DeliveryTime='%s', OrderStatus='%s' WHERE OrderID='%s'";
+            sql = String.format(sql, CustomerID, OrderType, DeliveryAddress, OrderDate, DeliveryDate, DeliveryTime, OrderStatus, OrderID);
             stmt.execute(sql);
 
         } catch (SQLException e) {

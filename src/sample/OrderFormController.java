@@ -1,5 +1,8 @@
 package sample;
 
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXDecorator;
+import com.jfoenix.controls.JFXTimePicker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,8 +44,9 @@ public class OrderFormController implements Initializable {
     @FXML private TextField customerPhone;
     @FXML private TextField customerEmail;
     @FXML private TextArea deliveryAddress;
-    @FXML private DatePicker orderDate;
-    @FXML private DatePicker deliveryDate;
+    @FXML private JFXDatePicker orderDate;
+    @FXML private JFXDatePicker deliveryDate;
+    @FXML private JFXTimePicker deliveryTime;
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
@@ -102,7 +106,7 @@ public class OrderFormController implements Initializable {
 
         // Make a New Order Object
         currentOrder = new Order(newOrderID, selectedCustomer.getCustomerID(), orderType.getSelectionModel().getSelectedItem().toString(), deliveryAddress.getText(),
-                10000, orderDate.getValue(), deliveryDate.getValue(), "Pending", 0, 0);
+                10000, orderDate.getValue(), deliveryDate.getValue(), deliveryTime.getValue(), "Pending", 0, 0);
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("SubOrderForm.fxml"));
