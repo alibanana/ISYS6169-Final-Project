@@ -55,8 +55,8 @@ public class DetailOrderController implements Initializable {
         orderID.setText(order.getOrderID());
         orderType.setText(order.getOrderType());
         orderDate.setText(String.valueOf(order.getOrderDate()));
-        deliveryDate.setText(String.valueOf(order.getDeliveryDate()));
-        deliveryTime.setText(String.valueOf(order.getDeliveryTime()));
+        deliveryDate.setText(order.getDeliveryDateTime().toLocalDate().toString());
+        deliveryTime.setText(order.getDeliveryDateTime().toLocalTime().toString());
         orderStatus.setText(order.getOrderStatus());
         deliveryAddress.setText(order.getDeliveryAddress());
         discount.setText(String.valueOf(order.getDiscount()));

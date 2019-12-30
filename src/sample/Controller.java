@@ -481,7 +481,7 @@ public class Controller implements Initializable {
             while(rs.next()) {
                 OrderList.add(new Order(rs.getString("OrderID"), Database.getCustomer(rs.getString("CustomerID")),
                         rs.getString("OrderType"), rs.getString("DeliveryAddress"), rs.getInt("DeliveryPrice"),
-                        rs.getDate("OrderDate").toLocalDate(), rs.getDate("DeliveryDate").toLocalDate(), rs.getTime("DeliveryTime").toLocalTime(),
+                        rs.getDate("OrderDate").toLocalDate(), rs.getTimestamp("DeliveryDateTime").toLocalDateTime(),
                         rs.getString("OrderStatus"), rs.getInt("Payment"), rs.getInt("Discount")));
                 colNo++;
             }

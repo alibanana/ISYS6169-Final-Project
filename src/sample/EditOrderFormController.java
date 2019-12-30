@@ -16,6 +16,7 @@ import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -120,7 +121,8 @@ public class EditOrderFormController implements Initializable {
         System.out.println("Order Status = " + order.getOrderStatus());
 
         // SQL Query
-        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliveryDate.getValue(), deliveryTime.getValue(), order.getOrderStatus());
+        LocalDateTime deliverydatetime = deliveryDate.getValue().atTime(deliveryTime.getValue());
+        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliverydatetime, order.getOrderStatus());
         System.out.println(String.format("Edited order ", order.getOrderID()));
 
         // Close Stage & Refresh Table

@@ -1,7 +1,6 @@
 package sample;
 
 import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXDecorator;
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -22,6 +20,7 @@ import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -105,8 +104,9 @@ public class OrderFormController implements Initializable {
         System.out.println("Next Button Clicked (Sub Order)");
 
         // Make a New Order Object
+        LocalDateTime deliverydatetime = deliveryDate.getValue().atTime(deliveryTime.getValue());
         currentOrder = new Order(newOrderID, selectedCustomer.getCustomerID(), orderType.getSelectionModel().getSelectedItem().toString(), deliveryAddress.getText(),
-                10000, orderDate.getValue(), deliveryDate.getValue(), deliveryTime.getValue(), "Pending", 0, 0);
+                10000, orderDate.getValue(), deliverydatetime, "Pending", 0, 0);
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("SubOrderForm.fxml"));

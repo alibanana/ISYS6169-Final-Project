@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <AnchorPane prefHeight="700.0" prefWidth="166.0" style="-fx-background-color: #ffffff;">
          <children>
@@ -51,7 +42,7 @@
             <Rectangle fx:id="ProductRectangle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="57.0" layoutY="293.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="5.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0">
+      <AnchorPane fx:id="HomePane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
          <children>
             <Label layoutX="437.0" layoutY="38.0" text="Revenue Graph">
                <font>
@@ -87,16 +78,16 @@
             <ChoiceBox fx:id="bgModePicker" layoutX="459.0" layoutY="566.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034" visible="false">
+      <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034">
          <children>
             <TableView fx:id="OrderTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
               <columns>
                 <TableColumn fx:id="OrdIDCol" prefWidth="116.0" resizable="false" text="Order ID" />
                   <TableColumn fx:id="OrdCustCol" prefWidth="113.0" resizable="false" text="Customer" />
                   <TableColumn fx:id="OrdTypeCol" minWidth="0.0" prefWidth="77.0" resizable="false" text="Type" />
-                  <TableColumn fx:id="OrdDateCol" prefWidth="116.0" resizable="false" text="Order Date" />
-                  <TableColumn fx:id="OrdDeliveryDateCol" prefWidth="111.0" resizable="false" text="Delivery Date" />
-                  <TableColumn fx:id="OrdDeliveryTimeCol" prefWidth="82.0" resizable="false" text="Time" />
+                  <TableColumn fx:id="OrdDateCol" prefWidth="110.0" resizable="false" text="Order Date" />
+                  <TableColumn fx:id="OrdDeliveryDateCol" prefWidth="110.0" resizable="false" text="Delivery Date" />
+                  <TableColumn fx:id="OrdDeliveryTimeCol" prefWidth="90.0" resizable="false" text="Time" />
                   <TableColumn fx:id="OrdStatusCol" prefWidth="124.0" resizable="false" text="Status" />
                   <TableColumn fx:id="OrdBalanceDueCol" prefWidth="110.0" resizable="false" text="Balance Due" />
               </columns>
