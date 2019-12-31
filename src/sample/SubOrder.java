@@ -1,5 +1,7 @@
 package sample;
 
+import java.sql.Blob;
+
 public class SubOrder {
     private int ColNo;
     private String OrderID;
@@ -7,19 +9,10 @@ public class SubOrder {
     private String ProductName;
     private int Qty;
     private String Description;
-    private String DescriptionPhoto;
+    private Blob DescriptionPhoto;
     private int Price;
 
-    public SubOrder(int ColNo, String orderID, String productName, int qty, String description, int price) {
-        this.ColNo = ColNo;
-        OrderID = orderID;
-        ProductName = productName;
-        Qty = qty;
-        Description = description;
-        Price = price;
-    }
-
-    public SubOrder(int ColNo, String orderID, String productID, String productName, int qty, String description, String descriptionPhoto, int price) {
+    public SubOrder(int ColNo, String orderID, String productID, String productName, int qty, String description, Blob descriptionPhoto, int price) {
         this.ColNo = ColNo;
         OrderID = orderID;
         ProductID = productID;
@@ -29,12 +22,21 @@ public class SubOrder {
         DescriptionPhoto = descriptionPhoto;
         Price = price;
     }
+    public SubOrder(int ColNo, String orderID, String productID, String productName, int qty, String description, int price) {
+        this.ColNo = ColNo;
+        OrderID = orderID;
+        ProductID = productID;
+        ProductName = productName;
+        Qty = qty;
+        Description = description;
+        Price = price;
+    }
 
-    public String getDescriptionPhoto() {
+    public Blob getDescriptionPhoto() {
         return DescriptionPhoto;
     }
 
-    public void setDescriptionPhoto(String descriptionPhoto) {
+    public void setDescriptionPhoto(Blob descriptionPhoto) {
         DescriptionPhoto = descriptionPhoto;
     }
 

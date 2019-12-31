@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2019 at 08:01 PM
+-- Generation Time: Dec 31, 2019 at 02:16 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.23
 
@@ -67,7 +67,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`OrderID`, `CustomerID`, `OrderType`, `DeliveryAddress`, `DeliveryPrice`, `OrderDate`, `DeliveryDateTime`, `OrderStatus`, `Payment`, `Discount`) VALUES
-('ORD00001', 'CUS00002', 'Delivery', 'Resor Dago Pakar, Bandung', 10000, '2019-12-04', '2019-12-12 12:05:00', 'Pending', 300000, 0);
+('ORD00001', 'CUS00002', 'Delivery', 'Resor Dago Pakar, Bandung', 10000, '2019-12-27', '2019-12-30 18:00:00', 'Completed', 460000, 0);
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,7 @@ CREATE TABLE `suborders` (
 --
 
 INSERT INTO `suborders` (`OrderID`, `ProductID`, `Qty`, `Description`, `DescriptionPhoto`) VALUES
-('ORD00001', 'PRO00006', 20, '', '');
+('ORD00001', 'PRO00002', 1, '', 0x6e756c6c);
 
 --
 -- Indexes for dumped tables

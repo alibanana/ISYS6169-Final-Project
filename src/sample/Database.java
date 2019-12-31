@@ -3,11 +3,9 @@ package sample;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.lang.reflect.Type;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -349,6 +347,7 @@ public class Database {
 
     public static void editOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, LocalDate OrderDate, LocalDateTime DeliveryDateTime, String OrderStatus, int Payment){
         try {
+            conn = connect();
             stmt = conn.createStatement();
 
             String sql = "UPDATE orders SET CustomerID='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDateTime='%s', OrderStatus='%s', Payment='%d' WHERE OrderID='%s'";
@@ -389,7 +388,7 @@ public class Database {
         }
     }
 
-    public static void addSubOrder(String OrderID, String ProductID, int Qty, String Description, String DescriptionPhoto){
+    public static void addSubOrder(String OrderID, String ProductID, int Qty, String Description, Blob DescriptionPhoto){
         try {
             conn = connect();
             stmt = conn.createStatement();
@@ -398,8 +397,22 @@ public class Database {
             sql = String.format(sql, OrderID, ProductID, Qty, Description, DescriptionPhoto);
             stmt.execute(sql);
 
-            System.out.println(String.format("Added %s to sub-orders", OrderID));
-        } catch (Exception e) {
+            System.out.println(String.format("Added %s to sub-orders", ProductID));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void clearSubOrders(String OrderID){
+        try {
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = String.format("DELETE FROM suborders where OrderID = '%s'", OrderID);
+            stmt.execute(sql);
+
+            System.out.println("Cleared SubOrder where OrderID = " + OrderID);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -410,12 +423,13 @@ public class Database {
             String sql = "SELECT * FROM suborders WHERE OrderID = '%s'";
             sql = String.format(sql, OrderID);
 
+            conn = connect();
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             int colNo = 1;
             while(rs.next()) {
-                SubOrderList.add(new SubOrder(colNo, rs.getString("OrderID"), Database.getProductName(rs.getString("ProductID")),
-                        rs.getInt("Qty"), rs.getString("Description"), Database.getProductPrice(rs.getString("ProductID"))));
+                SubOrderList.add(new SubOrder(colNo, rs.getString("OrderID"), rs.getString("ProductID"), Database.getProductName(rs.getString("ProductID")),
+                        rs.getInt("Qty"), rs.getString("Description"), rs.getBlob("DescriptionPhoto"), Database.getProductPrice(rs.getString("ProductID"))));
                 colNo++;
             }
 

@@ -64,6 +64,7 @@ public class DetailOrderController implements Initializable {
     public void initData(Controller parentController, Order order, ObservableList<Product> ProductList){
         this.parentController = parentController;
         this.order = order;
+        SubOrderList = Database.getSubOrderList(order.getOrderID());
 
         // Bind Product
         this.ProductList = ProductList;
@@ -80,6 +81,10 @@ public class DetailOrderController implements Initializable {
         deliveryAddress.setText(order.getDeliveryAddress());
         deliveryCharge.setText(String.valueOf(order.getDeliveryPrice()));
         discount.setText(String.valueOf(order.getDiscount()));
+        paid.setText(String.valueOf(order.getPayment()));
+
+        calculatePaid();
+        RefreshSubOrderTable();
     }
 
     private void bindProductName(){
@@ -107,9 +112,9 @@ public class DetailOrderController implements Initializable {
 
     @FXML
     public void addItemClicked() {
-        System.out.println("AddItemButton clicked on SubOrderForm.fxml");
+        System.out.println("AddItemButton clicked on DetailOrderForm.fxml");
         String DescriptionPhoto = "";
-        SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), DescriptionPhoto, selectedProduct.getPrice()));
+        SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
         RefreshSubOrderTable();
         clearTextfields();
     }
@@ -123,7 +128,7 @@ public class DetailOrderController implements Initializable {
 
     @FXML
     public void deleteItemClicked(){
-        System.out.println("DeleteItemButton clicked on SubOrderForm.fxml");
+        System.out.println("DeleteItemButton clicked on DetailOrderForm.fxml");
         SubOrderList.remove(SubOrderTable.getSelectionModel().getSelectedIndex());
         RefreshSubOrderTable();
     }
@@ -141,7 +146,7 @@ public class DetailOrderController implements Initializable {
     }
 
     @FXML
-    public void editOrder(ActionEvent event) throws SQLException {
+    public void editOrder(ActionEvent event) throws SQLException, InterruptedException {
         // Set Sub-Orders variables
         String OrderID;
         String ProductID;
@@ -152,18 +157,25 @@ public class DetailOrderController implements Initializable {
         // Check Order Status
         if ((order.getDeliveryDate().compareTo(LocalDate.now()) < 0) && (balanceDue.getText().equals("0"))) {
             order.setOrderStatus("Completed");
+        } else {
+            order.setOrderStatus("Pending");
         }
 
         // SQL queries
         Database.editOrder(order.getOrderID(), Database.getCustomerID(order.getCustomerName()), order.getOrderType(), order.getDeliveryAddress(), order.getOrderDate(), order.getDeliveryDateTime(), order.getOrderStatus(), Integer.parseInt(paid.getText()));
 
+        // Clear SubOrders (Before Adding it again)
+        Database.clearSubOrders(order.getOrderID());
+
+        // Adding Suborders Back
+        System.out.println("SubOrderList Size = " + SubOrderList.size());
         for (SubOrder subOrder: SubOrderList){
             OrderID = order.getOrderID();
             ProductID = subOrder.getProductID();
             Qty = subOrder.getQty();
             Description = subOrder.getDescription();
-            DescriptionPhoto = subOrder.getDescriptionPhoto();
-            Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
+//            DescriptionPhoto = subOrder.getDescriptionPhoto();
+            Database.addSubOrder(OrderID, ProductID, Qty, Description, null);
         }
 
         // Close Stage & Refresh Table

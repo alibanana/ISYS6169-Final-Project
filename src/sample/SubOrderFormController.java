@@ -111,7 +111,7 @@ public class SubOrderFormController implements Initializable {
     public void addItemClicked() {
         System.out.println("AddItemButton clicked on SubOrderForm.fxml");
         String DescriptionPhoto = "";
-        SubOrderList.add(new SubOrder(SubOrderList.size()+1, currentOrder.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), DescriptionPhoto, selectedProduct.getPrice()));
+        SubOrderList.add(new SubOrder(SubOrderList.size()+1, currentOrder.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
         RefreshSubOrderTable();
         clearTextfields();
     }
@@ -165,8 +165,8 @@ public class SubOrderFormController implements Initializable {
             ProductID = subOrder.getProductID();
             Qty = subOrder.getQty();
             Description = subOrder.getDescription();
-            DescriptionPhoto = subOrder.getDescriptionPhoto();
-            Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
+//            DescriptionPhoto = subOrder.getDescriptionPhoto();
+            Database.addSubOrder(OrderID, ProductID, Qty, Description, null);
         }
 
         // Close Stage & Refresh Table
