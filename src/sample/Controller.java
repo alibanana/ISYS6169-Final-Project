@@ -407,15 +407,23 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void DeleteOrderClicked(){
+    public void DeleteOrderClicked() throws SQLException {
         System.out.println("Delete Order Clicked");
         new FadeIn(DeleteOrderLabel).setSpeed(5).play();
 
         // Gets Selected Row
         Order selectedOrder = OrderTable.getSelectionModel().getSelectedItem();
+
+        String custID = Database.getCustomerID(selectedOrder.getCustomerName());
+
         if(!(selectedOrder == null)){
             String id = selectedOrder.getOrderID();
             Database.deleteOrder(id);
+
+            if(Database.getNoOrders(custID) < 5){
+                Database.setMember(custID, 0);
+            }
+
             RefreshOrderTable();
         }
     }

@@ -169,6 +169,15 @@ public class SubOrderFormController implements Initializable {
             Database.addSubOrder(OrderID, ProductID, Qty, Description, null);
         }
 
+
+//        Detects if a customer is a non-member, checks if they already have 5 orders and makes them a member if both conditions are fulfilled
+        if(currentCustomer.getMember().equals("Non-Member")){
+            int currCustomerNumOrders = Database.getNoOrders(currentCustomer.getCustomerID());
+            if(currCustomerNumOrders >= 5){
+                Database.setMember(currentCustomer.getCustomerID(), 1);
+            }
+        }
+
         // Close Stage & Refresh Table
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();

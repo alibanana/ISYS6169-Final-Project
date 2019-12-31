@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="890.0" prefWidth="646.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.OrderFormController">
+<AnchorPane prefHeight="890.0" prefWidth="646.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.OrderFormController">
    <children>
       <Label alignment="CENTER" layoutX="11.0" layoutY="14.0" prefHeight="62.0" prefWidth="624.0" style="-fx-background-color: #1e90ff; -fx-background-radius: 10;" text="Add Order" textFill="WHITE">
          <font>
@@ -51,7 +51,7 @@
             <Label layoutX="68.0" layoutY="353.0" prefHeight="21.0" prefWidth="91.0" text="Delivery Date" />
             <JFXDatePicker fx:id="orderDate" defaultColor="DODGERBLUE" layoutX="175.0" layoutY="304.0" prefHeight="31.0" prefWidth="257.0" />
             <Label layoutX="83.0" layoutY="309.0" prefHeight="21.0" prefWidth="76.0" text="Order Date" />
-            <JFXTimePicker defaultColor="DODGERBLUE" layoutX="175.0" layoutY="395.0" prefHeight="25.0" prefWidth="257.0" />
+            <JFXTimePicker fx:id="deliveryTime" defaultColor="DODGERBLUE" layoutX="175.0" layoutY="395.0" prefHeight="25.0" prefWidth="257.0" />
             <Button fx:id="clearOrderButton" layoutX="25.0" layoutY="473.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #b92e34;" text="Clear" textFill="WHITE" />
             <Label layoutX="68.0" layoutY="397.0" prefHeight="21.0" prefWidth="91.0" text="Delivery Time" />
          </children>

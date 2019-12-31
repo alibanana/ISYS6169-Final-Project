@@ -15,8 +15,8 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/db_databasesystem";
     static final String USER = "root";
 //    passwordnya Aleep
-    static final String PASS = "2201798295Binus";
-//    static final String PASS = "";
+//    static final String PASS = "2201798295Binus";
+    static final String PASS = "";
     static Connection conn;
     static Statement stmt;
     static ResultSet rs;
@@ -558,4 +558,68 @@ public class Database {
             return null;
         }
     }
+
+
+//  Getting number of orders a customer has in total
+    public static int getNoOrders(String customerID){
+        try{
+            conn = connect();
+
+//            get weekly sum based on the Payment column of orders
+            String sql = "SELECT COUNT(*) AS numOrders FROM orders WHERE CustomerID = '%s'";
+            sql = String.format(sql, customerID);
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            rs.next();
+
+//          return the entire result set to be processed
+            return rs.getInt("numOrders");
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+    }
+
+    public static int getNoOrdersByName(String customerName){
+        try{
+            conn = connect();
+
+//            get weekly sum based on the Payment column of orders
+            String sql = "SELECT COUNT(*) AS numOrders FROM orders WHERE 'Name' = '%s'";
+            sql = String.format(sql, customerName);
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            rs.next();
+
+//          return the entire result set to be processed
+            return rs.getInt("numOrders");
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+    }
+
+//    Sets a customer to become a member
+    public static void setMember(String customerID, int status){
+        try{
+            conn = connect();
+            stmt = conn.createStatement();
+
+            String sql = "UPDATE customers SET Member = '%d' WHERE CustomerID = '%s'";
+
+            sql = String.format(sql, status, customerID);
+            stmt.execute(sql);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

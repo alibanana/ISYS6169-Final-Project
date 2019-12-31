@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
 
+import javax.xml.crypto.Data;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,6 +27,9 @@ public class EditOrderFormController implements Initializable {
     private ArrayList<String> ListOfNames = new ArrayList<>();
     private Customer selectedCustomer;
     private Order order;
+
+    private String prevCustID;
+    private String nextCustID;
 
     @FXML private TextField customerName;
     @FXML private TextField customerPhone;
@@ -49,6 +53,10 @@ public class EditOrderFormController implements Initializable {
 
         // Set Initial Selected Customer
         setSelectedCustomer(order.getCustomerName());
+
+        // References for Automatic Membership
+        prevCustID = selectedCustomer.getCustomerID();
+        nextCustID = selectedCustomer.getCustomerID();
 
         customerName.setText(selectedCustomer.getName());
         customerPhone.setText(selectedCustomer.getPhoneNo());
@@ -80,6 +88,7 @@ public class EditOrderFormController implements Initializable {
         customerPhone.setText(selectedCustomer.getPhoneNo());
         customerEmail.setText(selectedCustomer.getEmail());
         System.out.println("Selected Customer: " + selectedCustomer.getCustomerID());
+        nextCustID = selectedCustomer.getCustomerID();
     }
 
     private void setSelectedCustomer(String selectedName) {
@@ -124,6 +133,15 @@ public class EditOrderFormController implements Initializable {
         LocalDateTime deliverydatetime = deliveryDate.getValue().atTime(deliveryTime.getValue());
         Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliverydatetime, order.getOrderStatus(), order.getPayment());
         System.out.println(String.format("Edited order ", order.getOrderID()));
+
+        // Automatic Membership
+        if(Database.getNoOrders(prevCustID) < 5){
+            Database.setMember(prevCustID, 0);
+        }
+
+        if(Database.getNoOrders(nextCustID) >= 5){
+            Database.setMember(nextCustID, 1);
+        }
 
         // Close Stage & Refresh Table
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
