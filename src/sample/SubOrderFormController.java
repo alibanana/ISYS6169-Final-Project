@@ -15,6 +15,7 @@ import org.controlsfx.control.textfield.TextFields;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -151,9 +152,10 @@ public class SubOrderFormController implements Initializable {
         String DescriptionPhoto = "";
 
         // Check Order Status
-//        if ((currentOrder.getDeliveryDate().compareTo(LocalDate.now()) < 0) && (balanceDue.getText().equals("0"))) {
-//            currentOrder.setOrderStatus("Completed");
-//        }
+        System.out.println("Compare Date = " + currentOrder.getDeliveryDate().compareTo(LocalDate.now()));
+        if ((currentOrder.getDeliveryDate().compareTo(LocalDate.now()) < 0) && (balanceDue.getText().equals("0"))) {
+            currentOrder.setOrderStatus("Completed");
+        }
 
         // SQL queries
         Database.addOrder(currentOrder.getOrderID(), currentCustomer.getCustomerID(), currentOrder.getOrderType(), currentOrder.getDeliveryAddress(), currentOrder.getDeliveryPrice(), currentOrder.getOrderDate(), currentOrder.getDeliveryDateTime(), currentOrder.getOrderStatus(), Integer.parseInt(paid.getText()), currentOrder.getDiscount());

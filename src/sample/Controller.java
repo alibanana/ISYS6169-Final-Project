@@ -21,6 +21,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.xml.transform.Result;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -28,6 +29,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -163,6 +167,19 @@ public class Controller implements Initializable {
         weeklyRevenueChart.getXAxis().setAnimated(false);
 
         getAllWeeklyGraph();
+
+        // Change the order status of all the orders that is delivered yesterday
+        LocalDateTime startDateTime = LocalDate.now().minus(1, ChronoUnit.DAYS).atTime(LocalTime.of(0, 0, 0));
+        ResultSet rs = Database.getOrderByDeliveryDateTime(startDateTime, LocalDateTime.now());
+        try {
+            while (rs.next()){
+                if (rs.getInt("Payment") == Database.getGrandTotal(rs.getString("OrderID"))){
+                    Database.editOrderStatus(rs.getString("OrderID"), "Completed");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<String> getProductTypeList(){

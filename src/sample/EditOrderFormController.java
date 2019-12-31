@@ -122,7 +122,7 @@ public class EditOrderFormController implements Initializable {
 
         // SQL Query
         LocalDateTime deliverydatetime = deliveryDate.getValue().atTime(deliveryTime.getValue());
-        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliverydatetime, order.getOrderStatus());
+        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliverydatetime, order.getOrderStatus(), order.getPayment());
         System.out.println(String.format("Edited order ", order.getOrderID()));
 
         // Close Stage & Refresh Table

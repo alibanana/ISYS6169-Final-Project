@@ -94,6 +94,17 @@ public class Database {
         return rs.getString("Name");
     }
 
+    public static String getCustomerID(String CustomerName) throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT * FROM customers WHERE Name = '%s'";
+        sql = String.format(sql, CustomerName);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getString("CustomerID");
+    }
+
     public static void addProductType(String TypeID, String Type){
         try {
             conn = connect();
@@ -336,17 +347,45 @@ public class Database {
         }
     }
 
-    public static void editOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, LocalDate OrderDate, LocalDateTime DeliveryDateTime, String OrderStatus){
+    public static void editOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, LocalDate OrderDate, LocalDateTime DeliveryDateTime, String OrderStatus, int Payment){
         try {
-            conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "UPDATE orders SET CustomerID='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDateTime='%s', DeliveryTime='%s', OrderStatus='%s' WHERE OrderID='%s'";
-            sql = String.format(sql, CustomerID, OrderType, DeliveryAddress, OrderDate, DeliveryDateTime, OrderStatus, OrderID);
+            String sql = "UPDATE orders SET CustomerID='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDateTime='%s', OrderStatus='%s', Payment='%d' WHERE OrderID='%s'";
+            sql = String.format(sql, CustomerID, OrderType, DeliveryAddress, OrderDate, DeliveryDateTime, OrderStatus, Payment, OrderID);
             stmt.execute(sql);
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void editOrderStatus(String OrderID, String OrderStatus){
+        try {
+            stmt = conn.createStatement();
+
+            String sql = "UPDATE orders SET OrderStatus='%s' WHERE OrderID='%s'";
+            sql = String.format(sql, OrderStatus, OrderID);
+            stmt.execute(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ResultSet getOrderByDeliveryDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime){
+        try{
+            conn = connect();
+
+            // Get orders between that datetime frame
+            String sql = String.format("SELECT * FROM orders WHERE DeliveryDateTime BETWEEN '%s' AND '%s'", startDateTime.toString(), endDateTime.toString());
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -371,7 +410,6 @@ public class Database {
             String sql = "SELECT * FROM suborders WHERE OrderID = '%s'";
             sql = String.format(sql, OrderID);
 
-            Connection conn = Database.connect();
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             int colNo = 1;
@@ -387,6 +425,29 @@ public class Database {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
         }
         return SubOrderList;
+    }
+
+    public static int getGrandTotal(String OrderID){
+        int grandTotal = 0;
+        try {
+            String sql = String.format("SELECT ProductID, Qty, DeliveryPrice, Discount FROM suborders, orders WHERE orders.OrderID = '%s'", OrderID, OrderID);
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+
+            int subTotal = 0;
+            int deliveryPrice = 0;
+            int discount = 0;
+            while(rs.next()){
+                subTotal += Database.getProductPrice(rs.getString("ProductID")) * rs.getInt("Qty");
+                deliveryPrice = rs.getInt("DeliveryPrice");
+                discount = rs.getInt("Discount");
+            }
+
+            grandTotal = subTotal + deliveryPrice - discount;
+        } catch (SQLException e) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return grandTotal;
     }
 
     public static ResultSet getWeeklySales(String dateStart, String dateEnd){
