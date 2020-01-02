@@ -134,7 +134,7 @@ public class Controller implements Initializable {
         TotalRevenueLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         DetailsOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         OrderFilterComboBox.setPromptText("Status: All");
-        OrderFilterComboBox.getItems().addAll("All", "Pending", "Done");
+        OrderFilterComboBox.getItems().addAll("All", "Pending", "Completed");
 
         // Initialize Customer Pane
         NewCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
@@ -489,11 +489,29 @@ public class Controller implements Initializable {
             }
 
             Connection conn = Database.connect();
+
+            // Filtering OrderStatus
             String sql = "SELECT * FROM orders";
+            boolean option = false;
             if (filter.equals("Pending")){
                 sql = "SELECT * FROM orders WHERE OrderStatus = 'Pending'";
-            } else if (filter.equals("Done")){
-                sql = "SELECT * FROM orders WHERE OrderStatus = 'Done'";
+                option = true;
+            } else if (filter.equals("Completed")){
+                sql = "SELECT * FROM orders WHERE OrderStatus = 'Completed'";
+                option = true;
+            }
+
+            // Filtering Dates
+            if (!(OrderDateFilter.getValue() == null)) {
+                LocalDate dateFilter = OrderDateFilter.getValue();
+                // Checks if OrderStatus is filtered
+                if (option) {
+                    sql = sql + " AND DeliveryDateTime Between '%s 00:00:00' AND '%s 23:59:59'";
+                    sql = String.format(sql, dateFilter, dateFilter);
+                } else {
+                    sql = sql + " WHERE DeliveryDateTime Between '%s 00:00:00' AND '%s 23:59:59'";
+                    sql = String.format(sql, dateFilter, dateFilter);
+                }
             }
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
