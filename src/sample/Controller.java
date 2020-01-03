@@ -266,8 +266,6 @@ public class Controller implements Initializable {
         ResultSet result = Database.getWeeklySales(Database.getFirstSale(), Database.getLastSale());
 
         insertIntoGraph(result, "Weekly graph");
-
-
     }
 
     @FXML
@@ -279,8 +277,6 @@ public class Controller implements Initializable {
         ResultSet result = Database.getMonthlySales(Database.getFirstSale(), Database.getLastSale());
 
         insertIntoGraph(result, "Monthly graph");
-
-
     }
 
     @FXML
@@ -292,8 +288,6 @@ public class Controller implements Initializable {
         ResultSet result = Database.getYearlySales(Database.getFirstSale(), Database.getLastSale());
 
         insertIntoGraph(result, "Yearly graph");
-
-
     }
 
     @FXML
@@ -354,7 +348,6 @@ public class Controller implements Initializable {
                 getAllYearlyGraph();
             }
         }
-
     }
 
     @FXML
@@ -370,7 +363,6 @@ public class Controller implements Initializable {
                 set1.getData().add(new XYChart.Data(week, data));
             }
             weeklyRevenueChart.getData().addAll(set1);
-
         } catch (SQLException e){
                 e.printStackTrace();
             }
