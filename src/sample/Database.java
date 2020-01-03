@@ -360,13 +360,13 @@ public class Database {
         }
     }
 
-    public static void editOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, LocalDate OrderDate, LocalDateTime DeliveryDateTime, String OrderStatus, int Payment){
+    public static void editOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, int DeliveryPrice, LocalDate OrderDate, LocalDateTime DeliveryDateTime, String OrderStatus, int Payment){
         try {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "UPDATE orders SET CustomerID='%s', OrderType='%s', DeliveryAddress='%s', OrderDate='%s', DeliveryDateTime='%s', OrderStatus='%s', Payment='%d' WHERE OrderID='%s'";
-            sql = String.format(sql, CustomerID, OrderType, DeliveryAddress, OrderDate, DeliveryDateTime, OrderStatus, Payment, OrderID);
+            String sql = "UPDATE orders SET CustomerID='%s', OrderType='%s', DeliveryAddress='%s', DeliveryPrice='%s', OrderDate='%s', DeliveryDateTime='%s', OrderStatus='%s', Payment='%d' WHERE OrderID='%s'";
+            sql = String.format(sql, CustomerID, OrderType, DeliveryAddress, DeliveryPrice, OrderDate, DeliveryDateTime, OrderStatus, Payment, OrderID);
             stmt.execute(sql);
 
         } catch (SQLException e) {

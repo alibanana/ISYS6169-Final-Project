@@ -162,7 +162,7 @@ public class DetailOrderController implements Initializable {
         }
 
         // SQL queries
-        Database.editOrder(order.getOrderID(), Database.getCustomerID(order.getCustomerName()), order.getOrderType(), order.getDeliveryAddress(), order.getOrderDate(), order.getDeliveryDateTime(), order.getOrderStatus(), Integer.parseInt(paid.getText()));
+        Database.editOrder(order.getOrderID(), Database.getCustomerID(order.getCustomerName()), order.getOrderType(),order.getDeliveryAddress(),  order.getDeliveryPrice(), order.getOrderDate(), order.getDeliveryDateTime(), order.getOrderStatus(), Integer.parseInt(paid.getText()));
 
         // Clear SubOrders (Before Adding it again)
         Database.clearSubOrders(order.getOrderID());

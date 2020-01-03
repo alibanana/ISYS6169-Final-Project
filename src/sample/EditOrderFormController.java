@@ -39,6 +39,7 @@ public class EditOrderFormController implements Initializable {
     @FXML private JFXDatePicker orderDate;
     @FXML private JFXDatePicker deliveryDate;
     @FXML private JFXTimePicker deliveryTime;
+    @FXML private TextField deliveryCharge;
 
     @Override
     public void initialize(URL url, ResourceBundle rb){orderType.getItems().addAll("Delivery", "Pick-Up");}
@@ -73,6 +74,7 @@ public class EditOrderFormController implements Initializable {
         orderDate.setValue(order.getOrderDate());
         deliveryDate.setValue(order.getDeliveryDate());
         deliveryTime.setValue(order.getDeliveryTime());
+        deliveryCharge.setText(String.valueOf(order.getDeliveryPrice()));
     }
 
     private void bindCustomerTextFields() {
@@ -131,7 +133,7 @@ public class EditOrderFormController implements Initializable {
 
         // SQL Query
         LocalDateTime deliverydatetime = deliveryDate.getValue().atTime(deliveryTime.getValue());
-        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), orderDate.getValue(), deliverydatetime, order.getOrderStatus(), order.getPayment());
+        Database.editOrder(order.getOrderID(), selectedCustomer.getCustomerID(), ordertype, deliveryAddress.getText(), Integer.valueOf(deliveryCharge.getText()), orderDate.getValue(), deliverydatetime, order.getOrderStatus(), order.getPayment());
         System.out.println(String.format("Edited order ", order.getOrderID()));
 
         // Automatic Membership

@@ -20,6 +20,7 @@ import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -46,6 +47,7 @@ public class OrderFormController implements Initializable {
     @FXML private JFXDatePicker orderDate;
     @FXML private JFXDatePicker deliveryDate;
     @FXML private JFXTimePicker deliveryTime;
+    @FXML private TextField deliveryCharge;
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
@@ -66,6 +68,7 @@ public class OrderFormController implements Initializable {
         // Make new CustomerID
         newOrderID = String.format("ORD%05d", this.prevOrderID+1);
         System.out.println("Order ID: " + newOrderID);
+        orderDate.setValue(LocalDate.now());
     }
 
     private void bindCustomerTextFields() {
@@ -106,7 +109,7 @@ public class OrderFormController implements Initializable {
         // Make a New Order Object
         LocalDateTime deliverydatetime = deliveryDate.getValue().atTime(deliveryTime.getValue());
         currentOrder = new Order(newOrderID, selectedCustomer.getCustomerID(), orderType.getSelectionModel().getSelectedItem().toString(), deliveryAddress.getText(),
-                10000, orderDate.getValue(), deliverydatetime, "Pending", 0, 0);
+                Integer.parseInt(deliveryCharge.getText()), orderDate.getValue(), deliverydatetime, "Pending", 0, 0);
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("SubOrderForm.fxml"));
