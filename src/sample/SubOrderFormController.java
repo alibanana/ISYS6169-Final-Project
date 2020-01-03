@@ -184,18 +184,48 @@ public class SubOrderFormController implements Initializable {
         parentController.RefreshOrderTable();
     }
 
+    private int SetDiscount(){
+        double total = Double.valueOf(subTotal.getText());
+        double disc = 0;
+        double total_disc = 0;
+
+        if(total == 0 || total <= 1500000){
+            disc = 0.15;
+            total_disc = total * disc;
+            return (int)total_disc;
+        } else if(total >= 1500001 || total <= 3000000){
+            disc = 0.1;
+            total_disc = total * disc;
+            return (int)total_disc;
+        } else if(total >= 3000001 || total <= 5000000){
+            disc = 0.5;
+            total_disc = total * disc;
+            return (int)total_disc;
+        } else{
+            disc = 5;
+            total_disc = total * (disc / 100);
+            return (int)total_disc;
+        }
+    }
+
     private void RefreshSubOrderTable(){
         SubOrderTable.setItems(SubOrderList);
+        int disc = 0;
 
         // Calculate subTotal
         int sTotal = 0;
         for (SubOrder suborder : SubOrderList) {
             sTotal += suborder.getQty() * suborder.getPrice();
         }
-        int gTotal = sTotal + currentOrder.getDeliveryPrice() - currentOrder.getDiscount();
 
-                // Set Labels;
+        // Set Labels;
         subTotal.setText(String.valueOf(sTotal));
+        // Set Discount for Members
+        if(currentCustomer.getMember().equals("Member")){
+            disc = SetDiscount();
+        }
+        int gTotal = sTotal + currentOrder.getDeliveryPrice() - disc;
+        discount.setText(String.valueOf(disc));
         grandTotal.setText(String.valueOf(gTotal));
         balanceDue.setText(String.valueOf(gTotal));
     }

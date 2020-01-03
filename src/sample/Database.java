@@ -103,6 +103,21 @@ public class Database {
         return rs.getString("CustomerID");
     }
 
+    public static boolean getMember(String CustomerName) throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT * FROM customers WHERE Name = '%s'";
+        sql = String.format(sql, CustomerName);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        if (rs.getInt("Member") == 1){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
     public static void addProductType(String TypeID, String Type){
         try {
             conn = connect();
@@ -621,5 +636,4 @@ public class Database {
             e.printStackTrace();
         }
     }
-
 }
