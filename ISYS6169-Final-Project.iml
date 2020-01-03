@@ -12,5 +12,7 @@
     <orderEntry type="library" name="AnimateFX-1.2.1" level="project" />
     <orderEntry type="library" name="controlsfx-8.40.16" level="project" />
     <orderEntry type="library" name="com.jfoenix:jfoenix:8.0.8" level="project" />
+    <orderEntry type="library" name="iText7-Core-7.1" level="project" />
+    <orderEntry type="library" name="org.slf4j:slf4j-log4j12:1.7.26" level="project" />
   </component>
 </module>
