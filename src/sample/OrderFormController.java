@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -69,6 +70,7 @@ public class OrderFormController implements Initializable {
         newOrderID = String.format("ORD%05d", this.prevOrderID+1);
         System.out.println("Order ID: " + newOrderID);
         orderDate.setValue(LocalDate.now());
+        deliveryTime.set24HourView(true);
     }
 
     private void bindCustomerTextFields() {
@@ -103,34 +105,58 @@ public class OrderFormController implements Initializable {
     }
 
     @FXML
-    public void NextButtonClicked(ActionEvent event) throws IOException {
-        System.out.println("Next Button Clicked (Sub Order)");
-
-        // Make a New Order Object
-        LocalDateTime deliverydatetime = deliveryDate.getValue().atTime(deliveryTime.getValue());
-        currentOrder = new Order(newOrderID, selectedCustomer.getCustomerID(), orderType.getSelectionModel().getSelectedItem().toString(), deliveryAddress.getText(),
-                Integer.parseInt(deliveryCharge.getText()), orderDate.getValue(), deliverydatetime, "Pending", 0, 0);
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("SubOrderForm.fxml"));
-        Parent SubOrderFormParent = loader.load();
-
-        // Close OrderForm
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        currentStage.close();
-
-        Stage stage = new Stage(); // New stage (window)
-
-        // Passing data to SubOrderFormController
-        SubOrderFormController controller = loader.getController();
-        controller.initData(parentController, currentOrder, selectedCustomer, ProductList);
-
-        // Setting the stage up
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setResizable(false);
-        stage.setTitle("Sub Order Form");
-        stage.setScene(new Scene(SubOrderFormParent));
-        stage.show();
+    public void ClearButton2Clicked(){
+        deliveryAddress.clear();
+        orderDate.setValue(LocalDate.now());
+        deliveryDate.setValue(null);
+        deliveryTime.setValue(null);
+        deliveryCharge.clear();
     }
 
+    @FXML
+    public void NextButtonClicked(ActionEvent event) throws IOException {
+        try {
+            // Make a New Order Object
+            LocalDateTime deliverydatetime = deliveryDate.getValue().atTime(deliveryTime.getValue());
+            currentOrder = new Order(newOrderID, selectedCustomer.getCustomerID(), orderType.getSelectionModel().getSelectedItem().toString(), deliveryAddress.getText(),
+                    Integer.parseInt(deliveryCharge.getText()), orderDate.getValue(), deliverydatetime, "Pending", 0, 0);
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("SubOrderForm.fxml"));
+            Parent SubOrderFormParent = loader.load();
+
+            // Close OrderForm
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
+
+            Stage stage = new Stage(); // New stage (window)
+
+            // Passing data to SubOrderFormController
+            SubOrderFormController controller = loader.getController();
+            controller.initData(parentController, currentOrder, selectedCustomer, ProductList);
+
+            // Setting the stage up
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.setTitle("Sub Order Form");
+            stage.setScene(new Scene(SubOrderFormParent));
+            stage.show();
+        } catch (NullPointerException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Please Fullfil All Data!");
+            alert.setContentText("Data is still not completed, please fullfil all data.");
+
+            alert.showAndWait();
+        } catch (NumberFormatException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Please Fullfil The Data With Correct Format!");
+            alert.setContentText("Data have wrong format, please fullfil with correct format. \n(e.g. delivery price with number format)");
+
+            alert.showAndWait();
+        }
+    }
 }

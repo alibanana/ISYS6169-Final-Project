@@ -117,15 +117,33 @@ public class SubOrderFormController implements Initializable {
 
     @FXML
     public void addItemClicked() throws FileNotFoundException {
-        System.out.println("AddItemButton clicked on SubOrderForm.fxml");
-        if (photoFile == null){
-            SubOrderList.add(new SubOrder(SubOrderList.size()+1, currentOrder.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
-        } else {
-            SubOrderList.add(new SubOrder(SubOrderList.size()+1, currentOrder.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), new FileInputStream(photoFile), selectedProduct.getPrice()));
+        try {
+            System.out.println("AddItemButton clicked on SubOrderForm.fxml");
+            if (photoFile == null) {
+                SubOrderList.add(new SubOrder(SubOrderList.size() + 1, currentOrder.getOrderID(), selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
+            } else {
+                SubOrderList.add(new SubOrder(SubOrderList.size() + 1, currentOrder.getOrderID(), selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), new FileInputStream(photoFile), selectedProduct.getPrice()));
+            }
+            RefreshSubOrderTable();
+            clearTextfields();
+            photoFile = null;
+        } catch (NullPointerException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Please Choose The Correct Product!");
+            alert.setContentText("Product not exist, please choose correct product.");
+
+            alert.showAndWait();
+        } catch (NumberFormatException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Please Input The Correct Format of Qty!");
+            alert.setContentText("Qty have wrong format, please fullfil with correct format. \n(e.g. Qty with number format.");
+
+            alert.showAndWait();
         }
-        RefreshSubOrderTable();
-        clearTextfields();
-        photoFile = null;
     }
 
     private void clearTextfields(){
@@ -156,51 +174,61 @@ public class SubOrderFormController implements Initializable {
     }
 
     @FXML
-    public void addOrder(ActionEvent event) throws SQLException{
-        // Set Sub-Orders variables
-        String OrderID;
-        String ProductID;
-        int Qty;
-        String Description;
-        InputStream DescriptionPhoto;
+    public void addOrder(ActionEvent event) throws SQLException {
+        try {
+            // Set Sub-Orders variables
+            String OrderID;
+            String ProductID;
+            int Qty;
+            String Description;
+            InputStream DescriptionPhoto;
 
-        // Check Order Status
-        if ((currentOrder.getDeliveryDate().compareTo(LocalDate.now()) < 0) && (balanceDue.getText().equals("0"))) {
-            currentOrder.setOrderStatus("Completed");
-        }
-
-        // SQL queries
-        Database.addOrder(currentOrder.getOrderID(), currentCustomer.getCustomerID(), currentOrder.getOrderType(), currentOrder.getDeliveryAddress(), currentOrder.getDeliveryPrice(), currentOrder.getOrderDate(), currentOrder.getDeliveryDateTime(), currentOrder.getOrderStatus(), Integer.parseInt(paid.getText()), currentOrder.getDiscount());
-
-        for (SubOrder subOrder: SubOrderList){
-            OrderID = currentOrder.getOrderID();
-            ProductID = subOrder.getProductID();
-            Qty = subOrder.getQty();
-            Description = subOrder.getDescription();
-            // Check if Product has photo
-            if (subOrder.getDescriptionPhoto() == null){
-                System.out.println("test1");
-                Database.addSubOrder(OrderID, ProductID, Qty, Description);
-            } else {
-                System.out.println("test2");
-                DescriptionPhoto = subOrder.getDescriptionPhoto();
-                Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
+            // Check Order Status
+            if ((currentOrder.getDeliveryDate().compareTo(LocalDate.now()) < 0) && (balanceDue.getText().equals("0"))) {
+                currentOrder.setOrderStatus("Completed");
             }
-        }
 
+            // SQL queries
+            Database.addOrder(currentOrder.getOrderID(), currentCustomer.getCustomerID(), currentOrder.getOrderType(), currentOrder.getDeliveryAddress(), currentOrder.getDeliveryPrice(), currentOrder.getOrderDate(), currentOrder.getDeliveryDateTime(), currentOrder.getOrderStatus(), Integer.parseInt(paid.getText()), currentOrder.getDiscount());
 
-//        Detects if a customer is a non-member, checks if they already have 5 orders and makes them a member if both conditions are fulfilled
-        if(currentCustomer.getMember().equals("Non-Member")){
-            int currCustomerNumOrders = Database.getNoOrders(currentCustomer.getCustomerID());
-            if(currCustomerNumOrders >= 5){
-                Database.setMember(currentCustomer.getCustomerID(), 1);
+            for (SubOrder subOrder : SubOrderList) {
+                OrderID = currentOrder.getOrderID();
+                ProductID = subOrder.getProductID();
+                Qty = subOrder.getQty();
+                Description = subOrder.getDescription();
+                // Check if Product has photo
+                if (subOrder.getDescriptionPhoto() == null) {
+                    System.out.println("test1");
+                    Database.addSubOrder(OrderID, ProductID, Qty, Description);
+                } else {
+                    System.out.println("test2");
+                    DescriptionPhoto = subOrder.getDescriptionPhoto();
+                    Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
+                }
             }
-        }
 
-        // Close Stage & Refresh Table
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
-        parentController.RefreshOrderTable();
+
+            //        Detects if a customer is a non-member, checks if they already have 5 orders and makes them a member if both conditions are fulfilled
+            if (currentCustomer.getMember().equals("Non-Member")) {
+                int currCustomerNumOrders = Database.getNoOrders(currentCustomer.getCustomerID());
+                if (currCustomerNumOrders >= 5) {
+                    Database.setMember(currentCustomer.getCustomerID(), 1);
+                }
+            }
+
+            // Close Stage & Refresh Table
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+            parentController.RefreshOrderTable();
+        } catch (NumberFormatException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Please Fullfil The Paid With Correct Format!");
+            alert.setContentText("Paid have wrong format, please fullfil with correct format. \n(e.g. Paid with number format)");
+
+            alert.showAndWait();
+        }
     }
 
     private int SetDiscount(double total){

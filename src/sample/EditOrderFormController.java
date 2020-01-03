@@ -75,6 +75,7 @@ public class EditOrderFormController implements Initializable {
         deliveryDate.setValue(order.getDeliveryDate());
         deliveryTime.setValue(order.getDeliveryTime());
         deliveryCharge.setText(String.valueOf(order.getDeliveryPrice()));
+        deliveryTime.set24HourView(true);
     }
 
     private void bindCustomerTextFields() {

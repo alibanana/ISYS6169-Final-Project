@@ -176,8 +176,9 @@ public class DetailOrderController implements Initializable {
         }
         if (photoFile == null){
             SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
+        } else {
+            SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(), selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), new FileInputStream(photoFile), selectedProduct.getPrice()));
         }
-        SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(), selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), new FileInputStream(photoFile), selectedProduct.getPrice()));
         RefreshSubOrderTable();
         clearTextfields();
         photoFile = null;

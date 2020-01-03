@@ -19,8 +19,8 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/db_databasesystem";
     static final String USER = "root";
 //    passwordnya Aleep
-    static final String PASS = "2201798295Binus";
-//    static final String PASS = "";
+//    static final String PASS = "2201798295Binus";
+    static final String PASS = "";
     static Connection conn;
     static Statement stmt;
     static PreparedStatement pstmt;
