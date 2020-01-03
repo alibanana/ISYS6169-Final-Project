@@ -1,1 +1,5 @@
-org.slf4jslf4j-log4j121.7.26
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-api</artifactId>
+    <version>1.7.30</version>
+</dependency>
