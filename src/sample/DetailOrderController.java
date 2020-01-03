@@ -6,11 +6,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
 
+import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -20,6 +27,7 @@ import java.util.ResourceBundle;
 public class DetailOrderController implements Initializable {
     private Controller parentController;
     private Order order;
+    private File photoFile;
 
     @FXML private Label customerName;
     @FXML private Label orderID;
@@ -39,6 +47,8 @@ public class DetailOrderController implements Initializable {
     @FXML private TextField productPrice;
     @FXML private TextField qty;
     @FXML private TextArea productDescription;
+    @FXML private Label FileNameLabel;
+    @FXML private Button viewPhotoButton;
 
     // Product List
     private ObservableList<Product> ProductList = FXCollections.observableArrayList();
@@ -111,12 +121,75 @@ public class DetailOrderController implements Initializable {
     }
 
     @FXML
-    public void addItemClicked() {
+    public void addPhotoClicked() {
+        FileChooser fc = new FileChooser();
+        File selectedFile = fc.showOpenDialog(null);
+        if (selectedFile != null){
+            System.out.println("File Choosen Path = " + selectedFile.getAbsolutePath());
+            FileNameLabel.setText(selectedFile.getName());
+            photoFile = selectedFile;
+        } else {
+            System.out.println("File is not valid");
+        }
+    }
+
+    @FXML
+    public void viewPhotoClicked() throws IOException {
+        System.out.println("ViewPhotoButton Clicked on DetailOrder.fxml");
+
+        InputStream input = SubOrderTable.getSelectionModel().getSelectedItem().getDescriptionPhoto();
+        Image image = new Image(input);
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+
+        BorderPane pane = new BorderPane();
+        pane.setCenter(imageView);
+
+        Scene scene = new Scene(pane);
+
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    @FXML
+    public void tableviewOnSelected() {
+        System.out.println("TableView was selected");
+        SubOrder product = SubOrderTable.getSelectionModel().getSelectedItem();
+        productName.setText(product.getProductName());
+        productPrice.setText(String.valueOf(product.getPrice()));
+        qty.setText(String.valueOf(product.getQty()));
+        productDescription.setText(product.getDescription());
+        if (product.getDescriptionPhoto() != null) {
+            FileNameLabel.setText("Photo Exist");
+        } else {
+            FileNameLabel.setText("No Photo Available");
+        }
+    }
+
+    @FXML
+    public void addItemClicked() throws FileNotFoundException {
         System.out.println("AddItemButton clicked on DetailOrderForm.fxml");
-        String DescriptionPhoto = "";
-        SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
+        // Checks whether product is edited / added
+        if (productInList(selectedProduct.getProductID())){
+            SubOrderList.remove(SubOrderTable.getSelectionModel().getSelectedIndex());
+        }
+        if (photoFile == null){
+            SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
+        }
+        SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(), selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), new FileInputStream(photoFile), selectedProduct.getPrice()));
         RefreshSubOrderTable();
         clearTextfields();
+        photoFile = null;
+    }
+
+    private boolean productInList(String ProductID) {
+        for (SubOrder subOrder : SubOrderList) {
+            if (subOrder.getProductID().equals(ProductID)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void clearTextfields(){
@@ -124,6 +197,7 @@ public class DetailOrderController implements Initializable {
         productPrice.clear();
         qty.clear();
         productDescription.clear();
+        FileNameLabel.setText("Product Photo Status");
     }
 
     @FXML
@@ -152,7 +226,7 @@ public class DetailOrderController implements Initializable {
         String ProductID;
         int Qty;
         String Description;
-        String DescriptionPhoto = "";
+        InputStream DescriptionPhoto;
 
         // Check Order Status
         if ((order.getDeliveryDate().compareTo(LocalDate.now()) < 0) && (balanceDue.getText().equals("0"))) {
@@ -162,7 +236,7 @@ public class DetailOrderController implements Initializable {
         }
 
         // SQL queries
-        Database.editOrder(order.getOrderID(), Database.getCustomerID(order.getCustomerName()), order.getOrderType(),order.getDeliveryAddress(),  order.getDeliveryPrice(), order.getOrderDate(), order.getDeliveryDateTime(), order.getOrderStatus(), Integer.parseInt(paid.getText()));
+        Database.editOrder(order.getOrderID(), Database.getCustomerID(order.getCustomerName()), order.getOrderType(), order.getDeliveryAddress(),  order.getDeliveryPrice(), order.getOrderDate(), order.getDeliveryDateTime(), order.getOrderStatus(), Integer.parseInt(paid.getText()));
 
         // Clear SubOrders (Before Adding it again)
         Database.clearSubOrders(order.getOrderID());
@@ -174,8 +248,13 @@ public class DetailOrderController implements Initializable {
             ProductID = subOrder.getProductID();
             Qty = subOrder.getQty();
             Description = subOrder.getDescription();
-//            DescriptionPhoto = subOrder.getDescriptionPhoto();
-            Database.addSubOrder(OrderID, ProductID, Qty, Description, null);
+            // Check if Product has photo
+            if (subOrder.getDescriptionPhoto() == null){
+                Database.addSubOrder(OrderID, ProductID, Qty, Description);
+            } else {
+                DescriptionPhoto = subOrder.getDescriptionPhoto();
+                Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
+            }
         }
 
         // Close Stage & Refresh Table
@@ -184,18 +263,43 @@ public class DetailOrderController implements Initializable {
         parentController.RefreshOrderTable();
     }
 
-    private void RefreshSubOrderTable(){
+    private int SetDiscount(double total){
+        double disc = 0;
+        double total_disc = 0;
+
+        if(total == 0 || total <= 1500000){
+            disc = 0.15;
+        } else if(total >= 1500001 || total <= 3000000){
+            disc = 0.1;
+        } else if(total >= 3000001 || total <= 5000000){
+            disc = 0.075;
+        } else{
+            disc = 0.05;
+        }
+        total_disc = total * disc;
+        return (int)total_disc;
+    }
+
+    private void RefreshSubOrderTable() {
         SubOrderTable.setItems(SubOrderList);
+        int disc = 0;
 
         // Calculate subTotal
         int sTotal = 0;
         for (SubOrder suborder : SubOrderList) {
             sTotal += suborder.getQty() * suborder.getPrice();
         }
-        int gTotal = sTotal + order.getDeliveryPrice() - order.getDiscount();
+
+        // Check if customer is Member
+        if(Database.getMember(order.getCustomerName())){
+            disc = SetDiscount(sTotal);
+        }
+
+        int gTotal = sTotal + order.getDeliveryPrice() - disc;
 
         // Set Labels;
         subTotal.setText(String.valueOf(sTotal));
+        discount.setText(String.valueOf(disc));
         grandTotal.setText(String.valueOf(gTotal));
         balanceDue.setText(String.valueOf(gTotal));
     }

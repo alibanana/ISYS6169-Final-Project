@@ -23,7 +23,7 @@
                   <Font name="System Bold" size="16.0" />
                </font></Label>
             <Button fx:id="deleteItemButton" layoutX="717.0" layoutY="158.0" mnemonicParsing="false" onAction="#deleteItemClicked" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #b92e34;" text="- Delete Item" textFill="WHITE" />
-            <TableView fx:id="SubOrderTable" layoutX="10.0" layoutY="208.0" prefHeight="359.0" prefWidth="827.0">
+            <TableView fx:id="SubOrderTable" layoutX="10.0" layoutY="208.0" onMouseClicked="#tableviewOnSelected" prefHeight="359.0" prefWidth="827.0">
               <columns>
                   <TableColumn fx:id="noCol" prefWidth="54.0" text="#" />
                 <TableColumn fx:id="productNameCol" prefWidth="362.0" text="Product Name" />
@@ -190,14 +190,14 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="862.0" layoutY="81.0" prefHeight="746.0" prefWidth="310.0" style="-fx-background-color: #f4f4f4; -fx-background-radius: 10;">
+      <AnchorPane layoutX="862.0" layoutY="81.0" onMouseClicked="#tableviewOnSelected" prefHeight="746.0" prefWidth="310.0" style="-fx-background-color: #f4f4f4; -fx-background-radius: 10;">
          <children>
             <TextField fx:id="productName" layoutX="20.0" layoutY="46.0" onAction="#ProductNameAction" prefHeight="31.0" prefWidth="277.0" />
             <TextField fx:id="productPrice" editable="false" layoutX="20.0" layoutY="121.0" prefHeight="31.0" prefWidth="277.0" />
             <TextField fx:id="qty" layoutX="20.0" layoutY="197.0" prefHeight="31.0" prefWidth="277.0" />
             <TextArea fx:id="productDescription" layoutX="20.0" layoutY="280.0" prefHeight="334.0" prefWidth="277.0" />
-            <Button fx:id="addItemButton" layoutX="17.0" layoutY="701.0" mnemonicParsing="false" onAction="#addItemClicked" prefHeight="31.0" prefWidth="277.0" style="-fx-background-color: #00ab66;" text="+ Add Item" textFill="WHITE" />
-            <Button fx:id="addPhotoButton" layoutX="164.0" layoutY="627.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="132.0" style="-fx-background-color: #00ab66;" text="+ Add Photo" textFill="WHITE" />
+            <Button fx:id="addItemButton" layoutX="17.0" layoutY="701.0" mnemonicParsing="false" onAction="#addItemClicked" prefHeight="31.0" prefWidth="277.0" style="-fx-background-color: #00ab66;" text="+ Add/Edit Item" textFill="WHITE" />
+            <Button fx:id="addPhotoButton" layoutX="164.0" layoutY="627.0" mnemonicParsing="false" onAction="#addPhotoClicked" prefHeight="31.0" prefWidth="132.0" style="-fx-background-color: #00ab66;" text="+ Add Photo" textFill="WHITE" />
             <Label layoutX="20.0" layoutY="16.0" prefHeight="27.0" prefWidth="116.0" text="Product Name">
                <font>
                   <Font name="System Bold" size="16.0" />
@@ -218,7 +218,12 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Button fx:id="addPhotoButton1" layoutX="20.0" layoutY="627.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="132.0" style="-fx-background-color: #32527b;" text="View Photo" textFill="WHITE" />
+            <Button fx:id="viewPhotoButton" layoutX="20.0" layoutY="627.0" mnemonicParsing="false" onAction="#viewPhotoClicked" prefHeight="31.0" prefWidth="132.0" style="-fx-background-color: #32527b;" text="View Photo" textFill="WHITE" />
+            <Label fx:id="FileNameLabel" layoutX="22.0" layoutY="667.0" prefHeight="27.0" prefWidth="112.0" text="File Name">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

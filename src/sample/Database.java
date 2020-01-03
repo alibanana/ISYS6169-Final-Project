@@ -3,6 +3,10 @@ package sample;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,10 +19,11 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/db_databasesystem";
     static final String USER = "root";
 //    passwordnya Aleep
-//    static final String PASS = "2201798295Binus";
-    static final String PASS = "";
+    static final String PASS = "2201798295Binus";
+//    static final String PASS = "";
     static Connection conn;
     static Statement stmt;
+    static PreparedStatement pstmt;
     static ResultSet rs;
 
     public static Connection connect(){
@@ -103,19 +108,23 @@ public class Database {
         return rs.getString("CustomerID");
     }
 
-    public static boolean getMember(String CustomerName) throws SQLException{
-        conn = connect();
+    public static boolean getMember(String CustomerName){
+        boolean flag = false;
+        try {
+            conn = connect();
 
-        String sql = "SELECT * FROM customers WHERE Name = '%s'";
-        sql = String.format(sql, CustomerName);
-        ResultSet rs = conn.createStatement().executeQuery(sql);
+            String sql = "SELECT * FROM customers WHERE Name = '%s'";
+            sql = String.format(sql, CustomerName);
+            ResultSet rs = conn.createStatement().executeQuery(sql);
 
-        rs.next();
-        if (rs.getInt("Member") == 1){
-            return true;
-        } else{
-            return false;
+            rs.next();
+            if (rs.getInt("Member") == 1){
+                flag = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return flag;
     }
 
     public static void addProductType(String TypeID, String Type){
@@ -403,13 +412,31 @@ public class Database {
         }
     }
 
-    public static void addSubOrder(String OrderID, String ProductID, int Qty, String Description, Blob DescriptionPhoto){
+    public static void addSubOrder(String OrderID, String ProductID, int Qty, String Description, InputStream DescriptionPhoto){
+        try {
+            conn = connect();
+
+            String sql = "INSERT INTO suborders(OrderID, ProductID, Qty, Description, DescriptionPhoto) VALUE('%s', '%s', '%d', '%s', ?)";
+            sql = String.format(sql, OrderID, ProductID, Qty, Description);
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setBinaryStream(1, DescriptionPhoto, DescriptionPhoto.available());
+
+            pstmt.execute();
+
+            System.out.println(String.format("Added %s to sub-orders", ProductID));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addSubOrder(String OrderID, String ProductID, int Qty, String Description){
         try {
             conn = connect();
             stmt = conn.createStatement();
 
-            String sql = "INSERT INTO suborders(OrderID, ProductID, Qty, Description, DescriptionPhoto) VALUE('%s', '%s', '%d', '%s', '%s')";
-            sql = String.format(sql, OrderID, ProductID, Qty, Description, DescriptionPhoto);
+            String sql = "INSERT INTO suborders(OrderID, ProductID, Qty, Description) VALUE('%s', '%s', '%d', '%s')";
+            sql = String.format(sql, OrderID, ProductID, Qty, Description);
             stmt.execute(sql);
 
             System.out.println(String.format("Added %s to sub-orders", ProductID));
@@ -443,8 +470,13 @@ public class Database {
 
             int colNo = 1;
             while(rs.next()) {
+                Blob blob = rs.getBlob("DescriptionPhoto");
+                InputStream inputStream = null;
+                if (blob != null) {
+                    inputStream = blob.getBinaryStream();
+                }
                 SubOrderList.add(new SubOrder(colNo, rs.getString("OrderID"), rs.getString("ProductID"), Database.getProductName(rs.getString("ProductID")),
-                        rs.getInt("Qty"), rs.getString("Description"), rs.getBlob("DescriptionPhoto"), Database.getProductPrice(rs.getString("ProductID"))));
+                        rs.getInt("Qty"), rs.getString("Description"), inputStream, Database.getProductPrice(rs.getString("ProductID"))));
                 colNo++;
             }
 
@@ -636,4 +668,5 @@ public class Database {
             e.printStackTrace();
         }
     }
+
 }

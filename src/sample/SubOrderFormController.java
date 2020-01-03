@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,6 +29,7 @@ public class SubOrderFormController implements Initializable {
     private ObservableList<Product> ProductList = FXCollections.observableArrayList();
     private ArrayList<String> ListofProductNames = new ArrayList<>();
     private Product selectedProduct;
+    private File photoFile;
 
     @FXML private Label customerName;
     @FXML private Label orderID;
@@ -40,6 +44,7 @@ public class SubOrderFormController implements Initializable {
     @FXML private TextField productPrice;
     @FXML private TextField qty;
     @FXML private TextArea productDescription;
+    @FXML private Label FileNameLabel;
 
     // Table Members
     @FXML private TableView<SubOrder> SubOrderTable;
@@ -101,19 +106,26 @@ public class SubOrderFormController implements Initializable {
         FileChooser fc = new FileChooser();
         File selectedFile = fc.showOpenDialog(null);
         if (selectedFile != null){
-            System.out.println(selectedFile.getAbsolutePath());
+            System.out.println("File Choosen Path = " + selectedFile.getAbsolutePath());
+            System.out.println("File Choosen Name = " + selectedFile.getName());
+            FileNameLabel.setText(selectedFile.getName());
+            photoFile = selectedFile;
         } else {
             System.out.println("File is not valid");
         }
     }
 
     @FXML
-    public void addItemClicked() {
+    public void addItemClicked() throws FileNotFoundException {
         System.out.println("AddItemButton clicked on SubOrderForm.fxml");
-        String DescriptionPhoto = "";
-        SubOrderList.add(new SubOrder(SubOrderList.size()+1, currentOrder.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
+        if (photoFile == null){
+            SubOrderList.add(new SubOrder(SubOrderList.size()+1, currentOrder.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
+        } else {
+            SubOrderList.add(new SubOrder(SubOrderList.size()+1, currentOrder.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), new FileInputStream(photoFile), selectedProduct.getPrice()));
+        }
         RefreshSubOrderTable();
         clearTextfields();
+        photoFile = null;
     }
 
     private void clearTextfields(){
@@ -121,6 +133,7 @@ public class SubOrderFormController implements Initializable {
         productPrice.clear();
         qty.clear();
         productDescription.clear();
+        FileNameLabel.setText("File Name");
     }
 
     @FXML
@@ -149,10 +162,9 @@ public class SubOrderFormController implements Initializable {
         String ProductID;
         int Qty;
         String Description;
-        String DescriptionPhoto = "";
+        InputStream DescriptionPhoto;
 
         // Check Order Status
-        System.out.println("Compare Date = " + currentOrder.getDeliveryDate().compareTo(LocalDate.now()));
         if ((currentOrder.getDeliveryDate().compareTo(LocalDate.now()) < 0) && (balanceDue.getText().equals("0"))) {
             currentOrder.setOrderStatus("Completed");
         }
@@ -165,8 +177,15 @@ public class SubOrderFormController implements Initializable {
             ProductID = subOrder.getProductID();
             Qty = subOrder.getQty();
             Description = subOrder.getDescription();
-//            DescriptionPhoto = subOrder.getDescriptionPhoto();
-            Database.addSubOrder(OrderID, ProductID, Qty, Description, null);
+            // Check if Product has photo
+            if (subOrder.getDescriptionPhoto() == null){
+                System.out.println("test1");
+                Database.addSubOrder(OrderID, ProductID, Qty, Description);
+            } else {
+                System.out.println("test2");
+                DescriptionPhoto = subOrder.getDescriptionPhoto();
+                Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
+            }
         }
 
 
@@ -184,28 +203,21 @@ public class SubOrderFormController implements Initializable {
         parentController.RefreshOrderTable();
     }
 
-    private int SetDiscount(){
-        double total = Double.valueOf(subTotal.getText());
+    private int SetDiscount(double total){
         double disc = 0;
         double total_disc = 0;
 
         if(total == 0 || total <= 1500000){
             disc = 0.15;
-            total_disc = total * disc;
-            return (int)total_disc;
         } else if(total >= 1500001 || total <= 3000000){
             disc = 0.1;
-            total_disc = total * disc;
-            return (int)total_disc;
         } else if(total >= 3000001 || total <= 5000000){
-            disc = 0.5;
-            total_disc = total * disc;
-            return (int)total_disc;
+            disc = 0.075;
         } else{
-            disc = 5;
-            total_disc = total * (disc / 100);
-            return (int)total_disc;
+            disc = 0.05;
         }
+        total_disc = total * disc;
+        return (int)total_disc;
     }
 
     private void RefreshSubOrderTable(){
@@ -218,13 +230,15 @@ public class SubOrderFormController implements Initializable {
             sTotal += suborder.getQty() * suborder.getPrice();
         }
 
+        // Check if customer is Member
+        if(currentCustomer.getMember().equals("Member")){
+            disc = SetDiscount(sTotal);
+        }
+
+        int gTotal = sTotal + currentOrder.getDeliveryPrice() - disc;
+
         // Set Labels;
         subTotal.setText(String.valueOf(sTotal));
-        // Set Discount for Members
-        if(currentCustomer.getMember().equals("Member")){
-            disc = SetDiscount();
-        }
-        int gTotal = sTotal + currentOrder.getDeliveryPrice() - disc;
         discount.setText(String.valueOf(disc));
         grandTotal.setText(String.valueOf(gTotal));
         balanceDue.setText(String.valueOf(gTotal));

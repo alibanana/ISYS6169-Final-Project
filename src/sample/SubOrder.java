@@ -1,6 +1,6 @@
 package sample;
 
-import java.sql.Blob;
+import java.io.InputStream;
 
 public class SubOrder {
     private int ColNo;
@@ -9,10 +9,10 @@ public class SubOrder {
     private String ProductName;
     private int Qty;
     private String Description;
-    private Blob DescriptionPhoto;
+    private InputStream DescriptionPhoto;
     private int Price;
 
-    public SubOrder(int ColNo, String orderID, String productID, String productName, int qty, String description, Blob descriptionPhoto, int price) {
+    public SubOrder(int ColNo, String orderID, String productID, String productName, int qty, String description, InputStream descriptionPhoto, int price) {
         this.ColNo = ColNo;
         OrderID = orderID;
         ProductID = productID;
@@ -29,14 +29,15 @@ public class SubOrder {
         ProductName = productName;
         Qty = qty;
         Description = description;
+        DescriptionPhoto = null;
         Price = price;
     }
 
-    public Blob getDescriptionPhoto() {
+    public InputStream getDescriptionPhoto() {
         return DescriptionPhoto;
     }
 
-    public void setDescriptionPhoto(Blob descriptionPhoto) {
+    public void setDescriptionPhoto(InputStream descriptionPhoto) {
         DescriptionPhoto = descriptionPhoto;
     }
 
