@@ -16,6 +16,7 @@ import org.controlsfx.control.textfield.TextFields;
 
 import javax.xml.crypto.Data;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -104,7 +105,7 @@ public class EditOrderFormController implements Initializable {
     }
 
     @FXML
-    public void editOrder(ActionEvent event){
+    public void editOrder(ActionEvent event) throws SQLException {
         String ordertype;
         if (orderType.getSelectionModel().isEmpty()){
             ordertype = order.getOrderType();

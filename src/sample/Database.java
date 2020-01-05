@@ -377,6 +377,28 @@ public class Database {
         }
     }
 
+    public static int getDoneOrders() throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT COUNT(*) as Done FROM orders WHERE OrderStatus = 'Completed'";
+        sql = String.format(sql);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getInt("Done");
+    }
+
+    public static int getOngoingOrders() throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT COUNT(*) as Ongoing FROM orders WHERE OrderStatus = 'Pending'";
+        sql = String.format(sql);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getInt("Ongoing");
+    }
+
     public static void addOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, int DeliveryPrice, LocalDate OrderDate, LocalDateTime DeliveryDateTime, String OrderStatus, int Payment, int Discount){
         try {
             conn = connect();

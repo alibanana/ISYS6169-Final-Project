@@ -176,6 +176,7 @@ public class SubOrderFormController implements Initializable {
     @FXML
     public void addOrder(ActionEvent event) throws SQLException {
         try {
+            calculatePaid();
             // Set Sub-Orders variables
             String OrderID;
             String ProductID;

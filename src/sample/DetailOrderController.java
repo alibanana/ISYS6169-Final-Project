@@ -93,8 +93,8 @@ public class DetailOrderController implements Initializable {
         discount.setText(String.valueOf(order.getDiscount()));
         paid.setText(String.valueOf(order.getPayment()));
 
-        calculatePaid();
         RefreshSubOrderTable();
+        calculatePaid();
     }
 
     private void bindProductName(){

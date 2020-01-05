@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1214.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <AnchorPane prefHeight="700.0" prefWidth="166.0" style="-fx-background-color: #ffffff;">
          <children>
@@ -87,7 +87,7 @@
             <ChoiceBox fx:id="bgModePicker" layoutX="459.0" layoutY="566.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034">
+      <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1048.0" visible="false">
          <children>
             <TableView fx:id="OrderTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
               <columns>
@@ -120,28 +120,28 @@
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="OverviewLabel" layoutX="923.0" layoutY="72.0" text="Overview" textFill="#5596fd">
+            <Label fx:id="OverviewLabel" layoutX="926.0" layoutY="67.0" text="Overview" textFill="#5596fd">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
             <ComboBox fx:id="OrderFilterComboBox" layoutX="145.0" layoutY="24.0" onAction="#RefreshOrderList" prefHeight="31.0" prefWidth="166.0" style="-fx-background-color: #D1D1D1;" />
-            <Label fx:id="DoneOrderLabel" layoutX="909.0" layoutY="147.0" text="Done Orders">
+            <Label fx:id="DoneOrderLabel" layoutX="912.0" layoutY="123.0" text="Done Orders">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="OngoingOrderLabel" layoutX="897.0" layoutY="237.0" text="Ongoing Orders">
+            <Label fx:id="OngoingOrderLabel" layoutX="900.0" layoutY="205.0" text="Ongoing Orders">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="PaymentPendingLabel" layoutX="890.0" layoutY="332.0" text="Payment Pending">
+            <Label fx:id="PaymentPendingLabel" layoutX="893.0" layoutY="293.0" text="Payment Pending">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="TotalRevenueLabel" layoutX="902.0" layoutY="427.0" text="Total Revenue">
+            <Label fx:id="TotalRevenueLabel" layoutX="904.0" layoutY="379.0" text="Total Revenue">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
@@ -153,8 +153,28 @@
             </Label>
             <DatePicker fx:id="OrderDateFilter" layoutX="320.0" layoutY="24.0" prefHeight="31.0" prefWidth="184.0" />
             <Button fx:id="filterDateButton" layoutX="511.0" layoutY="23.0" mnemonicParsing="false" onAction="#RefreshOrderTable" prefHeight="31.0" prefWidth="116.0" style="-fx-background-color: #00ab66;" text="Filter by Date" textFill="WHITE" />
+            <Label fx:id="DoneOrders" alignment="CENTER" contentDisplay="BOTTOM" layoutX="876.0" layoutY="154.0" prefHeight="31.0" prefWidth="174.0" text="0">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="OngoingOrders" alignment="CENTER" contentDisplay="BOTTOM" layoutX="877.0" layoutY="237.0" prefHeight="31.0" prefWidth="174.0" text="0">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="PaymentPending" alignment="CENTER" contentDisplay="BOTTOM" layoutX="877.0" layoutY="321.0" prefHeight="31.0" prefWidth="174.0" text="0">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="TotalRevenue" alignment="CENTER" contentDisplay="BOTTOM" layoutX="878.0" layoutY="407.0" prefHeight="31.0" prefWidth="174.0" text="0">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Label>
          </children></AnchorPane>
-      <AnchorPane fx:id="CustomerPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
+      <AnchorPane fx:id="CustomerPane" layoutX="166.0" prefHeight="700.0" prefWidth="1052.0" visible="false">
          <children>
             <TableView fx:id="CustomerTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
                <columns>
@@ -181,11 +201,6 @@
                   <Font name="Arial" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="OverviewLabel2" layoutX="927.0" layoutY="37.0" text="Overview" textFill="#5596fd">
-               <font>
-                  <Font name="Arial" size="18.0" />
-               </font>
-            </Label>
             <ComboBox fx:id="CustomerComboBox" layoutX="204.0" layoutY="21.0" onAction="#RefreshCustomerTable" prefHeight="31.0" prefWidth="184.0" style="-fx-background-color: #D1D1D1;" />
             <Label fx:id="EditCustomerLabel" layoutX="28.0" layoutY="655.0" onMouseClicked="#EditCustomerClicked" text="Edit Customer" textFill="#684efc">
                <font>
@@ -195,7 +210,7 @@
             <Button layoutX="491.0" layoutY="24.0" mnemonicParsing="false" onAction="#RefreshCustomerTable" text="Refresh" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1034.0" visible="false">
+      <AnchorPane fx:id="ProductPane" layoutX="166.0" prefHeight="700.0" prefWidth="1052.0">
          <children>
             <TableView fx:id="ProductTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
                <columns>
@@ -222,11 +237,6 @@
                </font>
             </Label>
             <Label fx:id="EditProductLabel" layoutX="27.0" layoutY="655.0" onMouseClicked="#EditProductClicked" text="Edit Product" textFill="#684efc">
-               <font>
-                  <Font name="Arial" size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="OverviewLabel3" layoutX="921.0" layoutY="65.0" text="Overview" textFill="#5596fd">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>

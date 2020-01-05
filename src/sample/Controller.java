@@ -69,6 +69,10 @@ public class Controller implements Initializable {
     @FXML private Label PaymentPendingLabel;
     @FXML private Label TotalRevenueLabel;
     @FXML private Label DetailsOrderLabel;
+    @FXML private Label DoneOrders;
+    @FXML private Label OngoingOrders;
+    @FXML private Label PaymentPending;
+    @FXML private Label TotalRevenue;
     @FXML private ComboBox OrderFilterComboBox;
     @FXML private DatePicker OrderDateFilter;
     @FXML private TableView<Order> OrderTable;
@@ -140,7 +144,6 @@ public class Controller implements Initializable {
         NewCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         DeleteCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         EditCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
-        OverviewLabel2.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         CustomerComboBox.setPromptText("Type: All");
         CustomerComboBox.getItems().addAll("All", "Members", "Non-Members");
 
@@ -148,7 +151,6 @@ public class Controller implements Initializable {
         NewProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         DeleteProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         EditProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
-        OverviewLabel3.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         FilterProduct.setPromptText("All");
         RefreshProductFilter();
 
@@ -221,7 +223,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void OrderLabelClicked(){
+    public void OrderLabelClicked() throws SQLException {
         LabelDefault();
         OrderLabel.setTextFill(Paint.valueOf("5596FD"));
         OrderRectangle.setVisible(true);
@@ -230,6 +232,7 @@ public class Controller implements Initializable {
         OrderPane.setVisible(true);
         new FadeIn(OrderPane).play();
         RefreshOrderTable();
+        SetOverview();
     }
 
     @FXML
@@ -525,7 +528,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void RefreshOrderTable() throws NullPointerException{
+    public void RefreshOrderTable() throws NullPointerException, SQLException {
         RefreshOrderList();
         OrdIDCol.setCellValueFactory(new PropertyValueFactory<>("OrderID"));
         OrdCustCol.setCellValueFactory(new PropertyValueFactory<>("CustomerName"));
@@ -536,6 +539,7 @@ public class Controller implements Initializable {
         OrdStatusCol.setCellValueFactory(new PropertyValueFactory<>("OrderStatus"));
         OrdBalanceDueCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
         OrderTable.setItems(OrderList);
+        SetOverview();
     }
 
     // Customer Pane Functions
@@ -784,5 +788,15 @@ public class Controller implements Initializable {
         ProdTypeCol.setCellValueFactory(new PropertyValueFactory<>("Type"));
         ProdPriceCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
         ProductTable.setItems(ProductList);
+    }
+
+    private void SetOverview() throws SQLException {
+        DoneOrders.setText(String.valueOf(Database.getDoneOrders()));
+        OngoingOrders.setText(String.valueOf(Database.getOngoingOrders()));
+
+        // Select Where Balance Due != 0
+        PaymentPending.setText("-");
+        // Select Sum All Payment
+        TotalRevenue.setText("-");
     }
 }
