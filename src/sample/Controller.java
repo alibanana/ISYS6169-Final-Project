@@ -370,7 +370,7 @@ public class Controller implements Initializable {
 
     // Order Pane Functions
     @FXML
-    public void NewOrderClicked() throws IOException {
+    public void NewOrderClicked() throws IOException, SQLException {
         System.out.println("New Order Clicked");
         new FadeIn(NewOrderLabel).setSpeed(5).play();
 
@@ -383,7 +383,7 @@ public class Controller implements Initializable {
         // Get CurrentProductID; if no Product exist yet prevProductID set to 0
         String prevOrderID = "ORD00000";
         if (!OrderList.isEmpty()){
-            prevOrderID = OrderList.get(OrderList.size()-1).getOrderID();
+            prevOrderID = Database.getLastOrderID();;
         }
 
         // Passing data to ProductFormController
@@ -483,13 +483,13 @@ public class Controller implements Initializable {
             Connection conn = Database.connect();
 
             // Filtering OrderStatus
-            String sql = "SELECT * FROM orders";
+            String sql = "SELECT * FROM orders ORDER BY DeliveryDateTime DESC";
             boolean option = false;
             if (filter.equals("Pending")){
-                sql = "SELECT * FROM orders WHERE OrderStatus = 'Pending'";
+                sql = "SELECT * FROM orders WHERE OrderStatus = 'Pending' ORDER BY DeliveryDateTime DESC";
                 option = true;
             } else if (filter.equals("Completed")){
-                sql = "SELECT * FROM orders WHERE OrderStatus = 'Completed'";
+                sql = "SELECT * FROM orders WHERE OrderStatus = 'Completed' ORDER BY DeliveryDateTime DESC";
                 option = true;
             }
 

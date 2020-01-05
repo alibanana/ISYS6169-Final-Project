@@ -16,6 +16,7 @@ public class Order {
     private String OrderStatus;
     private int Payment;
     private int Discount;
+    private int BalanceDue;
 
     // Split the Delivery Date & Time (for tableview)
     private LocalDate DeliveryDate;
@@ -47,6 +48,23 @@ public class Order {
 //        OrderStatus = orderStatus;
 //        Payment = payment;
 //    }
+
+    public Order(String orderID, String customerName, String orderType, String deliveryAddress, int deliveryPrice, LocalDate orderDate, LocalDateTime deliveryDateTime, String orderStatus, int payment, int discount, int balancedue) {
+        OrderID = orderID;
+        CustomerName = customerName;
+        OrderType = orderType;
+        DeliveryAddress = deliveryAddress;
+        DeliveryPrice = deliveryPrice;
+        OrderDate = orderDate;
+        DeliveryDateTime = deliveryDateTime;
+        OrderStatus = orderStatus;
+        Payment = payment;
+        Discount = discount;
+        // Split the Delivery Date & Time
+        DeliveryDate = DeliveryDateTime.toLocalDate();
+        DeliveryTime = DeliveryDateTime.toLocalTime();
+        BalanceDue = balancedue;
+    }
 
     public String getOrderID() {
         return OrderID;

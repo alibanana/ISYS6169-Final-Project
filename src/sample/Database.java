@@ -342,6 +342,41 @@ public class Database {
         }
     }
 
+    public static int getPayment(String OrderID) throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT Payment FROM orders WHERE OrderID = '%s'";
+        sql = String.format(sql, OrderID);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getInt("Payment");
+    }
+
+    public static String getLastOrderID() throws SQLException{
+        try {
+            conn = connect();
+
+            String sql = "SELECT MAX(OrderID) FROM orders";
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            rs.next();
+
+            // If no data exists yet
+            if (rs.getString("MAX(OrderID)") == null){
+                System.out.println("Last OrderID = ORD00000");
+                return "ORD00000";
+            }
+
+            // If data exists
+            String LastOrderID = rs.getString("MAX(OrderID)");
+            System.out.println(String.format("Last OrderID = %s", LastOrderID));
+            return LastOrderID;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void addOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, int DeliveryPrice, LocalDate OrderDate, LocalDateTime DeliveryDateTime, String OrderStatus, int Payment, int Discount){
         try {
             conn = connect();
