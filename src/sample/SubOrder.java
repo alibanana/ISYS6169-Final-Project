@@ -11,6 +11,7 @@ public class SubOrder {
     private String Description;
     private InputStream DescriptionPhoto;
     private int Price;
+    private String LocalPhotoID;
 
     public SubOrder(int ColNo, String orderID, String productID, String productName, int qty, String description, InputStream descriptionPhoto, int price) {
         this.ColNo = ColNo;
@@ -21,6 +22,7 @@ public class SubOrder {
         Description = description;
         DescriptionPhoto = descriptionPhoto;
         Price = price;
+        LocalPhotoID = null;
     }
     public SubOrder(int ColNo, String orderID, String productID, String productName, int qty, String description, int price) {
         this.ColNo = ColNo;
@@ -31,6 +33,19 @@ public class SubOrder {
         Description = description;
         DescriptionPhoto = null;
         Price = price;
+        LocalPhotoID = null;
+    }
+
+    public String getLocalPhotoID() {
+        return LocalPhotoID;
+    }
+
+    public void setLocalPhotoID(String localPhotoID) {
+        LocalPhotoID = localPhotoID;
+    }
+
+    public boolean LocalPhotoExists(){
+        return (getLocalPhotoID() != null);
     }
 
     public InputStream getDescriptionPhoto() {

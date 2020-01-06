@@ -3,9 +3,6 @@ package sample;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDate;
@@ -19,8 +16,8 @@ public class Database {
     static final String DB_URL = "jdbc:mysql://localhost/db_databasesystem";
     static final String USER = "root";
 //    passwordnya Aleep
-//    static final String PASS = "2201798295Binus";
-    static final String PASS = "";
+    static final String PASS = "2201798295Binus";
+//    static final String PASS = "";
     static Connection conn;
     static Statement stmt;
     static PreparedStatement pstmt;
@@ -481,6 +478,8 @@ public class Database {
 
             pstmt.execute();
 
+            DescriptionPhoto.close();
+
             System.out.println(String.format("Added %s to sub-orders", ProductID));
         } catch (Exception e) {
             e.printStackTrace();
@@ -539,7 +538,7 @@ public class Database {
 
             rs.close();
             conn.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, e);
         }
         return SubOrderList;

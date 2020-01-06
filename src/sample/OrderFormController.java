@@ -70,7 +70,6 @@ public class OrderFormController implements Initializable {
         newOrderID = String.format("ORD%05d", this.prevOrderID+1);
         System.out.println("Order ID: " + newOrderID);
         orderDate.setValue(LocalDate.now());
-        deliveryTime.set24HourView(true);
     }
 
     private void bindCustomerTextFields() {
@@ -104,7 +103,6 @@ public class OrderFormController implements Initializable {
         customerEmail.clear();
     }
 
-    @FXML
     public void ClearButton2Clicked(){
         deliveryAddress.clear();
         orderDate.setValue(LocalDate.now());
@@ -115,6 +113,8 @@ public class OrderFormController implements Initializable {
 
     @FXML
     public void NextButtonClicked(ActionEvent event) throws IOException {
+        System.out.println("Next Button Clicked (Sub Order)");
+
         try {
             // Make a New Order Object
             LocalDateTime deliverydatetime = deliveryDate.getValue().atTime(deliveryTime.getValue());
@@ -141,6 +141,7 @@ public class OrderFormController implements Initializable {
             stage.setTitle("Sub Order Form");
             stage.setScene(new Scene(SubOrderFormParent));
             stage.show();
+
         } catch (NullPointerException e){
             // Validation with alert box
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -149,7 +150,7 @@ public class OrderFormController implements Initializable {
             alert.setContentText("Data is still not completed, please fullfil all data.");
 
             alert.showAndWait();
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             // Validation with alert box
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");

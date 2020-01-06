@@ -90,7 +90,6 @@ public class Controller implements Initializable {
     @FXML private Label NewCustomerLabel;
     @FXML private Label DeleteCustomerLabel;
     @FXML private Label EditCustomerLabel;
-    @FXML private Label OverviewLabel2;
     @FXML private ComboBox CustomerComboBox;
     @FXML private TableView<Customer> CustomerTable;
     @FXML private TableColumn<Customer, Integer> CustNoCol;
@@ -105,7 +104,6 @@ public class Controller implements Initializable {
     @FXML private Label NewProductLabel;
     @FXML private Label DeleteProductLabel;
     @FXML private Label EditProductLabel;
-    @FXML private Label OverviewLabel3;
     @FXML private ComboBox FilterProduct;
     @FXML private TableView<Product> ProductTable;
     @FXML private TableColumn<Product, Integer> ProdNoCol;
@@ -211,6 +209,16 @@ public class Controller implements Initializable {
         ProductPane.setVisible(false);
     }
 
+    private void SetOverview() throws SQLException {
+        DoneOrders.setText(String.valueOf(Database.getDoneOrders()));
+        OngoingOrders.setText(String.valueOf(Database.getOngoingOrders()));
+
+        // Select Where Balance Due != 0
+        PaymentPending.setText("-");
+        // Select Sum All Payment
+        TotalRevenue.setText("-");
+    }
+
     @FXML
     public void HomeLabelClicked(){
         LabelDefault();
@@ -269,6 +277,8 @@ public class Controller implements Initializable {
         ResultSet result = Database.getWeeklySales(Database.getFirstSale(), Database.getLastSale());
 
         insertIntoGraph(result, "Weekly graph");
+
+
     }
 
     @FXML
@@ -280,6 +290,8 @@ public class Controller implements Initializable {
         ResultSet result = Database.getMonthlySales(Database.getFirstSale(), Database.getLastSale());
 
         insertIntoGraph(result, "Monthly graph");
+
+
     }
 
     @FXML
@@ -291,6 +303,8 @@ public class Controller implements Initializable {
         ResultSet result = Database.getYearlySales(Database.getFirstSale(), Database.getLastSale());
 
         insertIntoGraph(result, "Yearly graph");
+
+
     }
 
     @FXML
@@ -351,6 +365,7 @@ public class Controller implements Initializable {
                 getAllYearlyGraph();
             }
         }
+
     }
 
     @FXML
@@ -366,6 +381,7 @@ public class Controller implements Initializable {
                 set1.getData().add(new XYChart.Data(week, data));
             }
             weeklyRevenueChart.getData().addAll(set1);
+
         } catch (SQLException e){
                 e.printStackTrace();
             }
@@ -386,7 +402,7 @@ public class Controller implements Initializable {
         // Get CurrentProductID; if no Product exist yet prevProductID set to 0
         String prevOrderID = "ORD00000";
         if (!OrderList.isEmpty()){
-            prevOrderID = Database.getLastOrderID();;
+            prevOrderID = Database.getLastOrderID();
         }
 
         // Passing data to ProductFormController
@@ -486,15 +502,16 @@ public class Controller implements Initializable {
             Connection conn = Database.connect();
 
             // Filtering OrderStatus
-            String sql = "SELECT * FROM orders ORDER BY DeliveryDateTime DESC";
+            String sql = "SELECT * FROM orders";
             boolean option = false;
             if (filter.equals("Pending")){
-                sql = "SELECT * FROM orders WHERE OrderStatus = 'Pending' ORDER BY DeliveryDateTime DESC";
+                sql = "SELECT * FROM orders WHERE OrderStatus = 'Pending'";
                 option = true;
             } else if (filter.equals("Completed")){
-                sql = "SELECT * FROM orders WHERE OrderStatus = 'Completed' ORDER BY DeliveryDateTime DESC";
+                sql = "SELECT * FROM orders WHERE OrderStatus = 'Completed'";
                 option = true;
             }
+            sql = sql + " ORDER BY DeliveryDateTime DESC";
 
             // Filtering Dates
             if (!(OrderDateFilter.getValue() == null)) {
@@ -788,15 +805,5 @@ public class Controller implements Initializable {
         ProdTypeCol.setCellValueFactory(new PropertyValueFactory<>("Type"));
         ProdPriceCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
         ProductTable.setItems(ProductList);
-    }
-
-    private void SetOverview() throws SQLException {
-        DoneOrders.setText(String.valueOf(Database.getDoneOrders()));
-        OngoingOrders.setText(String.valueOf(Database.getOngoingOrders()));
-
-        // Select Where Balance Due != 0
-        PaymentPending.setText("-");
-        // Select Sum All Payment
-        TotalRevenue.setText("-");
     }
 }

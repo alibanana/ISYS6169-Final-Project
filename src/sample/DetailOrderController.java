@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -48,7 +49,6 @@ public class DetailOrderController implements Initializable {
     @FXML private TextField qty;
     @FXML private TextArea productDescription;
     @FXML private Label FileNameLabel;
-    @FXML private Button viewPhotoButton;
 
     // Product List
     private ObservableList<Product> ProductList = FXCollections.observableArrayList();
@@ -69,6 +69,18 @@ public class DetailOrderController implements Initializable {
         productNameCol.setCellValueFactory(new PropertyValueFactory<>("ProductName"));
         qtyCol.setCellValueFactory(new PropertyValueFactory<>("Qty"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        resetResourcesDir();
+
+    }
+
+    private void resetResourcesDir(){
+        File directory = new File("src/resources");
+        File[] files = directory.listFiles();
+        for ( File file : files) {
+            if (!file.delete()){
+                System.out.println("Failed to delete "+file);
+            }
+        }
     }
 
     public void initData(Controller parentController, Order order, ObservableList<Product> ProductList){
@@ -126,6 +138,7 @@ public class DetailOrderController implements Initializable {
         File selectedFile = fc.showOpenDialog(null);
         if (selectedFile != null){
             System.out.println("File Choosen Path = " + selectedFile.getAbsolutePath());
+            System.out.println("File Choosen Name = " + selectedFile.getName());
             FileNameLabel.setText(selectedFile.getName());
             photoFile = selectedFile;
         } else {
@@ -136,9 +149,51 @@ public class DetailOrderController implements Initializable {
     @FXML
     public void viewPhotoClicked() throws IOException {
         System.out.println("ViewPhotoButton Clicked on DetailOrder.fxml");
+        InputStream input;
 
-        InputStream input = SubOrderTable.getSelectionModel().getSelectedItem().getDescriptionPhoto();
-        Image image = new Image(input);
+        // Get Selected Product
+        SubOrder product = SubOrderTable.getSelectionModel().getSelectedItem();
+
+        // Checks if File in resources directory
+        if (!product.LocalPhotoExists()){
+            // Number of Files in resources dir
+            int num;
+            try {
+                num = new File("src/resources").list().length;
+            } catch (NullPointerException e) {
+                num = 0;
+            }
+
+            // Set LocalPhotoID
+            String LocalPhotoID = "JPG" + String.valueOf(num + 1);
+
+            // Add LocalPhotoID to product object
+            product.setLocalPhotoID(LocalPhotoID);
+
+            // Set LocalPhoto PathName
+            String pathName = "src/resources/" + LocalPhotoID + ".jpg";
+            
+            input = product.getDescriptionPhoto();
+            OutputStream output = new FileOutputStream(new File(pathName));
+
+            // Writing file
+            byte[] content = new byte[1024];
+            int size = 0;
+            while ((size = input.read(content)) != -1){
+                output.write(content, 0, size);
+            }
+            output.close();
+            input.close();
+
+            // Copy to DescriptionPhoto
+            File copyPhoto = new File("src/resources/" + product.getLocalPhotoID() + ".jpg");
+            product.setDescriptionPhoto(new FileInputStream(copyPhoto));
+        }
+
+        // Get LocalPhoto PathName
+        String pathName = "file:src/resources/" + product.getLocalPhotoID() + ".jpg";
+
+        Image image = new Image(pathName, 400, 600, true, true);
         ImageView imageView = new ImageView();
         imageView.setImage(image);
 
@@ -148,6 +203,7 @@ public class DetailOrderController implements Initializable {
         Scene scene = new Scene(pane);
 
         Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.showAndWait();
     }
@@ -156,6 +212,7 @@ public class DetailOrderController implements Initializable {
     public void tableviewOnSelected() {
         System.out.println("TableView was selected");
         SubOrder product = SubOrderTable.getSelectionModel().getSelectedItem();
+        setSelectedProduct(product.getProductName());
         productName.setText(product.getProductName());
         productPrice.setText(String.valueOf(product.getPrice()));
         qty.setText(String.valueOf(product.getQty()));
@@ -221,7 +278,7 @@ public class DetailOrderController implements Initializable {
     }
 
     @FXML
-    public void editOrder(ActionEvent event) throws SQLException, InterruptedException {
+    public void editOrder(ActionEvent event) throws SQLException, InterruptedException, IOException {
         // Set Sub-Orders variables
         String OrderID;
         String ProductID;
@@ -255,6 +312,7 @@ public class DetailOrderController implements Initializable {
             } else {
                 DescriptionPhoto = subOrder.getDescriptionPhoto();
                 Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
+                DescriptionPhoto.close();
             }
         }
 

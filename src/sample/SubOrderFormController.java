@@ -12,10 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -117,8 +114,8 @@ public class SubOrderFormController implements Initializable {
 
     @FXML
     public void addItemClicked() throws FileNotFoundException {
+        System.out.println("AddItemButton clicked on SubOrderForm.fxml");
         try {
-            System.out.println("AddItemButton clicked on SubOrderForm.fxml");
             if (photoFile == null) {
                 SubOrderList.add(new SubOrder(SubOrderList.size() + 1, currentOrder.getOrderID(), selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
             } else {
@@ -174,7 +171,7 @@ public class SubOrderFormController implements Initializable {
     }
 
     @FXML
-    public void addOrder(ActionEvent event) throws SQLException {
+    public void addOrder(ActionEvent event) throws SQLException, IOException {
         try {
             calculatePaid();
             // Set Sub-Orders variables
@@ -205,11 +202,12 @@ public class SubOrderFormController implements Initializable {
                     System.out.println("test2");
                     DescriptionPhoto = subOrder.getDescriptionPhoto();
                     Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
+                    DescriptionPhoto.close();
                 }
             }
 
 
-            //        Detects if a customer is a non-member, checks if they already have 5 orders and makes them a member if both conditions are fulfilled
+//        Detects if a customer is a non-member, checks if they already have 5 orders and makes them a member if both conditions are fulfilled
             if (currentCustomer.getMember().equals("Non-Member")) {
                 int currCustomerNumOrders = Database.getNoOrders(currentCustomer.getCustomerID());
                 if (currCustomerNumOrders >= 5) {
@@ -221,7 +219,7 @@ public class SubOrderFormController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
             parentController.RefreshOrderTable();
-        } catch (NumberFormatException e){
+        }  catch (NumberFormatException e){
             // Validation with alert box
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
