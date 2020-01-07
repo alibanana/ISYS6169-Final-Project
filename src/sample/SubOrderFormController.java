@@ -160,14 +160,33 @@ public class SubOrderFormController implements Initializable {
 
     @FXML
     public void calculatePaid(){
-        int sTotal = 0;
-        // Getting Grand Total value
-        int gTotal = Integer.parseInt(grandTotal.getText());
-        // Getting Paid value
-        int Paid = Integer.parseInt(paid.getText());
+        try{
+            int sTotal = 0;
+            // Getting Grand Total value
+            int gTotal = Integer.parseInt(grandTotal.getText());
+            // Getting Paid value
+            int Paid = Integer.parseInt(paid.getText());
 
-        sTotal = gTotal - Paid;
-        balanceDue.setText(String.valueOf(sTotal));
+            sTotal = gTotal - Paid;
+            if(sTotal < 0){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setHeaderText("Please Input The Correct Amount of Paid!");
+                alert.setContentText("Paid have more amount than balance due, please fulfill with correct format. \n(e.g. Qty with number format.");
+
+                alert.showAndWait();
+            } else{
+                balanceDue.setText(String.valueOf(sTotal));
+            }
+        } catch (NumberFormatException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Please Input The Correct Format of Paid!");
+            alert.setContentText("Paid have wrong format, please fulfill with correct format. \n(e.g. Qty with number format.");
+
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -206,7 +225,7 @@ public class SubOrderFormController implements Initializable {
                 }
             }
 
-//        Detects if a customer is a non-member, checks if they already have 5 orders and makes them a member if both conditions are fulfilled
+            // Detects if a customer is a non-member, checks if they already have 5 orders and makes them a member if both conditions are fulfilled
             if (currentCustomer.getMember().equals("Non-Member")) {
                 int currCustomerNumOrders = Database.getNoOrders(currentCustomer.getCustomerID());
                 if (currCustomerNumOrders >= 5) {

@@ -162,6 +162,11 @@ public class DetailOrderController implements Initializable {
         // Get Selected Product
         SubOrder product = SubOrderTable.getSelectionModel().getSelectedItem();
 
+        // Checks if SubOrder has Photo
+        if (product.getDescriptionPhoto() == null){
+            return;
+        }
+
         // Checks if File in resources directory
         if (!product.LocalPhotoExists()){
             // Number of Files in resources dir
@@ -235,14 +240,30 @@ public class DetailOrderController implements Initializable {
     @FXML
     public void addItemClicked() throws FileNotFoundException {
         System.out.println("AddItemButton clicked on DetailOrderForm.fxml");
+        int flag = 0;
         try {
-            // Checks whether product is edited / added
+            SubOrder subOrder = SubOrderTable.getSelectionModel().getSelectedItem();
+            // If Product is Edited
             if (productInList(selectedProduct.getProductID())){
+                // If Edited Product has previous Photo
+                if (subOrder.getDescriptionPhoto() != null){
+                    flag = 1;
+                }
                 SubOrderList.remove(SubOrderTable.getSelectionModel().getSelectedIndex());
             }
+            // Either SubOrder previously has photo or it was a new product (without photo)
             if (photoFile == null){
-                SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
+                if (flag == 0){
+                    // If new SubOrder without Photo
+                    SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
+                } else if (flag == 1){
+                    // If not new SubOrder & Has Previous Photo
+                    SubOrder newsuborder = new SubOrder(subOrder.getColNo(), order.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), subOrder.getDescriptionPhoto(), selectedProduct.getPrice());
+                    newsuborder.setLocalPhotoID(subOrder.getLocalPhotoID());
+                    SubOrderList.add(newsuborder);
+                }
             } else {
+                // If SubOrder with new Photo (old/new SubOrder)
                 SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(), selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), new FileInputStream(photoFile), selectedProduct.getPrice()));
             }
             RefreshSubOrderTable();
@@ -293,14 +314,33 @@ public class DetailOrderController implements Initializable {
 
     @FXML
     public void calculatePaid(){
-        int sTotal = 0;
-        // Getting Grand Total value
-        int gTotal = Integer.parseInt(grandTotal.getText());
-        // Getting Paid value
-        int Paid = Integer.parseInt(paid.getText());
+        try{
+            int sTotal = 0;
+            // Getting Grand Total value
+            int gTotal = Integer.parseInt(grandTotal.getText());
+            // Getting Paid value
+            int Paid = Integer.parseInt(paid.getText());
 
-        sTotal = gTotal - Paid;
-        balanceDue.setText(String.valueOf(sTotal));
+            sTotal = gTotal - Paid;
+            if(sTotal < 0){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setHeaderText("Please Input The Correct Amount of Paid!");
+                alert.setContentText("Paid have more amount than balance due, please fulfill with correct format. \n(e.g. Qty with number format.");
+
+                alert.showAndWait();
+            } else{
+                balanceDue.setText(String.valueOf(sTotal));
+            }
+        } catch (NumberFormatException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Please Input The Correct Format of Paid!");
+            alert.setContentText("Paid have wrong format, please fulfill with correct format. \n(e.g. Qty with number format.");
+
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -377,5 +417,9 @@ public class DetailOrderController implements Initializable {
         discount.setText(String.valueOf(disc));
         grandTotal.setText(String.valueOf(gTotal));
         balanceDue.setText(String.valueOf(gTotal));
+
+        // Sort
+        noCol.setSortType(TableColumn.SortType.ASCENDING);
+        SubOrderTable.getSortOrder().add(noCol);
     }
 }
