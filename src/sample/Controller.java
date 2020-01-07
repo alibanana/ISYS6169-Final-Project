@@ -135,21 +135,18 @@ public class Controller implements Initializable {
         PaymentPendingLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         TotalRevenueLabel.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         DetailsOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
-        OrderFilterComboBox.setPromptText("Status: All");
         OrderFilterComboBox.getItems().addAll("All", "Pending", "Completed");
 
         // Initialize Customer Pane
         NewCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         DeleteCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         EditCustomerLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
-        CustomerComboBox.setPromptText("Type: All");
         CustomerComboBox.getItems().addAll("All", "Members", "Non-Members");
 
         // Initialize Product Pane
         NewProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         DeleteProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         EditProductLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
-        FilterProduct.setPromptText("All");
         RefreshProductFilter();
 
         // By Default, Home Label is Clicked
@@ -233,6 +230,8 @@ public class Controller implements Initializable {
     @FXML
     public void OrderLabelClicked() throws SQLException {
         LabelDefault();
+        OrderFilterComboBox.setValue("Status: All");
+        OrderDateFilter.setValue(null);
         OrderLabel.setTextFill(Paint.valueOf("5596FD"));
         OrderRectangle.setVisible(true);
         new FadeIn(OrderRectangle).play();
@@ -246,6 +245,7 @@ public class Controller implements Initializable {
     @FXML
     public void CustomerLabelClicked(){
         LabelDefault();
+        CustomerComboBox.setValue("Type: All");
         CustomerLabel.setTextFill(Paint.valueOf("5596FD"));
         CustomerRectangle.setVisible(true);
         new FadeIn(CustomerRectangle).play();
@@ -258,6 +258,7 @@ public class Controller implements Initializable {
     @FXML
     public void ProductLabelClicked(){
         LabelDefault();
+        FilterProduct.setPromptText("Type: All");
         ProductLabel.setTextFill(Paint.valueOf("5596FD"));
         ProductRectangle.setVisible(true);
         new FadeIn(ProductRectangle).play();
@@ -511,7 +512,6 @@ public class Controller implements Initializable {
                 sql = "SELECT * FROM orders WHERE OrderStatus = 'Completed'";
                 option = true;
             }
-            sql = sql + " ORDER BY DeliveryDateTime DESC";
 
             // Filtering Dates
             if (!(OrderDateFilter.getValue() == null)) {
@@ -525,6 +525,10 @@ public class Controller implements Initializable {
                     sql = String.format(sql, dateFilter, dateFilter);
                 }
             }
+
+            sql = sql + " ORDER BY DeliveryDateTime DESC";
+
+            System.out.println(sql);
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
 

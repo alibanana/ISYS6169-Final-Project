@@ -12,7 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -78,7 +77,7 @@ public class DetailOrderController implements Initializable {
         File[] files = directory.listFiles();
         for ( File file : files) {
             if (!file.delete()){
-                System.out.println("Failed to delete "+file);
+                System.out.println("Failed to delete " + file);
             }
         }
     }
@@ -227,18 +226,36 @@ public class DetailOrderController implements Initializable {
     @FXML
     public void addItemClicked() throws FileNotFoundException {
         System.out.println("AddItemButton clicked on DetailOrderForm.fxml");
-        // Checks whether product is edited / added
-        if (productInList(selectedProduct.getProductID())){
-            SubOrderList.remove(SubOrderTable.getSelectionModel().getSelectedIndex());
+        try {
+            // Checks whether product is edited / added
+            if (productInList(selectedProduct.getProductID())){
+                SubOrderList.remove(SubOrderTable.getSelectionModel().getSelectedIndex());
+            }
+            if (photoFile == null){
+                SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
+            } else {
+                SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(), selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), new FileInputStream(photoFile), selectedProduct.getPrice()));
+            }
+            RefreshSubOrderTable();
+            clearTextfields();
+            photoFile = null;
+        } catch (NullPointerException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Please Choose The Correct Product!");
+            alert.setContentText("Product not exist, please choose correct product.");
+
+            alert.showAndWait();
+        } catch (NumberFormatException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Please Input The Correct Format of Qty!");
+            alert.setContentText("Qty have wrong format, please fullfil with correct format. \n(e.g. Qty with number format.");
+
+            alert.showAndWait();
         }
-        if (photoFile == null){
-            SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(),selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), selectedProduct.getPrice()));
-        } else {
-            SubOrderList.add(new SubOrder(SubOrderList.size()+1, order.getOrderID(), selectedProduct.getProductID(), selectedProduct.getProductName(), Integer.parseInt(qty.getText()), productDescription.getText(), new FileInputStream(photoFile), selectedProduct.getPrice()));
-        }
-        RefreshSubOrderTable();
-        clearTextfields();
-        photoFile = null;
     }
 
     private boolean productInList(String ProductID) {
@@ -279,64 +296,57 @@ public class DetailOrderController implements Initializable {
 
     @FXML
     public void editOrder(ActionEvent event) throws SQLException, InterruptedException, IOException {
-        // Set Sub-Orders variables
-        String OrderID;
-        String ProductID;
-        int Qty;
-        String Description;
-        InputStream DescriptionPhoto;
+        try {
+            // Set Sub-Orders variables
+            String OrderID;
+            String ProductID;
+            int Qty;
+            String Description;
+            InputStream DescriptionPhoto;
 
-        // Check Order Status
-        if ((order.getDeliveryDate().compareTo(LocalDate.now()) < 0) && (balanceDue.getText().equals("0"))) {
-            order.setOrderStatus("Completed");
-        } else {
-            order.setOrderStatus("Pending");
-        }
-
-        // SQL queries
-        Database.editOrder(order.getOrderID(), Database.getCustomerID(order.getCustomerName()), order.getOrderType(), order.getDeliveryAddress(),  order.getDeliveryPrice(), order.getOrderDate(), order.getDeliveryDateTime(), order.getOrderStatus(), Integer.parseInt(paid.getText()));
-
-        // Clear SubOrders (Before Adding it again)
-        Database.clearSubOrders(order.getOrderID());
-
-        // Adding Suborders Back
-        System.out.println("SubOrderList Size = " + SubOrderList.size());
-        for (SubOrder subOrder: SubOrderList){
-            OrderID = order.getOrderID();
-            ProductID = subOrder.getProductID();
-            Qty = subOrder.getQty();
-            Description = subOrder.getDescription();
-            // Check if Product has photo
-            if (subOrder.getDescriptionPhoto() == null){
-                Database.addSubOrder(OrderID, ProductID, Qty, Description);
+            // Check Order Status
+            if ((order.getDeliveryDate().compareTo(LocalDate.now()) < 0) && (balanceDue.getText().equals("0"))) {
+                order.setOrderStatus("Completed");
             } else {
-                DescriptionPhoto = subOrder.getDescriptionPhoto();
-                Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
-                DescriptionPhoto.close();
+                order.setOrderStatus("Pending");
             }
+
+            // SQL queries
+            Database.editOrder(order.getOrderID(), Database.getCustomerID(order.getCustomerName()), order.getOrderType(), order.getDeliveryAddress(),  order.getDeliveryPrice(), order.getOrderDate(), order.getDeliveryDateTime(), order.getOrderStatus(), Integer.parseInt(paid.getText()));
+
+            // Clear SubOrders (Before Adding it again)
+            Database.clearSubOrders(order.getOrderID());
+
+            // Adding Suborders Back
+            System.out.println("SubOrderList Size = " + SubOrderList.size());
+            for (SubOrder subOrder: SubOrderList){
+                OrderID = order.getOrderID();
+                ProductID = subOrder.getProductID();
+                Qty = subOrder.getQty();
+                Description = subOrder.getDescription();
+                // Check if Product has photo
+                if (subOrder.getDescriptionPhoto() == null){
+                    Database.addSubOrder(OrderID, ProductID, Qty, Description);
+                } else {
+                    DescriptionPhoto = subOrder.getDescriptionPhoto();
+                    Database.addSubOrder(OrderID, ProductID, Qty, Description, DescriptionPhoto);
+                    DescriptionPhoto.close();
+                }
+            }
+
+            // Close Stage & Refresh Table
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+            parentController.RefreshOrderTable();
+        }  catch (NumberFormatException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Paid section was filled with Wrong Format!");
+            alert.setContentText("Paid have wrong format, please fullfil with correct format. \n(e.g. 100000)");
+
+            alert.showAndWait();
         }
-
-        // Close Stage & Refresh Table
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
-        parentController.RefreshOrderTable();
-    }
-
-    private int SetDiscount(double total){
-        double disc = 0;
-        double total_disc = 0;
-
-        if(total == 0 || total <= 1500000){
-            disc = 0.15;
-        } else if(total >= 1500001 || total <= 3000000){
-            disc = 0.1;
-        } else if(total >= 3000001 || total <= 5000000){
-            disc = 0.075;
-        } else{
-            disc = 0.05;
-        }
-        total_disc = total * disc;
-        return (int)total_disc;
     }
 
     private void RefreshSubOrderTable() {
@@ -349,10 +359,7 @@ public class DetailOrderController implements Initializable {
             sTotal += suborder.getQty() * suborder.getPrice();
         }
 
-        // Check if customer is Member
-        if(Database.getMember(order.getCustomerName())){
-            disc = SetDiscount(sTotal);
-        }
+        disc = order.getDiscount();
 
         int gTotal = sTotal + order.getDeliveryPrice() - disc;
 

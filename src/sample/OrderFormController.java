@@ -53,6 +53,7 @@ public class OrderFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb){
         orderType.getItems().addAll("Delivery", "Pick-Up");
+        deliveryTime.set24HourView(true);
     }
 
     public void initData(Controller parentController, String prevOrderID, ObservableList<Customer> CustomerList, ObservableList<Product> ProductList){
@@ -120,6 +121,17 @@ public class OrderFormController implements Initializable {
             LocalDateTime deliverydatetime = deliveryDate.getValue().atTime(deliveryTime.getValue());
             currentOrder = new Order(newOrderID, selectedCustomer.getCustomerID(), orderType.getSelectionModel().getSelectedItem().toString(), deliveryAddress.getText(),
                     Integer.parseInt(deliveryCharge.getText()), orderDate.getValue(), deliverydatetime, "Pending", 0, 0);
+
+            if (currentOrder.getOrderDate().compareTo(currentOrder.getDeliveryDate()) > 0){
+                // Validation with alert box
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setHeaderText("Order Date must not exceed Delivery Date");
+                alert.setContentText("Please change either the order/delivery date!");
+
+                alert.showAndWait();
+                return;
+            }
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("SubOrderForm.fxml"));

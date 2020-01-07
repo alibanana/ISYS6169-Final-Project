@@ -43,7 +43,10 @@ public class EditOrderFormController implements Initializable {
     @FXML private TextField deliveryCharge;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb){orderType.getItems().addAll("Delivery", "Pick-Up");}
+    public void initialize(URL url, ResourceBundle rb){
+        orderType.getItems().addAll("Delivery", "Pick-Up");
+        deliveryTime.set24HourView(true);
+    }
 
     public void initData(Controller parentController, Order order, ObservableList<Customer> CustomerList){
         this.parentController = parentController;
@@ -76,7 +79,6 @@ public class EditOrderFormController implements Initializable {
         deliveryDate.setValue(order.getDeliveryDate());
         deliveryTime.setValue(order.getDeliveryTime());
         deliveryCharge.setText(String.valueOf(order.getDeliveryPrice()));
-        deliveryTime.set24HourView(true);
     }
 
     private void bindCustomerTextFields() {

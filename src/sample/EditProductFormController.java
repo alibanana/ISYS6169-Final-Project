@@ -3,6 +3,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
@@ -44,6 +45,17 @@ public class EditProductFormController implements Initializable {
     public void editProduct(ActionEvent event) throws SQLException {
         System.out.println("Edit_Product_Button clicked in EditProductForm.fxml");
 
+        if (productName.getText().equals("") || productPrice.getText().equals("") || productType.getText().equals("")){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Please Fullfil All Data!");
+            alert.setContentText("Data is still not completed, please fill in all of the data.");
+
+            alert.showAndWait();
+            return;
+        }
+
         // If ProductType does not exists
         if (!Database.isProductTypeExist(productType.getText())){
             // Make new TypeID
@@ -55,19 +67,29 @@ public class EditProductFormController implements Initializable {
         }
 
         // Query edits to the database
-        Database.editProduct(selectedProduct.getProductID(), productName.getText(), Database.getTypeID(productType.getText()), Integer.parseInt(productPrice.getText()));
-        System.out.println(String.format("Edited %s at the products", productName.getText()));
+        try {
+            Database.editProduct(selectedProduct.getProductID(), productName.getText(), Database.getTypeID(productType.getText()), Integer.parseInt(productPrice.getText()));
+            System.out.println(String.format("Edited %s at the products", productName.getText()));
 
-        // Checks if previous TypeID still in products
-        if (!(Database.isProductTypeExistInProduct(Database.getTypeID(selectedProduct.getType())))){
-            Database.deleteProductTypeByType(selectedProduct.getType());
-            parentController.RefreshProductFilter();
+            // Checks if previous TypeID still in products
+            if (!(Database.isProductTypeExistInProduct(Database.getTypeID(selectedProduct.getType())))){
+                Database.deleteProductTypeByType(selectedProduct.getType());
+                parentController.RefreshProductFilter();
+            }
+
+            // Close Stage & Refresh Table
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+            parentController.RefreshProductTable();
+        } catch (NumberFormatException e){
+            // Validation with alert box
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Price was filled with the Wrong Format");
+            alert.setContentText("Price have wrong format, please fill in with the correct format. \n(e.g. 100000)");
+
+            alert.showAndWait();
         }
-
-        // Close Stage & Refresh Table
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
-        parentController.RefreshProductTable();
     }
 
 }

@@ -223,8 +223,8 @@ public class SubOrderFormController implements Initializable {
             // Validation with alert box
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
-            alert.setHeaderText("Please Fullfil The Paid With Correct Format!");
-            alert.setContentText("Paid have wrong format, please fullfil with correct format. \n(e.g. Paid with number format)");
+            alert.setHeaderText("Paid section was filled with Wrong Format!");
+            alert.setContentText("Paid have wrong format, please fullfil with correct format. \n(e.g. 100000)");
 
             alert.showAndWait();
         }
@@ -261,6 +261,8 @@ public class SubOrderFormController implements Initializable {
         if(currentCustomer.getMember().equals("Member")){
             disc = SetDiscount(sTotal);
         }
+
+        currentOrder.setDiscount(disc);
 
         int gTotal = sTotal + currentOrder.getDeliveryPrice() - disc;
 
