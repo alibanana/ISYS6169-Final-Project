@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
+import pdfGeneration.Invoice;
 
 import java.io.IOException;
 import java.net.URL;

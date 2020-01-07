@@ -16,6 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
+import pdfGeneration.Invoice;
 
 import java.io.*;
 import java.net.URL;
@@ -129,6 +130,14 @@ public class DetailOrderController implements Initializable {
                 return;
             }
         }
+    }
+
+    @FXML
+    public void GenerateInvoice(ActionEvent event) throws InterruptedException, SQLException, IOException {
+        editOrder(event);
+
+        Invoice inv = new Invoice(order, SubOrderList);
+        inv.makeInvoice();
     }
 
     @FXML

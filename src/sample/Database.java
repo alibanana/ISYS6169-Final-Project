@@ -396,6 +396,33 @@ public class Database {
         return rs.getInt("Ongoing");
     }
 
+    public static int getPendingPayments() throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT COUNT(*) FROM " +
+                "(SELECT orders.*, (tv.total + orders.DeliveryPrice - orders.discount) as OrderTotal, " +
+                "(tv.total + orders.DeliveryPrice - orders.Payment - orders.discount) as RemainingPayment FROM orders INNER JOIN " +
+                "(SELECT suborders.OrderID, SUM(products.Price * suborders.Qty) as total FROM suborders INNER JOIN " +
+                "products on suborders.ProductID = products.ProductID GROUP BY suborders.OrderID) as tv on orders.OrderID = tv.OrderID) AS test " +
+                "WHERE test.RemainingPayment != 0;";
+        sql = String.format(sql);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getInt("COUNT(*)");
+    }
+
+    public static int getTotalRevenue() throws SQLException{
+        conn = connect();
+
+        String sql = "SELECT SUM(Payment) FROM orders";
+        sql = String.format(sql);
+        ResultSet rs = conn.createStatement().executeQuery(sql);
+
+        rs.next();
+        return rs.getInt("SUM(Payment)");
+    }
+
     public static void addOrder(String OrderID, String CustomerID, String OrderType, String DeliveryAddress, int DeliveryPrice, LocalDate OrderDate, LocalDateTime DeliveryDateTime, String OrderStatus, int Payment, int Discount){
         try {
             conn = connect();

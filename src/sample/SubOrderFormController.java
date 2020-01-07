@@ -206,7 +206,6 @@ public class SubOrderFormController implements Initializable {
                 }
             }
 
-
 //        Detects if a customer is a non-member, checks if they already have 5 orders and makes them a member if both conditions are fulfilled
             if (currentCustomer.getMember().equals("Non-Member")) {
                 int currCustomerNumOrders = Database.getNoOrders(currentCustomer.getCustomerID());

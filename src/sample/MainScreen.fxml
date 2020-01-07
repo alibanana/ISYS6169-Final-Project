@@ -78,7 +78,7 @@
             <ChoiceBox fx:id="bgModePicker" layoutX="459.0" layoutY="566.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1048.0" visible="false">
+      <AnchorPane fx:id="OrderPane" layoutX="166.0" prefHeight="700.0" prefWidth="1048.0">
          <children>
             <TableView fx:id="OrderTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
               <columns>
@@ -165,7 +165,7 @@
                </font>
             </Label>
          </children></AnchorPane>
-      <AnchorPane fx:id="CustomerPane" layoutX="166.0" prefHeight="700.0" prefWidth="1052.0">
+      <AnchorPane fx:id="CustomerPane" layoutX="166.0" prefHeight="700.0" prefWidth="1052.0" visible="false">
          <children>
             <TableView fx:id="CustomerTable" layoutX="28.0" layoutY="65.0" prefHeight="573.0" prefWidth="850.0">
                <columns>

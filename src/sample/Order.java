@@ -22,6 +22,23 @@ public class Order {
     private LocalDate DeliveryDate;
     private LocalTime DeliveryTime;
 
+    public Order(String orderID, String customerName, String orderType, String deliveryAddress, int deliveryPrice, LocalDate orderDate, LocalDateTime deliveryDateTime, String orderStatus, int payment, int discount, int balanceDue) {
+        OrderID = orderID;
+        CustomerName = customerName;
+        OrderType = orderType;
+        DeliveryAddress = deliveryAddress;
+        DeliveryPrice = deliveryPrice;
+        OrderDate = orderDate;
+        DeliveryDateTime = deliveryDateTime;
+        OrderStatus = orderStatus;
+        Payment = payment;
+        Discount = discount;
+        BalanceDue = balanceDue;
+        // Split the Delivery Date & Time
+        DeliveryDate = DeliveryDateTime.toLocalDate();
+        DeliveryTime = DeliveryDateTime.toLocalTime();
+    }
+
     public Order(String orderID, String customerName, String orderType, String deliveryAddress, int deliveryPrice, LocalDate orderDate, LocalDateTime deliveryDateTime, String orderStatus, int payment, int discount) {
         OrderID = orderID;
         CustomerName = customerName;
@@ -38,32 +55,20 @@ public class Order {
         DeliveryTime = DeliveryDateTime.toLocalTime();
     }
 
-    // Constructor for TableView
-//    public Order(String orderID, String customerName, String orderType, LocalDate orderDate, LocalDateTime deliveryDateTime, String orderStatus, int payment) {
-//        OrderID = orderID;
-//        CustomerName = customerName;
-//        OrderType = orderType;
-//        OrderDate = orderDate;
-//        DeliveryDateTime = deliveryDateTime;
-//        OrderStatus = orderStatus;
-//        Payment = payment;
-//    }
+    public int getBalanceDue() {
+        return BalanceDue;
+    }
 
-    public Order(String orderID, String customerName, String orderType, String deliveryAddress, int deliveryPrice, LocalDate orderDate, LocalDateTime deliveryDateTime, String orderStatus, int payment, int discount, int balancedue) {
-        OrderID = orderID;
-        CustomerName = customerName;
-        OrderType = orderType;
-        DeliveryAddress = deliveryAddress;
-        DeliveryPrice = deliveryPrice;
-        OrderDate = orderDate;
-        DeliveryDateTime = deliveryDateTime;
-        OrderStatus = orderStatus;
-        Payment = payment;
-        Discount = discount;
-        // Split the Delivery Date & Time
-        DeliveryDate = DeliveryDateTime.toLocalDate();
-        DeliveryTime = DeliveryDateTime.toLocalTime();
-        BalanceDue = balancedue;
+    public void setBalanceDue(int balanceDue) {
+        BalanceDue = balanceDue;
+    }
+
+    public void setDeliveryDate(LocalDate deliveryDate) {
+        DeliveryDate = deliveryDate;
+    }
+
+    public void setDeliveryTime(LocalTime deliveryTime) {
+        DeliveryTime = deliveryTime;
     }
 
     public String getOrderID() {

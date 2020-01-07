@@ -125,7 +125,7 @@ public class Controller implements Initializable {
         StartDate.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
         EndDate.setFont(Font.loadFont("file:src/fonts/cocolight.ttf", 18));
 
-        // Initialize Order Pane
+        // Initialize Order
         NewOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         DeleteOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
         EditOrderLabel.setFont(Font.loadFont("file:src/fonts/cocoregular.ttf", 18));
@@ -211,9 +211,9 @@ public class Controller implements Initializable {
         OngoingOrders.setText(String.valueOf(Database.getOngoingOrders()));
 
         // Select Where Balance Due != 0
-        PaymentPending.setText("-");
+        PaymentPending.setText(String.valueOf(Database.getPendingPayments()));
         // Select Sum All Payment
-        TotalRevenue.setText("-");
+        TotalRevenue.setText(String.valueOf(Database.getTotalRevenue()));
     }
 
     @FXML
@@ -278,8 +278,6 @@ public class Controller implements Initializable {
         ResultSet result = Database.getWeeklySales(Database.getFirstSale(), Database.getLastSale());
 
         insertIntoGraph(result, "Weekly graph");
-
-
     }
 
     @FXML
@@ -291,8 +289,6 @@ public class Controller implements Initializable {
         ResultSet result = Database.getMonthlySales(Database.getFirstSale(), Database.getLastSale());
 
         insertIntoGraph(result, "Monthly graph");
-
-
     }
 
     @FXML
@@ -304,8 +300,6 @@ public class Controller implements Initializable {
         ResultSet result = Database.getYearlySales(Database.getFirstSale(), Database.getLastSale());
 
         insertIntoGraph(result, "Yearly graph");
-
-
     }
 
     @FXML
@@ -502,14 +496,17 @@ public class Controller implements Initializable {
 
             Connection conn = Database.connect();
 
-            // Filtering OrderStatus
-            String sql = "SELECT * FROM orders";
+            String sql = "SELECT orders.*, (tv.total + orders.DeliveryPrice - orders.discount) as OrderTotal, " +
+                    "(tv.total + orders.DeliveryPrice - orders.Payment - orders.discount) as RemainingPayment " +
+                    "FROM orders INNER JOIN (SELECT suborders.OrderID, SUM(products.Price * suborders.Qty) as total " +
+                    "FROM suborders INNER JOIN products on suborders.ProductID = products.ProductID GROUP BY suborders.OrderID) as tv on orders.OrderID = tv.OrderID";
+
             boolean option = false;
             if (filter.equals("Pending")){
-                sql = "SELECT * FROM orders WHERE OrderStatus = 'Pending'";
+                sql = sql + " WHERE OrderStatus = 'Pending'";
                 option = true;
             } else if (filter.equals("Completed")){
-                sql = "SELECT * FROM orders WHERE OrderStatus = 'Completed'";
+                sql = sql + " WHERE OrderStatus = 'Completed'";
                 option = true;
             }
 
@@ -528,7 +525,7 @@ public class Controller implements Initializable {
 
             sql = sql + " ORDER BY DeliveryDateTime DESC";
 
-            System.out.println(sql);
+//            System.out.println(sql);
 
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
@@ -537,7 +534,7 @@ public class Controller implements Initializable {
                 OrderList.add(new Order(rs.getString("OrderID"), Database.getCustomer(rs.getString("CustomerID")),
                         rs.getString("OrderType"), rs.getString("DeliveryAddress"), rs.getInt("DeliveryPrice"),
                         rs.getDate("OrderDate").toLocalDate(), rs.getTimestamp("DeliveryDateTime").toLocalDateTime(),
-                        rs.getString("OrderStatus"), rs.getInt("Payment"), rs.getInt("Discount")));
+                        rs.getString("OrderStatus"), rs.getInt("Payment"), rs.getInt("Discount"), rs.getInt("RemainingPayment")));
                 colNo++;
             }
 
@@ -558,7 +555,7 @@ public class Controller implements Initializable {
         OrdDeliveryDateCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryDate"));
         OrdDeliveryTimeCol.setCellValueFactory(new PropertyValueFactory<>("DeliveryTime"));
         OrdStatusCol.setCellValueFactory(new PropertyValueFactory<>("OrderStatus"));
-        OrdBalanceDueCol.setCellValueFactory(new PropertyValueFactory<>("Payment"));
+        OrdBalanceDueCol.setCellValueFactory(new PropertyValueFactory<>("BalanceDue"));
         OrderTable.setItems(OrderList);
         SetOverview();
     }
