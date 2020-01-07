@@ -15,6 +15,7 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
+import javafx.collections.ObservableList;
 import sample.Order;
 import sample.SubOrder;
 
@@ -22,15 +23,16 @@ import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Invoice {
 
     private Order order;
-    private ArrayList<SubOrder> subOrdersList;
-    private String filepath = "./";
+    private ObservableList<SubOrder> subOrdersList;
+    private String filepath = System.getProperty("user.home").replaceAll("\\\\", "/") + "/Desktop/";
+//    private String filepath = "C:/Users/Alifio/Desktop/";
 
-    public Invoice(Order order, ArrayList<SubOrder> subOrdersList) {
+
+    public Invoice(Order order, ObservableList<SubOrder> subOrdersList) {
         this.order = order;
         this.subOrdersList = subOrdersList;
     }
@@ -43,11 +45,11 @@ public class Invoice {
         this.order = order;
     }
 
-    public ArrayList<SubOrder> getSubOrdersList() {
+    public ObservableList<SubOrder> getSubOrdersList() {
         return subOrdersList;
     }
 
-    public void setSubOrdersList(ArrayList<SubOrder> subOrdersList) {
+    public void setSubOrdersList(ObservableList<SubOrder> subOrdersList) {
         this.subOrdersList = subOrdersList;
     }
 
@@ -89,30 +91,38 @@ public class Invoice {
             document.add(new Paragraph("Items:" ));
 
             // Creating a table
-            Table table = new Table(new float[]{20, 100, 20, 50});
+            Table table = new Table(new float[]{20, 200, 20, 300, 100});
 
             table.addCell(new Cell().add(new Paragraph("#")).setTextAlignment(TextAlignment.CENTER).setBackgroundColor(topRowColor).setFont(font));
             table.addCell(new Cell().add(new Paragraph("Product Name")).setTextAlignment(TextAlignment.CENTER).setBackgroundColor(topRowColor).setFont(font));
             table.addCell(new Cell().add(new Paragraph("Qty")).setTextAlignment(TextAlignment.CENTER).setBackgroundColor(topRowColor).setFont(font));
+            table.addCell(new Cell().add(new Paragraph("Description")).setTextAlignment(TextAlignment.CENTER).setBackgroundColor(topRowColor).setFont(font));
             table.addCell(new Cell().add(new Paragraph("Price")).setTextAlignment(TextAlignment.CENTER).setBackgroundColor(topRowColor).setFont(font));
 
             int itemNo = 1;
-            int total = 0;
+            int subTotal = 0;
+            int gTotal = subTotal - order.getDiscount() + order.getDeliveryPrice();
 //
             // Inserting sub orders into the table
             for(SubOrder subOrder : subOrdersList){
                 table.addCell(new Cell().add(new Paragraph(String.valueOf(itemNo))));
                 table.addCell(new Cell().add(new Paragraph(subOrder.getProductName())));
                 table.addCell(new Cell().add(new Paragraph(String.valueOf(subOrder.getQty()))));
+                table.addCell(new Cell().add(new Paragraph(subOrder.getDescription())));
                 table.addCell(new Cell().add(new Paragraph(String.valueOf(subOrder.getPrice()))));
-                total += subOrder.getQty() * subOrder.getPrice();
+                subTotal += subOrder.getQty() * subOrder.getPrice();
                 itemNo++;
             }
 
             // Adding Table to document
             document.add(table);
 
-            document.add(new Paragraph("Total Price: " + total).setFont(font));
+            document.add(new Paragraph("Sub Total: " + subTotal).setFont(font));
+            document.add(new Paragraph("Delivery Price: " + order.getDeliveryPrice()).setFont(font));
+            document.add(new Paragraph("Discount: " + order.getDiscount()).setFont(font));
+            document.add(new Paragraph("Grand Total: " + gTotal).setFont(font));
+            document.add(new Paragraph("Paid: " + order.getPayment()).setFont(font));
+            document.add(new Paragraph("Balance Due: " + order.getBalanceDue()).setFont(font));
 
             document.close();
 
